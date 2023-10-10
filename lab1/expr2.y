@@ -56,10 +56,10 @@ stmt    :       assign ';'
 assign  :       ID ASSIGN expr { allocSymbol($1,$3);printf("assign!\n");}
         ;
 
-expr    :       expr ADD expr   { $$ = $1 + $3;printf("ADD !\n"); }
-        |       expr MINUS expr   {$$ = $1 - $3; printf("MINUS!\n"); }
-        |       expr MULT expr  { $$ = $1 * $3;printf("MULT!\n"); }
-        |       expr DIV expr   { $$ = $1 / $3;printf("DIV!\n"); }
+expr    :       expr ADD expr   { $$ = $1 + $3;printf("ADD ,Result is %f\n",$$); }
+        |       expr MINUS expr   {$$ = $1 - $3; printf("MINUS,Result is %f\n",$$); }
+        |       expr MULT expr  { $$ = $1 * $3;printf("MULT,Result is %f\n",$$); }
+        |       expr DIV expr   { $$ = $1 / $3;printf("DIV,Result is %f\n",$$); }
         |       LEFTPAR expr RIGHTPAR { $$ = $2; }
         |       MINUS expr %prec UMINUS   { $$ = -$2; }
         |       NUMBER   { $$ = $1;}
