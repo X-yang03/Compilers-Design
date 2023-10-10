@@ -1,4 +1,4 @@
-%option noyywrap
+%option noyywrap   
 %option nounput
 %option noinput
 %top{
@@ -9,7 +9,7 @@
     extern dump_type_t dump_type;
 
     inline void dump_tokens(const char* format, ...){
-        va_list args;
+        va_list args;       //va_list表示可变参数列表类型，实际上是一个char*
         va_start(args, format);
         if (dump_type == TOKENS)
             vfprintf(yyout, format, args);
@@ -20,10 +20,23 @@
 %}
 
 /* definitions section */
-DECIMIAL ([1-9][0-9]*|0)
-ID [[:alpha:]_][[:alpha:][:digit:]_]*
-EOL (\r\n|\n|\r)
-WHITE [\t ]
+SINGLECOMMENT   //
+COMNMENTBEGIN   /*
+COMNMENTEND     */
+INT             int
+FLOAT           float
+const           const
+SEMICOLON       ;
+WHILE           while
+BREAK           break
+CONTINUE        continue
+RETURN          return
+RELATION        (==|>|<|>=|<=)
+
+DECIMIAL        ([1-9][0-9]*|0)
+ID              [[:alpha:]_][[:alpha:][:digit:]_]*
+EOL             (\r\n|\n|\r)
+WHITE           [\t ]
 /*  Your code here (lab3). */
 
 %%
