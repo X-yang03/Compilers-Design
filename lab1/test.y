@@ -18,7 +18,6 @@ extern int yyparse();
 FILE* yyin;
 void yyerror(const char* s);
 char num[20] = {0};  //支持的最长数字长度为20
-char name[20] ={0};
 
 %}
 
@@ -90,6 +89,9 @@ int yylex()
         }
         else if(t==')'){
             return RIGHTPAR;
+        }
+        else if(isalpha(t)){
+            
         }
         else{
             return t;

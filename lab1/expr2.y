@@ -1,129 +1,153 @@
 %{
-/*********************************************
-将所有的词法分析功能均放在 yylex 函数内实现，为 +、-、*、/、(、 ) 每个运算符及整数分别定义一个单词类别，在 yylex 内实现代码，能
-识别这些单词，并将单词类别返回给词法分析程序。
-实现功能更强的词法分析程序，可识别并忽略空格、制表符、回车等
-空白符，能识别多位十进制整数。
-YACC file
-**********************************************/
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include<ctype.h>
-#ifndef YYSTYPE
-#define YYSTYPE char*
-#endif
+#include <ctype.h>
+
 int yylex();
 extern int yyparse();
 FILE* yyin;
 void yyerror(const char* s);
-char num[20] = {0};
-char identi[50] = {0};
 
-int ischar(int t){
+// 符号表项
+struct STE {   //symboltableentry
+    char name[50];
+    double value;
+};
 
-    return (('a'<=t&&t<='z')||('A'<=t&&'Z'>=t)||(t=='_'));
-}
+struct STE symbolTable[100];
+int symNum = 0;
 
+// 函数声明
+double searchSymbol(char *name);
+struct STE* allocSymbol(char *name, double value);
 %}
 
-//TODO:给每个符号定义一个单词类别
-%token ADD MINUS MULT DIV LEFTPAR RIGHTPAR
-%token NUMBER
-%token ID
+%union {
+    double val;
+    char* name;
+}
+
+%token ADD MINUS MULT DIV ASSIGN LEFTPAR RIGHTPAR
+%token <val> NUMBER
+%token <name> ID
+
 %left ADD MINUS
 %left MULT DIV
-%right UMINUS       
+
+%right UMINUS ASSIGN
+
+%type <val> expr
+%type <val> factor
+%type <name> assign
 
 %%
 
-
-lines   :       lines expr ';' { printf("%s\n", $2); }
-        |       lines ';'
+lines   :       lines stmt 
+        |       stmt 
         |
         ;
-//TODO:完善表达式的规则
-expr    :       expr ADD expr   { $$ = (char *)malloc(41); strcpy($$,$1); strcat($$,$3); strcat($$,"+ "); }
-        |       expr MINUS expr   { $$ = (char *)malloc(41); strcpy($$,$1); strcat($$,$3); strcat($$,"- "); }
-        |       expr MULT expr  { $$ = (char *)malloc(41); strcpy($$,$1); strcat($$,$3); strcat($$,"* "); }
-        |       expr DIV expr   { $$ = (char *)malloc(41); strcpy($$,$1); strcat($$,$3); strcat($$,"/ "); }
-        |       LEFTPAR expr RIGHTPAR { $$ = (char *)malloc(41); strcpy($$,$2); }
-        |       MINUS expr %prec UMINUS   { $$ = (char *)malloc(21); strcpy($$,"-"); strcat($$,$2); }
-        |       NUMBER   { $$ = (char *)malloc(20); strcpy($$,$1);strcat($$," ");}
-        |       ID      {$$ = (char *)malloc(50); strcpy($$,$1); strcat($$," ");}
+
+
+stmt    :       assign ';'
+        |       expr    ';'
         ;
 
+assign  :       ID ASSIGN expr { allocSymbol($1,$3);printf("assign!\n");}
+        ;
 
+expr    :       expr ADD expr   { $$ = $1 + $3;printf("ADD !\n"); }
+        |       expr MINUS expr   {$$ = $1 - $3; printf("MINUS!\n"); }
+        |       expr MULT expr  { $$ = $1 * $3;printf("MULT!\n"); }
+        |       expr DIV expr   { $$ = $1 / $3;printf("DIV!\n"); }
+        |       LEFTPAR expr RIGHTPAR { $$ = $2; }
+        |       MINUS expr %prec UMINUS   { $$ = -$2; }
+        |       NUMBER   { $$ = $1;}
+        |       factor  {$$ = $1;}
+        ;
+
+factor  :       ID      {$$=searchSymbol($1);printf("%s stands for %f\n",$1,$$);}
 
 %%
 
-// programs section
-
-int yylex()
+int yylex() 
 {
     int t;
-    while(1){
-        t=getchar();
-        if(t==' '||t=='\t'||t=='\n'){
-            //do noting
-        }else if(isdigit(t)){
-            int m = 0;
-            while(1){
-                num[m++] = t;
-                t = getchar();
-                if(!isdigit(t)){
-                   ungetc(t,stdin);
-                    break;
-                }
-            }
-            num[m] = 0;
-            yylval = num;
+    char identifier[50]; // 用于存储标识符
+    while (1) 
+    {
+        t = getchar();
+        if (t == ' ' || t == '\t' || t == '\n') {
+            // 忽略空白字符
+        } else if (isdigit(t)) {
+            // 识别整数
+            ungetc(t, stdin); 
+            int num;
+            scanf("%d", &num);
+            yylval.val = num; // 将识别的整数存储在yylval中
             return NUMBER;
-
-            //TODO:解析多位数字返回数字类型 
-        }else if(t=='+'){
-            return ADD;
-        }else if(t=='-'){
-            return MINUS;
-        }//TODO:识别其他符号
-        else if(t=='*'){
-            return MULT;
-        }
-        else if(t=='/'){
-            return DIV;
-        }
-        else if(t=='('){
-            return LEFTPAR;
-        }
-        else if(t==')'){
-            return RIGHTPAR;
-        }
-        else if(ischar(t)){
-            int m=0;
-            while(ischar(t) || isdigit(t)){
-                identi[m++] = t;
-                t=getchar(); 
+        } else if (isalpha(t)) {
+            // 识别标识符
+            int i = 0;
+            while (isalnum(t)) {  //识别字母开头，数字和字母组成的标识符
+                identifier[i++] = t;
+                t = getchar();
             }
-            identifier[ti] = 0;
-            yylval = identifier;
-            ungetc(t,stdin);
-            return ID;   
-
-        }
-        else{
-            return t;
+            ungetc(t, stdin); // 将多读的字符放回输入流
+            identifier[i] = '\0';
+            yylval.name = strdup(identifier); // 存储标识符字符串
+            return ID;
+        } else if (t == '+') {
+            return ADD;
+        } else if (t == '-') {
+            return MINUS;
+        } else if (t == '*') {
+            return MULT;
+        } else if (t == '/') {
+            return DIV;
+        } else if (t == '=') {
+            return ASSIGN;
+        } else if (t == '(') {
+            return LEFTPAR;
+        } else if (t == ')') {
+            return RIGHTPAR;
+        } else {
+            return t; // 未识别的字符直接返回ASCII值
         }
     }
 }
 
-int main(void)
-{
-    yyin=stdin;
-    do{
+int main(void) {
+    yyin = stdin;
+    do {
         yyparse();
-    }while(!feof(yyin));
+    } while (!feof(yyin));
     return 0;
 }
+
+double searchSymbol(char *name) {
+    for (int i = 0; i < symNum; i++) {
+        if (strcmp(symbolTable[i].name, name) == 0) {
+            return symbolTable[i].value;
+        }
+    }
+    printf( "Error: Undefined variable %s\n", name);
+    exit(1);
+}
+
+struct STE* allocSymbol(char *name, double value) {
+    for (int i = 0; i < symNum; i++) {
+        if (strcmp(symbolTable[i].name, name) == 0) {
+            symbolTable[i].value = value;
+            return &symbolTable[i];
+        }
+    }
+    strcpy(symbolTable[symNum].name, name);
+    symbolTable[symNum].value = value;
+    symNum++;
+    return &symbolTable[symNum];
+}
+
 void yyerror(const char* s){
     fprintf(stderr,"Parse error: %s\n",s);
     exit(1);
