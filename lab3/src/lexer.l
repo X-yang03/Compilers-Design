@@ -15,7 +15,7 @@
     
     int charNum = 0;
 
-    STE *SymbolTable;
+    STE SymbolTable[100];
 
     int SymbolNum = 0;
     extern dump_type_t dump_type;
@@ -28,7 +28,7 @@
             vfprintf(yyout, format, args);              //yyout中输出format格式化的字符串
         va_end(args);
         charNum += yyleng;      //charNum 加上yytext的长度yyleng
-        charNum++;              //加上空格
+
     }
 
     STE* appendSymbol(char* name){
@@ -172,20 +172,19 @@ WHITE           [\t ]
 }
 
 {ID} {
-    // STE* pos = LocateSymbol(yytext);
-    // if(pos == NULL){
-    //     pos = appendSymbol(yytext);
-    // }
-    dump_tokens("ID\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    STE* pos = LocateSymbol(yytext);
+    if(pos == NULL){
+        pos = appendSymbol(yytext);
+    }
+    dump_tokens("ID\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,charNum,pos);
 }
 
 {EOL} {
-    yylineno++;
     charNum = 0; //换行时列数置0
 }
 
 {WHITE} {
-    charNum+=4;
+    charNum+=1;
 }
 
     /*  Your code here (lab3). */
