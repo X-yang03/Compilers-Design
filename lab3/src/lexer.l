@@ -12,29 +12,55 @@
 
     int charNum = 0;
 
+    //  dump_tokens用于输出token的信息
     inline void dump_tokens(const char* format, ...){  //变长参数
-        va_list args;       //va_list表示可变参数列表类型，实际上是一个char*
-        va_start(args, format); //初始化args，指向第一个可变参数，即format后的第一个参数
+        va_list args;                                   //va_list表示可变参数列表类型，实际上是一个char*
+        va_start(args, format);                         //初始化args，指向第一个可变参数，即format后的第一个参数
         if (dump_type == TOKENS)
-            vfprintf(yyout, format, args);  //yyout中输出format格式化的字符串
+            vfprintf(yyout, format, args);              //yyout中输出format格式化的字符串
         va_end(args);
-        charNum += yyleng; //charNum 加上yytext的长度yyleng
-        charNum++;   //加上空格
+        charNum += yyleng;      //charNum 加上yytext的长度yyleng
+        charNum++;              //加上空格
     }
 
+    struct SymbolTableEntry{
+        char* name;//name
+        //value?
+    }
 
+    typedef struct SymbolTableEntry STE;
+
+    STE *SymbolTable;
+
+    int SymbolNum = 0;
+
+    STE* appendSymbol(char* name){
+        STE* entry = SymbolTable + SymbolNum;
+        entry->name = name;
+        return entry;
+    }
+
+    STE* LocateSymbol(char* name){
+        STE* entry = SymbolTable;
+        for(int i=0;i<SymbolNum;i++){
+            entry += 1;
+            if(entry->name == name){
+                return entry;
+            }
+        }
+        return NULL;
+    }
     /* Your code here, if desired (lab3). */
 %}
 
 /* definitions section */
-SINGLECOMMENT   //
+SINGLECOMMENT   "//"[^\n]*   
 COMNMENTBEGIN   /*
 COMNMENTEND     */
 CONST           const
 WHILE           while
 BREAK           break
 CONTINUE        continue
-RETURN          return
 DECIMIAL        ([1-9][0-9]*|0)
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
@@ -98,6 +124,9 @@ WHITE           [\t ]
 "}" {
     dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
+"," {
+    dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+}
 
 {DECIMIAL} {
     int decimal;
@@ -106,7 +135,11 @@ WHITE           [\t ]
 }
 
 {ID} {
-    dump_tokens("ID\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    STE* pos = LocateSymbol(yytext);
+    if(pos == NULL){
+        pos = appendSymbol(yytext);
+    }
+    dump_tokens("ID\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,charNum,pos);
 }
 
 {EOL} {
@@ -118,7 +151,9 @@ WHITE           [\t ]
     dump_tokens("CONST\t%s\t%d\t%d\n",yytext,yylineno,charNum);
 }
 
-{WHITE}
+{WHITE} {
+    charNum+=4;
+}
 
     /*  Your code here (lab3). */
 %%
