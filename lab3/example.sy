@@ -1,4 +1,4 @@
-int a, a1;
+int a;
 
 int main()
 {
