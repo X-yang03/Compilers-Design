@@ -55,9 +55,7 @@
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
-splice                  (\\[[:blank:]]*\n)*
 SINGLECOMMENT   "//"[^\n]*   
-
 CONST           const
 WHILE           while
 BREAK           break
@@ -77,12 +75,13 @@ WHITE           [\t ]
 {SINGLECOMMENT} {
     charNum = 0;
 }
-[/]{splice}[*]          BEGIN(COMMENT);
+"/*"         BEGIN(COMMENT);
 <COMMENT>{
   [^*\\\n]+           
-  "*"+[^*/\\\n]*        
-  [*]{splice}[/]        BEGIN(INITIAL);
-  [*\\]              
+  "*"+
+  [^*/\\\n]*        
+  (\\[[:blank:]]*\n)*
+  [*][/]        BEGIN(INITIAL);              
   \n                 
 }
 
