@@ -1,17 +1,5 @@
-/* int c = 521 
-
-
-
-
-*/
-int a;
-
-int main()
-{
-    int a;
-    float b = 0.1231111;
-    a = 1 + 2;
-    if(a < 5)
-        return 1;
-    return 0;
-}
+// */ // comment, not syntax error
+f = g/**//h; // equivalent to f = g / h;
+/*//*/ l(); // equivalent to l();
+m = n//**/o
++ p; // equivalent to m = n + p;

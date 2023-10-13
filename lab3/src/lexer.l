@@ -54,10 +54,10 @@
     }
     /* Your code here, if desired (lab3). */
 %}
-
 /* definitions section */
+splice                  (\\[[:blank:]]*\n)*
 SINGLECOMMENT   "//"[^\n]*   
-MULCOMMENT     "/\*"(.*|\n)*?"\*/"
+
 CONST           const
 WHILE           while
 BREAK           break
@@ -77,11 +77,14 @@ WHITE           [\t ]
 {SINGLECOMMENT} {
     charNum = 0;
 }
-{MULCOMMENT} {
-    charNum = 0;
-    printf("comment begin\n");
+[/]{splice}[*]          BEGIN(COMMENT);
+<COMMENT>{
+  [^*\\\n]+             /* eat anything that's not a '*' or line end */
+  "*"+[^*/\\\n]*        /* eat up '*'s not followed by '/'s or line end */
+  [*]{splice}[/]        BEGIN(INITIAL);
+  [*\\]                 /* stray '*' or backslash */
+  \n                    /* Reduce the amount of work needed for yylineno */
 }
-
 
 "int" {     //输出 INT  int    行号    列号
     dump_tokens("INT\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串
