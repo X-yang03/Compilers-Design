@@ -79,11 +79,11 @@ WHITE           [\t ]
 }
 [/]{splice}[*]          BEGIN(COMMENT);
 <COMMENT>{
-  [^*\\\n]+             /* eat anything that's not a '*' or line end */
-  "*"+[^*/\\\n]*        /* eat up '*'s not followed by '/'s or line end */
+  [^*\\\n]+           
+  "*"+[^*/\\\n]*        
   [*]{splice}[/]        BEGIN(INITIAL);
-  [*\\]                 /* stray '*' or backslash */
-  \n                    /* Reduce the amount of work needed for yylineno */
+  [*\\]              
+  \n                 
 }
 
 "int" {     //输出 INT  int    行号    列号
