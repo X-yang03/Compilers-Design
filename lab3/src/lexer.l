@@ -1,4 +1,4 @@
-%option noyywrap   
+%option noyywrap  
 %option nounput
 %option noinput
 %option yylineno
@@ -13,6 +13,11 @@
 
     typedef struct SymbolTableEntry STE;
     
+
+    unsigned int oct2dec(unsigned int oct){
+        return oct/10*8+oct%10;
+    }
+
     int charNum = 0;
 
     STE SymbolTable[100];
@@ -52,20 +57,32 @@
 
 /* definitions section */
 SINGLECOMMENT   "//"[^\n]*   
-COMNMENTBEGIN   /*
-COMNMENTEND     */
+MULCOMMENT     "/\*"(.*|\n)*?"\*/"
 CONST           const
 WHILE           while
 BREAK           break
 CONTINUE        continue
 DECIMIAL        ([1-9][0-9]*|0)
+OCTAL           (0[1-7][0-7]*|0)
+HEXDECIMAL      (0(X|x)[1-f][0-f]*|0)
+FLOAT_NUMBER    ([1-9][0-9]*|0"."[0-9]*[1-9])
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
+%x COMMENT
 /*  Your code here (lab3). */
 
 %%
     /* rules section */
+{SINGLECOMMENT} {
+    charNum = 0;
+}
+{MULCOMMENT} {
+    charNum = 0;
+    printf("comment begin\n");
+}
+
+
 "int" {     //输出 INT  int    行号    列号
     dump_tokens("INT\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串
 }
@@ -121,7 +138,6 @@ WHITE           [\t ]
 "*" {
     dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
-
 "/" {
     dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
@@ -170,7 +186,22 @@ WHITE           [\t ]
     decimal = atoi(yytext);
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, decimal);
 }
-
+{OCTAL} {
+    int octal;
+    octal = oct2dec(atoi(yytext));
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, octal);
+}
+{HEXDECIMAL} {
+    int hex = 0;
+    int tmp;
+    sscanf(yytext,"%dx%016x",&tmp,&hex);
+    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
+}
+{FLOAT_NUMBER} {
+    float f ;
+    sscanf(yytext, "%f", &f);
+    dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
+}
 {ID} {
     STE* pos = LocateSymbol(yytext);
     if(pos == NULL){

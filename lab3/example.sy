@@ -1,8 +1,15 @@
+/* int c = 521 
+
+
+
+
+*/
 int a;
 
 int main()
 {
     int a;
+    float b = 0.1231111;
     a = 1 + 2;
     if(a < 5)
         return 1;
