@@ -40,6 +40,7 @@ int func(int a, int b){
         + i1 + i2 + i3 + i4 
         - j1 - j2 - j3 - j4 
         + k1 + k2 + k3 + k4 ;
+
 }
 
 int main(){
