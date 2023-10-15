@@ -39,6 +39,7 @@
     STE* appendSymbol(char* name){
         STE* entry = SymbolTable + SymbolNum;
         entry->name = name;
+        SymbolNum++;
         return entry;
     }
 
@@ -55,6 +56,7 @@
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
+splice                  (\\[[:blank:]]*\n)*
 SINGLECOMMENT   "//"[^\n]*   
 CONST           const
 WHILE           while
@@ -75,15 +77,15 @@ WHITE           [\t ]
 {SINGLECOMMENT} {
     charNum = 0;
 }
-"/*"         BEGIN(COMMENT);
+[/]{splice}[*]          BEGIN(COMMENT);
 <COMMENT>{
-  [^*\\\n]+           
-  "*"+
-  [^*/\\\n]*        
-  (\\[[:blank:]]*\n)*
-  [*][/]        BEGIN(INITIAL);              
-  \n                 
+  [^*\\\n]+             /* eat anything that's not a '*' or line end */
+  "*"+[^*/\\\n]*        /* eat up '*'s not followed by '/'s or line end */
+  [*]{splice}[/]        BEGIN(INITIAL);
+  [*\\]                 /* stray '*' or backslash */
+  \n                    /* Reduce the amount of work needed for yylineno */
 }
+
 
 "int" {     //输出 INT  int    行号    列号
     dump_tokens("INT\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串

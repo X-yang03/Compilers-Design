@@ -1,9 +1,10 @@
 // */ // comment, not syntax error
-f = g/*
-sgaadgg
-adskfm
-asgafaDSG
-*//h; // equivalent to f = g / h;
+f = g/*/\aaaaaaaaa    
+
+
+
+
+a\n*//h; // equivalent to f = g / h;
 /*//*/ l(); // equivalent to l();
 m = n//**/o
 + p; // equivalent to m = n + p;
