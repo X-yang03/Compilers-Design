@@ -9,15 +9,11 @@
 %{
     struct SymbolTableEntry{
         char* name;//name
+
     };
 
     typedef struct SymbolTableEntry STE;
     
-
-    unsigned int oct2dec(unsigned int oct){
-        return oct/10*8+oct%10;
-    }
-
     int charNum = 0;
 
     STE SymbolTable[100];
@@ -191,14 +187,15 @@ WHITE           [\t ]
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, decimal);
 }
 {OCTAL} {
-    int octal;
-    octal = oct2dec(atoi(yytext));
-    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, octal);
+    int oct = 0;
+    sscanf(yytext, "%o", &oct);
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, oct);
 }
 {HEXDECIMAL} {
     int hex = 0;
     int tmp;
-    sscanf(yytext,"%dx%016x",&tmp,&hex);
+    char c;
+    sscanf(yytext,"%d%c%016x",&tmp,&c,&hex);
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
 }
 {FLOAT_NUMBER} {
