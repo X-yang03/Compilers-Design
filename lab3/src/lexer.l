@@ -56,10 +56,6 @@
 %}
 /* definitions section */
 SINGLECOMMENT   "//"[^\n]*   
-CONST           const
-WHILE           while
-BREAK           break
-CONTINUE        continue
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[1-7][0-7]*|0)
 HEXDECIMAL      (0(X|x)[1-f][0-f]*|0)
@@ -86,7 +82,7 @@ WHITE           [\t ]
 }
 
 "int" {     //输出 INT  int    行号    列号
-    dump_tokens("INT\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串
+    dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串
 }
 
 "float" {
@@ -209,7 +205,7 @@ WHITE           [\t ]
     if(pos == NULL){
         pos = appendSymbol(yytext);
     }
-    dump_tokens("ID\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,charNum,pos);
+    dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,charNum,pos);
 }
 
 {EOL} {
