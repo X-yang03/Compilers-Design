@@ -60,7 +60,7 @@ BREAK           break
 CONTINUE        continue
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[1-7][0-7]*|0)
-HEXDECIMAL      (0(X|x)[1-f][0-f]*|0)
+HEXDECIMAL      (0[xX][0-9a-fA-F]+)
 FLOAT_NUMBER    ([1-9][0-9]*|0"."[0-9]*[1-9])
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
@@ -192,10 +192,11 @@ WHITE           [\t ]
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, oct);
 }
 {HEXDECIMAL} {
+   // printf("%s\n",yytext);
     int hex = 0;
     int tmp;
-    char c;
-    sscanf(yytext,"%d%c%016x",&tmp,&c,&hex);
+    char c[1];
+    sscanf(yytext,"%d%[xX]%016x",&tmp,c,&hex);
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
 }
 {FLOAT_NUMBER} {
