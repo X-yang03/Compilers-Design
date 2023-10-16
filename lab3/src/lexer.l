@@ -8,16 +8,12 @@
 }
 %{
     struct SymbolTableEntry{
-        char* name;//name
+        char name[20];//name
+
     };
 
     typedef struct SymbolTableEntry STE;
     
-
-    unsigned int oct2dec(unsigned int oct){
-        return oct/10*8+oct%10;
-    }
-
     int charNum = 0;
 
     STE SymbolTable[100];
@@ -38,7 +34,9 @@
 
     STE* appendSymbol(char* name){
         STE* entry = SymbolTable + SymbolNum;
-        entry->name = name;
+        //entry->name = name;
+        strcpy(entry->name,name);
+        SymbolNum++;
         return entry;
     }
 
@@ -46,7 +44,8 @@
         STE* entry = SymbolTable;
         for(int i=0;i<SymbolNum;i++){
             entry += 1;
-            if(entry->name == name){
+            //printf("%s\n", entry->name);
+            if(strcmp(entry->name,name) == 0){
                 return entry;
             }
         }
@@ -55,11 +54,13 @@
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
+splice                  (\\[[:blank:]]*\n)*
 SINGLECOMMENT   "//"[^\n]*   
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[1-7][0-7]*|0)
-HEXDECIMAL      (0(X|x)[1-f][0-f]*|0)
-FLOAT_NUMBER    ([1-9][0-9]*|0"."[0-9]*[1-9])
+HEXDECIMAL      (0[xX][0-9a-fA-F]+)
+digit           [0-9]
+FLOAT_NUMBER    {digit}*(\.{digit}+)?
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
@@ -71,15 +72,15 @@ WHITE           [\t ]
 {SINGLECOMMENT} {
     charNum = 0;
 }
-"/*"         BEGIN(COMMENT);
+[/]{splice}[*]          BEGIN(COMMENT);
 <COMMENT>{
-  [^*\\\n]+           
-  "*"+
-  [^*/\\\n]*        
-  (\\[[:blank:]]*\n)*
-  [*][/]        BEGIN(INITIAL);              
-  \n                 
+  [^*\\\n]+             /* eat anything that's not a '*' or line end */
+  "*"+[^*/\\\n]*        /* eat up '*'s not followed by '/'s or line end */
+  [*]{splice}[/]        BEGIN(INITIAL);
+  [*\\]                 /* stray '*' or backslash */
+  \n                    /* Reduce the amount of work needed for yylineno */
 }
+
 
 "int" {     //输出 INT  int    行号    列号
     dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,charNum); //yytext是识别到的字符串
@@ -185,18 +186,21 @@ WHITE           [\t ]
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, decimal);
 }
 {OCTAL} {
-    int octal;
-    octal = oct2dec(atoi(yytext));
-    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, octal);
+    int oct = 0;
+    sscanf(yytext, "%o", &oct);
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, oct);
 }
 {HEXDECIMAL} {
+   // printf("%s\n",yytext);
     int hex = 0;
     int tmp;
-    sscanf(yytext,"%dx%016x",&tmp,&hex);
+    char c[1];
+    sscanf(yytext,"%d%[xX]%016x",&tmp,c,&hex);
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
 }
 {FLOAT_NUMBER} {
     float f ;
+    //f = atof(yytext);
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
 }
