@@ -2,6 +2,10 @@ int a = 0s123;
 int b = 0x123 ;0123
 int c = 0X456;
 
+
+
+c = 1;
+
 // */ // comment, not syntax error
 f = g/*/\aaaaaaaaa    
 

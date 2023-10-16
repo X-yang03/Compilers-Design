@@ -8,7 +8,7 @@
 }
 %{
     struct SymbolTableEntry{
-        char* name;//name
+        char name[20];//name
 
     };
 
@@ -34,7 +34,8 @@
 
     STE* appendSymbol(char* name){
         STE* entry = SymbolTable + SymbolNum;
-        entry->name = name;
+        //entry->name = name;
+        strcpy(entry->name,name);
         SymbolNum++;
         return entry;
     }
@@ -43,7 +44,8 @@
         STE* entry = SymbolTable;
         for(int i=0;i<SymbolNum;i++){
             entry += 1;
-            if(entry->name == name){
+            //printf("%s\n", entry->name);
+            if(strcmp(entry->name,name) == 0){
                 return entry;
             }
         }
