@@ -63,7 +63,8 @@ CONTINUE        continue
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[1-7][0-7]*|0)
 HEXDECIMAL      (0[xX][0-9a-fA-F]+)
-FLOAT_NUMBER    ([1-9][0-9]*|0"."[0-9]*[1-9])
+digit           [0-9]
+FLOAT_NUMBER    {digit}*(\.{digit}+)?
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
@@ -203,6 +204,7 @@ WHITE           [\t ]
 }
 {FLOAT_NUMBER} {
     float f ;
+    //f = atof(yytext);
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
 }
