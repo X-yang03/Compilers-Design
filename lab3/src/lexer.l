@@ -191,16 +191,12 @@ WHITE           [\t ]
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, oct);
 }
 {HEXDECIMAL} {
-   // printf("%s\n",yytext);
     int hex = 0;
-    int tmp;
-    char c[1];
-    sscanf(yytext,"%d%[xX]%016x",&tmp,c,&hex);
+    sscanf(yytext,"%016x",&hex);
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
 }
 {FLOAT_NUMBER} {
     float f ;
-    //f = atof(yytext);
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
 }
