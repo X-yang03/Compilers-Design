@@ -63,7 +63,7 @@ DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[1-7][0-7]*|0)
 HEXDECIMAL      (0[xX][0-9a-fA-F]+)
 digit           [0-9]
-FLOAT_NUMBER    {digit}*(\.{digit}+)?
+FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+)))
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
@@ -115,7 +115,7 @@ WHITE           [\t ]
 }
 
 "<="    {
-    dump_tokens("LESS OR EQUAL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,charNum);
     preToken = 1;
 }
 
@@ -125,7 +125,7 @@ WHITE           [\t ]
 }
 
 ">="    {
-    dump_tokens("GREATER OR EQUAL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,charNum);
     preToken = 1;
 }
 
@@ -190,6 +190,18 @@ WHITE           [\t ]
 
 "const" {
     dump_tokens("CONST\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+}
+
+"&&"    {
+    dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+}
+
+"||"    {
+    dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+}
+
+"!" {
+    dump_tokens("NOT\t%s\t%d\t%d\n",yytext,yylineno,charNum);
 }
 
 {DECIMIAL} {
