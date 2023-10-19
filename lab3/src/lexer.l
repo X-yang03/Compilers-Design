@@ -19,6 +19,9 @@
     STE SymbolTable[100];
 
     int SymbolNum = 0;
+
+    bool preToken = 0; //0表示加减号 ，1表示为正负号
+
     extern dump_type_t dump_type;
 
     //  dump_tokens用于输出token的信息
@@ -108,22 +111,27 @@ WHITE           [\t ]
 
 "=" {
     dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1; //跟在 = 后的+ -为正负号
 }
 
 "<="    {
     dump_tokens("LESS OR EQUAL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "<" {
     dump_tokens("LESS\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 ">="    {
     dump_tokens("GREATER OR EQUAL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 ">" {
     dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "+" {
@@ -131,7 +139,10 @@ WHITE           [\t ]
 }
 
 "-" {
-    dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    if(!preToken)
+        dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    else
+        dump_tokens("MINUS\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
 
 "*" {
@@ -147,6 +158,7 @@ WHITE           [\t ]
 
 "(" {
     dump_tokens("LPAREN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 ")" {
@@ -184,21 +196,25 @@ WHITE           [\t ]
     int decimal;
     decimal = atoi(yytext);
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, decimal);
+    preToken = 0;
 }
 {OCTAL} {
     int oct = 0;
     sscanf(yytext, "%o", &oct);
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, oct);
+    preToken = 0;
 }
 {HEXDECIMAL} {
     int hex = 0;
     sscanf(yytext,"%016x",&hex);
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,charNum, hex);
+    preToken = 0;
 }
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
+    preToken = 0;
 }
 {ID} {
     STE* pos = LocateSymbol(yytext);
@@ -206,6 +222,7 @@ WHITE           [\t ]
         pos = appendSymbol(yytext);
     }
     dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,charNum,pos);
+    preToken = 0;
 }
 
 {EOL} {
