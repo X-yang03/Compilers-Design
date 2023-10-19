@@ -60,10 +60,11 @@
 splice                  (\\[[:blank:]]*\n)*
 SINGLECOMMENT   "//"[^\n]*   
 DECIMIAL        ([1-9][0-9]*|0)
-OCTAL           (0[1-7][0-7]*|0)
+OCTAL           (0[0-7]+)
 HEXDECIMAL      (0[xX][0-9a-fA-F]+)
 digit           [0-9]
 FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+)))
+HEX_FLOAT       (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*[pP][+-]?[0-9]+)|([0-9A-Fa-f]+[pP][+-]?[0-9]+)))
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
@@ -204,6 +205,15 @@ WHITE           [\t ]
     dump_tokens("NOT\t%s\t%d\t%d\n",yytext,yylineno,charNum);
 }
 
+"[" {
+    dump_tokens("LBRACKET\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+}
+
+"]" {
+    dump_tokens("RBRACKET\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+}
+
+
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
@@ -228,6 +238,14 @@ WHITE           [\t ]
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
     preToken = 0;
 }
+
+{HEX_FLOAT} {
+    float f ;
+    sscanf(yytext, "%f", &f);
+    dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,charNum, f);
+    preToken = 0;
+}
+
 {ID} {
     STE* pos = LocateSymbol(yytext);
     if(pos == NULL){
