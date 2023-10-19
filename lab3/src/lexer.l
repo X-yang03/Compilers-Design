@@ -60,7 +60,7 @@
 
 COMMENTBEGIN    "/*"
 COMMENTEND      "*/"
-COMMENTELEMENT  .|\n
+COMMENTELEMENT  .
 SINGLECOMMENT   "//"[^\n]*   
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[0-7]+)
@@ -83,12 +83,16 @@ WHITE           [\t ]
 
 {COMMENTBEGIN}  {
     BEGIN COMMENT;
+    charNum+=2;
 }
 
-<COMMENT>{COMMENTELEMENT}    {}
+<COMMENT>{COMMENTELEMENT}    { charNum++;}
+
+<COMMENT>{EOL}  {charNum = 0;}
 
 <COMMENT>{COMMENTEND}    {
     BEGIN INITIAL;
+    charNum+=2;
 }
 
 
