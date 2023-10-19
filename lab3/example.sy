@@ -1,7 +1,7 @@
 
 int b = 3.e2;
 int c = 0xa.2p1;
-
+//singlecomment
 int a = -1;
 
 float a = 1.3336;
@@ -22,3 +22,5 @@ a\n*//h; // equivalent to f = g / h;
 /*//*/ l(); // equivalent to l();
 m = n//**/o
 + p; // equivalent to m = n + p;
+
+int m = 0;

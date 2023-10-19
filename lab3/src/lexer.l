@@ -57,7 +57,10 @@
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
-splice                  (\\[[:blank:]]*\n)*
+
+COMMENTBEGIN    "/*"
+COMMENTEND      "*/"
+COMMENTELEMENT  .|\n
 SINGLECOMMENT   "//"[^\n]*   
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[0-7]+)
@@ -75,14 +78,17 @@ WHITE           [\t ]
     /* rules section */
 {SINGLECOMMENT} {
     charNum = 0;
+    dump_tokens("SINGLECOMMENT\t%d\n",yylineno);
 }
-[/]{splice}[*]          BEGIN(COMMENT);
-<COMMENT>{
-  [^*\\\n]+             /* eat anything that's not a '*' or line end */
-  "*"+[^*/\\\n]*        /* eat up '*'s not followed by '/'s or line end */
-  [*]{splice}[/]        BEGIN(INITIAL);
-  [*\\]                 /* stray '*' or backslash */
-  \n                    /* Reduce the amount of work needed for yylineno */
+
+{COMMENTBEGIN}  {
+    BEGIN COMMENT;
+}
+
+<COMMENT>{COMMENTELEMENT}    {}
+
+<COMMENT>{COMMENTEND}    {
+    BEGIN INITIAL;
 }
 
 
