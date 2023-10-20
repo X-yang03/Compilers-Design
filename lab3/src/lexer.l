@@ -46,11 +46,11 @@
     STE* LocateSymbol(char* name){
         STE* entry = SymbolTable;
         for(int i=0;i<SymbolNum;i++){
-            entry += 1;
             //printf("%s\n", entry->name);
             if(strcmp(entry->name,name) == 0){
                 return entry;
             }
+        entry += 1;            
         }
         return NULL;
     }
