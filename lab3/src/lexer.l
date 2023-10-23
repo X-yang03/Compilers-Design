@@ -66,8 +66,8 @@ DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[0-7]+)
 HEXDECIMAL      (0[xX][0-9a-fA-F]+)
 digit           [0-9]
-FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+)))
-HEX_FLOAT       (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*[pP][+-]?[0-9]+)|([0-9A-Fa-f]+[pP][+-]?[0-9]+)))
+FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+))[fFlL]?)
+HEX_FLOAT       (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*[pP][+-]?[0-9]+)|([0-9A-Fa-f]+[pP][+-]?[0-9]+))[fFlL]?)
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL             (\r\n|\n|\r)
 WHITE           [\t ]
@@ -120,7 +120,7 @@ WHITE           [\t ]
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
 "==" {
-    dump_tokens("EQL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,charNum);
     preToken = 1;
 }
 
@@ -169,6 +169,7 @@ WHITE           [\t ]
 
 ";" {
     dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "(" {
@@ -190,6 +191,7 @@ WHITE           [\t ]
 }
 "," {
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "while" {
@@ -210,10 +212,12 @@ WHITE           [\t ]
 
 "&&"    {
     dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "||"    {
     dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,charNum);
+    preToken = 1;
 }
 
 "!" {

@@ -1,7 +1,8 @@
 //
 
-int b = 3.e2
-int c = 0xa.2p1;
+int b = 3.e2l;
+-5+2;
+int c = 0xa.2p1F;
 //singlecomment
 int a = -1;
 
