@@ -119,6 +119,10 @@ WHITE           [\t ]
 "return" {
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
 }
+"==" {
+    dump_tokens("EQL\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 1;
+}
 
 "=" {
     dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
