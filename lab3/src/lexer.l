@@ -178,6 +178,7 @@ WHITE           [\t ]
 
 ")" {
     dump_tokens("RPAREN\t%s\t%d\t%d\n", yytext,yylineno,charNum);
+    preToken = 0;
 }
 
 "{" {
