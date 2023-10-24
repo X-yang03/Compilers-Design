@@ -150,7 +150,10 @@ WHITE           [\t ]
 }
 
 "+" {
-    dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    if(!preToken)
+        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    else
+        dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 }
 
 "-" {
