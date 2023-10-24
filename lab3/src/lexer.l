@@ -4,11 +4,12 @@
 %option yylineno
 %top{
     #include <stdarg.h>
+    #include <string>
     #include "common.h"
 }
 %{
     struct SymbolTableEntry{
-        char name[20];//name
+        std::string name;
 
     };
 
@@ -19,6 +20,7 @@
     STE SymbolTable[100];
 
     int SymbolNum = 0;
+
 
     bool preToken = 0; //0表示加减号 ，1表示为正负号
 
@@ -35,19 +37,20 @@
 
     }
 
-    STE* appendSymbol(char* name){
+    STE* insertSymbol(char* name){
         STE* entry = SymbolTable + SymbolNum;
         //entry->name = name;
-        strcpy(entry->name,name);
+        //strcpy(entry->name,name);
+        entry->name = name;
         SymbolNum++;
         return entry;
     }
 
-    STE* LocateSymbol(char* name){
+    STE* LookUpSymbol(char* name){
         STE* entry = SymbolTable;
         for(int i=0;i<SymbolNum;i++){
             //printf("%s\n", entry->name);
-            if(strcmp(entry->name,name) == 0){
+            if(entry->name == name){
                 return entry;
             }
         entry += 1;            
@@ -269,9 +272,9 @@ WHITE           [\t ]
 }
 
 {ID} {
-    STE* pos = LocateSymbol(yytext);
+    STE* pos = LookUpSymbol(yytext);
     if(pos == NULL){
-        pos = appendSymbol(yytext);
+        pos = insertSymbol(yytext);
     }
     dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,pos);
     preToken = 0;
