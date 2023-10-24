@@ -5,22 +5,17 @@
 %top{
     #include <stdarg.h>
     #include <string>
+    #include<iostream>
     #include "common.h"
+    #include "symbol.h"
 }
 %{
-    struct SymbolTableEntry{
-        std::string name;
 
-    };
-
-    typedef struct SymbolTableEntry STE;
+    int nowLevel = 0;
     
     int columnNo = 0;
 
-    STE SymbolTable[100];
-
-    int SymbolNum = 0;
-
+    SymbolTable* CurrTable = new SymbolTable(nowLevel);
 
     bool preToken = 0; //0表示加减号 ，1表示为正负号
 
@@ -37,26 +32,44 @@
 
     }
 
-    STE* insertSymbol(char* name){
-        STE* entry = SymbolTable + SymbolNum;
-        //entry->name = name;
-        //strcpy(entry->name,name);
+    STE* insertSymbol(char* name,int nowLevel){
+        
+        if(nowLevel > CurrTable->level){
+            SymbolTable* newTable = new SymbolTable(nowLevel);
+            newTable->next = CurrTable;
+            CurrTable->prev = newTable;
+            CurrTable = newTable;
+        }
+
+        STE* entry = new STE;  //新建STE
         entry->name = name;
-        SymbolNum++;
+        entry->next = NULL;
+        entry->level = nowLevel;
+        STE* lastID = CurrTable->ste_tail->prev;
+        lastID->next = entry;
+        entry->next = CurrTable->ste_tail;
+        CurrTable->ste_tail->prev = entry;
+        CurrTable->symNum++;
         return entry;
     }
 
     STE* LookUpSymbol(char* name){
-        STE* entry = SymbolTable;
-        for(int i=0;i<SymbolNum;i++){
-            //printf("%s\n", entry->name);
-            if(entry->name == name){
-                return entry;
+        SymbolTable* findTable = CurrTable;
+        STE* entry = findTable->ste_head;
+        while(findTable!=NULL){
+            entry = findTable->ste_head;
+            while(entry->next != NULL){
+                if(entry->name == name){
+                    return entry;
+                }
+                entry = entry->next;
             }
-        entry += 1;            
+            findTable = findTable->next;
+            
         }
         return NULL;
     }
+
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
@@ -190,10 +203,17 @@ WHITE           [\t ]
 
 "{" {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    nowLevel++;
 }
 
 "}" {
     dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    nowLevel-- ;
+
+    SymbolTable* tmp = CurrTable;
+    CurrTable = tmp->next;
+    CurrTable->prev = NULL;
+    delete tmp;
 }
 "," {
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
@@ -273,8 +293,8 @@ WHITE           [\t ]
 
 {ID} {
     STE* pos = LookUpSymbol(yytext);
-    if(pos == NULL){
-        pos = insertSymbol(yytext);
+    if(pos == NULL || pos->level < nowLevel){
+        pos = insertSymbol(yytext,nowLevel);
     }
     dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,pos);
     preToken = 0;

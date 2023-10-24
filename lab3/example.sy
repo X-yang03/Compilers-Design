@@ -1,10 +1,20 @@
 //
 
 int b = 3.e2l;
+
+{
+    int b = 32;
+    int c = 25;
+    b;
+}
+b = 5;
+b;
+int c = 20;
 -5+2;
 int c = 0xa.2p1F;
 //singlecomment
 int a = -1;
+c;
 
 float a = 1.3336;
 
