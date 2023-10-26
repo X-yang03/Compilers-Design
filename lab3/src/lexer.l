@@ -210,6 +210,9 @@ WHITE           [\t ]
 "{" {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     nowLevel++;
+    char c[20] = "zccissb";
+    char* d = c;
+    insertSymbol(d,nowLevel);
 }
 
 "}" {
@@ -286,7 +289,7 @@ WHITE           [\t ]
     preToken = 0;
 }
 {FLOAT_NUMBER} {
-    float f ;
+    double f ;
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
