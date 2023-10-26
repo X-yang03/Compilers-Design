@@ -1,38 +1,32 @@
-//
+-1
+3.1415845451615154
+/*/*/
+*/*
 
-int b = 3.e2l;
+int a = 10;
+a - 1;
 
+*/
+
+int a = 5;
+int a = 10/-5;
+int main()
 {
-    int b = 32;
-    int c = 25;
-    b;
+    a = 7;
+    int a;
+    a = 5;
+    {
+        int a;
+        {
+            //int a;
+            {
+                int a;
+            }
+            a = 9;
+        }
+        a = 345;
+    }/////
+    printf("%d%d%d\n",a,a,a);
+
+    return a;
 }
-b = 5;
-b;
-int c = 20;
--5+2;
-int c = 0xa.2p1F;
-//singlecomment
-int a = -1;
-c;
-
-float a = 1.3336;
-
-int d = 0;
-
-
-
-c = 1;
-
-// */ // comment, not syntax error
-f = g/*/\aaaaaaaaa    
-
-
-
-
-a\n*//h; // equivalent to f = g / h;
-/*//*/ l(); // equivalent to l();
-m = n//**/o
-+ p; // equivalent to m = n + p;
-
-int m = 0;

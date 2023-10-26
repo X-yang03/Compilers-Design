@@ -134,6 +134,8 @@ WHITE           [\t ]
 
 "return" {
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+    preToken = 1;
 }
 "==" {
     dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
@@ -181,9 +183,13 @@ WHITE           [\t ]
 
 "*" {
     dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+    preToken = 1;
 }
 "/" {
     dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+    preToken = 1;
 }
 
 ";" {
@@ -219,7 +225,9 @@ WHITE           [\t ]
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
 }
-
+"\"" {
+    dump_tokens("QUOTATION\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+}
 "while" {
     dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 }
