@@ -289,7 +289,7 @@ WHITE           [\t ]
     preToken = 0;
 }
 {FLOAT_NUMBER} {
-    double f ;
+    float f ;
     sscanf(yytext, "%f", &f);
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
