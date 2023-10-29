@@ -169,9 +169,9 @@ WHITE           [\t ]
 
 "+" {
     if(!preToken)
-        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    else
         dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    else
+        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 }
 
 "-" {
@@ -191,7 +191,12 @@ WHITE           [\t ]
     //here add
     preToken = 1;
 }
-
+"%" {
+    if(!preToken)
+        dump_tokens("FORMAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    else
+        dump_tokens("MOD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+}
 ";" {
     dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
@@ -210,7 +215,7 @@ WHITE           [\t ]
 "{" {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     nowLevel++;
-    char c[20] = "zccissb";
+    char c[20] = "stackbuttom";
     char* d = c;
     insertSymbol(d,nowLevel);
 }
