@@ -14,7 +14,7 @@
 }
 
 %union {
-    int itype;
+    double numtype;
     char* strtype;
     StmtNode* stmttype;
     ExprNode* exprtype;
@@ -23,16 +23,20 @@
 
 %start Program
 %token <strtype> ID 
-%token <itype> INTEGER
-%token IF ELSE
-%token INT VOID
-%token LPAREN RPAREN LBRACE RBRACE SEMICOLON
-%token ADD SUB OR AND LESS ASSIGN
-%token RETURN
+%token <numtype> INTEGER FLOATNUM
+%token IF ELSE WHILE
+%token INT VOID FLOAT
+%token LPAREN RPAREN LBRACE RBRACE SEMICOLON LBRACKET RBRACKET PARSE
+%token ADD SUB MUL DIV MOD OR AND LESS LE GREATER GE ASSIGN EQ NEQ NOT
+%token POS MINUS 
+%token CONST RETURN CONTINUE BREAK
 
-%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
-%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
-%nterm <type> Type
+%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
+%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
+%type <type> Type
+//%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
+//%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
+//%nterm <type> Type
 
 %precedence THEN
 %precedence ELSE
