@@ -559,7 +559,7 @@ static const yytype_uint8 yyrline[] =
        0,    45,    45,    50,    51,    56,    57,    58,    59,    60,
       61,    64,    79,    85,    84,    95,    98,   104,   110,   114,
      118,   121,   128,   130,   136,   144,   146,   154,   156,   164,
-     166,   173,   176,   182,   192,   192
+     166,   173,   176,   182,   193,   193
 };
 #endif
 
@@ -1224,7 +1224,7 @@ yyreduce:
         {
             fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)(yyvsp[0].strtype));
             delete [](char*)(yyvsp[0].strtype);
-            //assert(se != nullptr);
+            assert(se != nullptr);
         }
         (yyval.exprtype) = new Id(se);
         delete [](yyvsp[0].strtype);
@@ -1399,16 +1399,17 @@ yyreduce:
 #line 182 "src/parser.y"
                       {
         SymbolEntry *se;
+        std::cout<<identifiers->getLevel()<<std::endl;
         se = new IdentifierSymbolEntry((yyvsp[-2].type), (yyvsp[-1].strtype), identifiers->getLevel());
         identifiers->install((yyvsp[-1].strtype), se);
         (yyval.stmttype) = new DeclStmt(new Id(se));
         delete [](yyvsp[-1].strtype);
     }
-#line 1408 "src/parser.cpp"
+#line 1409 "src/parser.cpp"
     break;
 
   case 34: /* $@2: %empty  */
-#line 192 "src/parser.y"
+#line 193 "src/parser.y"
             {
         Type *funcType;
         funcType = new FunctionType((yyvsp[-1].type),{});
@@ -1416,11 +1417,11 @@ yyreduce:
         identifiers->install((yyvsp[0].strtype), se);
         identifiers = new SymbolTable(identifiers);
     }
-#line 1420 "src/parser.cpp"
+#line 1421 "src/parser.cpp"
     break;
 
   case 35: /* FuncDef: Type ID $@2 LPAREN RPAREN BlockStmt  */
-#line 201 "src/parser.y"
+#line 202 "src/parser.y"
     {
         SymbolEntry *se;
         se = identifiers->lookup((yyvsp[-4].strtype));
@@ -1431,11 +1432,11 @@ yyreduce:
         delete top;
         delete [](yyvsp[-4].strtype);
     }
-#line 1435 "src/parser.cpp"
+#line 1436 "src/parser.cpp"
     break;
 
 
-#line 1439 "src/parser.cpp"
+#line 1440 "src/parser.cpp"
 
       default: break;
     }
@@ -1628,7 +1629,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 212 "src/parser.y"
+#line 213 "src/parser.y"
 
 
 int yyerror(char const* message)

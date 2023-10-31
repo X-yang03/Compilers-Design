@@ -181,6 +181,7 @@ DeclStmt
     :
     Type ID SEMICOLON {
         SymbolEntry *se;
+        std::cout<<identifiers->getLevel()<<std::endl;
         se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
         identifiers->install($2, se);
         $$ = new DeclStmt(new Id(se));

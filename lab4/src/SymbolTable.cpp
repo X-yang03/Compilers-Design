@@ -71,12 +71,15 @@ SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
     SymbolEntry* SE = symbolTable.find(name)->second;
+    std::cout<<"find name "<<name<<std::endl;
     if(SE == NULL){
         SymbolTable* CurrTable = this;
         while( SE == NULL){
+            std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrTable->level<<std::endl;
             CurrTable = CurrTable->getPrev();
             if(CurrTable == NULL){
-                break;
+                return nullptr;
+                //break;
             }
             SE = CurrTable->symbolTable.find(name)->second;
             if(SE != NULL){
@@ -84,19 +87,21 @@ SymbolEntry* SymbolTable::lookup(std::string name)
             }
         }
     }
-    return nullptr;
+    return SE;
+    //return nullptr;
 }
 
 // install the entry into current symbol table.
 void SymbolTable::install(std::string name, SymbolEntry* entry)
 {
-    SymbolEntry* SE = symbolTable.find(name)->second;
-    if(SE != NULL){
-        std::cout<<"this is SymbolTable.cpp install the entry "<<name<<"is redefined"<<std::endl;
-    }else{
-        symbolTable[name] = entry;
-    }
+    //SymbolEntry* SE = symbolTable.find(name)->second;
+    //if(SE != NULL){
+    //    std::cout<<"this is SymbolTable.cpp install the entry "<<name<<" is redefined"<<std::endl;
+    //}else{
+        //symbolTable[name] = entry;
+    //}
     //symbolTable[name] = entry;
+    symbolTable[name] = entry;    
 }
 
 int SymbolTable::counter = 0;
