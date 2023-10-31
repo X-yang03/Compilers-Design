@@ -169,9 +169,9 @@ WHITE           [\t ]
 
 "+" {
     if(!preToken)
-        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    else
         dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    else
+        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 }
 
 "-" {
@@ -308,7 +308,7 @@ WHITE           [\t ]
         pos = insertSymbol(yytext,nowLevel);
     }
     dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,pos);
-    preToken = 0;
+    preToken = 1;
 }
 
 {EOL} {
