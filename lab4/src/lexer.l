@@ -1,21 +1,16 @@
-%option noyywrap  
+%option noyywrap
 %option nounput
 %option noinput
-%option yylineno
 %top{
     #include <stdarg.h>
-    #include <string>
-    #include<iostream>
     #include "common.h"
-    #include "symbol.h"
+    #include "parser.h"
 }
 %{
 
     int nowLevel = 0;
     
     int columnNo = 0;
-
-    SymbolTable* CurrTable = new SymbolTable(nowLevel);
 
     bool preToken = 0; //0表示加减号 ，1表示为正负号
 
@@ -32,44 +27,6 @@
 
     }
 
-    STE* insertSymbol(char* name,int nowLevel){
-        
-        if(nowLevel > CurrTable->level){
-            SymbolTable* newTable = new SymbolTable(nowLevel);
-            newTable->next = CurrTable;
-            CurrTable->prev = newTable;
-            CurrTable = newTable;
-        }
-
-        STE* entry = new STE;  //新建STE
-        entry->name = name;
-        entry->next = NULL;
-        entry->level = nowLevel;
-        STE* lastID = CurrTable->ste_tail->prev;
-        lastID->next = entry;
-        entry->next = CurrTable->ste_tail;
-        CurrTable->ste_tail->prev = entry;
-        CurrTable->symNum++;
-        return entry;
-    }
-
-    STE* LookUpSymbol(char* name){
-        SymbolTable* findTable = CurrTable;
-        STE* entry = findTable->ste_head;
-        while(findTable!=NULL){
-            entry = findTable->ste_head;
-            while(entry->next != NULL){
-                if(entry->name == name){
-                    return entry;
-                }
-                entry = entry->next;
-            }
-            findTable = findTable->next;
-            
-        }
-        return NULL;
-    }
-
     /* Your code here, if desired (lab3). */
 %}
 /* definitions section */
@@ -81,7 +38,6 @@ SINGLECOMMENT   "//"[^\n]*
 DECIMIAL        ([1-9][0-9]*|0)
 OCTAL           (0[0-7]+)
 HEXDECIMAL      (0[xX][0-9a-fA-F]+)
-digit           [0-9]
 FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+))[fFlL]?)
 HEX_FLOAT       (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*[pP][+-]?[0-9]+)|([0-9A-Fa-f]+[pP][+-]?[0-9]+))[fFlL]?)
 ID              [[:alpha:]_][[:alpha:][:digit:]_]*
@@ -114,206 +70,244 @@ WHITE           [\t ]
 
 "int" {     //输出 INT  int    行号    列号
     dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
+    return INT;
 }
 
 "float" {
     dump_tokens("FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return FLOAT;
 }
 
 "void" {
     dump_tokens("VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return VOID;
 }
 
 "if" {
     dump_tokens("IF\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return IF;
 }
 
 "else" {
     dump_tokens("ELSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return ELSE;
 }
 
 "return" {
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
     preToken = 1;
+    return RETURN;
+}
+"!=" {
+    dump_tokens("NEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    preToken = 1;
+    return NEQ;
 }
 "==" {
     dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return EQ;
 }
 
 "=" {
     dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1; //跟在 = 后的+ -为正负号
+    return ASSIGN;
 }
 
 "<="    {
     dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return LE;
 }
 
 "<" {
     dump_tokens("LESS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return LESS;
 }
 
 ">="    {
     dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return GE;
 }
 
 ">" {
     dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return GREATER;
 }
 
 "+" {
-    if(!preToken)
+    if(!preToken){
         dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    else
+        return ADD;
+    }else{
         dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+        return POS;
+    }
 }
 
 "-" {
-    if(!preToken)
+    if(!preToken){
         dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    else
+        return SUB;
+    }else{
         dump_tokens("MINUS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+        return MINUS;
+    }
 }
 
 "*" {
     dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
     preToken = 1;
+    return MUL;
 }
 "/" {
     dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
     preToken = 1;
+    return DIV;
 }
 "%" {
-    if(!preToken)
-        dump_tokens("FORMAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    else
-        dump_tokens("MOD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("MOD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return MOD;
 }
 ";" {
     dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return SEMICOLON;
 }
 
 "(" {
     dump_tokens("LPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
+    return LPAREN;
 }
 
 ")" {
     dump_tokens("RPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 0;
+    return RPAREN;
 }
 
 "{" {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     nowLevel++;
-    char c[20] = "stackbuttom";
-    char* d = c;
-    insertSymbol(d,nowLevel);
+    return LBRACE;
 }
 
 "}" {
     dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     nowLevel-- ;
-
-    SymbolTable* tmp = CurrTable;
-    CurrTable = tmp->next;
-    CurrTable->prev = NULL;
-    delete tmp;
+    return RBRACE;
 }
 "," {
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     preToken = 1;
-}
-"\"" {
-    dump_tokens("QUOTATION\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return PARSE;
 }
 "while" {
     dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return WHILE;
 }
 
 "continue"  {
     dump_tokens("CONTINUE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return CONTINUE;
 }
 
 "break" {
     dump_tokens("BREAK\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return BREAK;
 }
 
 "const" {
     dump_tokens("CONST\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return CONST;
 }
 
 "&&"    {
     dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     preToken = 1;
+    return AND;
 }
 
 "||"    {
     dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     preToken = 1;
+    return OR;
 }
 
 "!" {
     dump_tokens("NOT\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return NOT;
 }
 
 "[" {
     dump_tokens("LBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return LBRACKET;
 }
 
 "]" {
     dump_tokens("RBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return RBRACKET;
 }
 
 
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
+    yylval.numtype = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
     preToken = 0;
+    return INTEGER;
 }
 {OCTAL} {
     int oct = 0;
     sscanf(yytext, "%o", &oct);
+    yylval.numtype = oct;
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
     preToken = 0;
+    return INTEGER;
 }
 {HEXDECIMAL} {
     int hex = 0;
     sscanf(yytext,"%016x",&hex);
+    yylval.numtype = hex;
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
     preToken = 0;
+    return INTEGER;
 }
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
+    yylval.numtype = f;
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
+    return FLOATNUM;
 }
 
 {HEX_FLOAT} {
     float f ;
     sscanf(yytext, "%f", &f);
+    yylval.numtype = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
+    return FLOATNUM;
 }
 
 {ID} {
-    STE* pos = LookUpSymbol(yytext);
-    if(pos == NULL || pos->level < nowLevel){
-        pos = insertSymbol(yytext,nowLevel);
-    }
-    dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,pos);
-    preToken = 1;
+    char *lexeme;
+    lexeme = new char[strlen(yytext) + 1];
+    strcpy(lexeme, yytext);
+    yylval.strtype = lexeme;
+    dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,lexeme);
+    preToken = 0;
+    return ID;
 }
 
 {EOL} {
@@ -323,8 +317,4 @@ WHITE           [\t ]
 {WHITE} {
     columnNo+=1;
 }
-
-    /*  Your code here (lab3). */
-%%
-/* user code section */
 
