@@ -1,6 +1,7 @@
 %option noyywrap
 %option nounput
 %option noinput
+%option yylineno
 %top{
     #include <stdarg.h>
     #include "common.h"

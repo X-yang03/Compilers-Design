@@ -70,6 +70,20 @@ SymbolTable::SymbolTable(SymbolTable *prev)
 SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
+    SymbolEntry* SE = symbolTable.find(name)->second;
+    if(SE == NULL){
+        SymbolTable* CurrTable = this;
+        while( SE == NULL){
+            CurrTable = CurrTable->getPrev();
+            if(CurrTable == NULL){
+                break;
+            }
+            SE = CurrTable->symbolTable.find(name)->second;
+            if(SE != NULL){
+                return SE;
+            }
+        }
+    }
     return nullptr;
 }
 
