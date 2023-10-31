@@ -90,7 +90,13 @@ SymbolEntry* SymbolTable::lookup(std::string name)
 // install the entry into current symbol table.
 void SymbolTable::install(std::string name, SymbolEntry* entry)
 {
-    symbolTable[name] = entry;
+    SymbolEntry* SE = symbolTable.find(name)->second;
+    if(SE != NULL){
+        std::cout<<"this is SymbolTable.cpp install the entry "<<name<<"is redefined"<<std::endl;
+    }else{
+        symbolTable[name] = entry;
+    }
+    //symbolTable[name] = entry;
 }
 
 int SymbolTable::counter = 0;

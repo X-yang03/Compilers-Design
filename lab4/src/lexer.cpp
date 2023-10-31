@@ -1284,7 +1284,7 @@ YY_RULE_SETUP
     lexeme = new char[strlen(yytext) + 1];
     strcpy(lexeme, yytext);
     yylval.strtype = lexeme;
-    dump_tokens("ID\t\t%s\t%d\t%d\t0x%016lx\n", yytext,yylineno,columnNo,lexeme);
+    dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
     preToken = 0;
     return ID;
 }

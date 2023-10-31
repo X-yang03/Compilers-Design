@@ -1224,7 +1224,7 @@ yyreduce:
         {
             fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)(yyvsp[0].strtype));
             delete [](char*)(yyvsp[0].strtype);
-            assert(se != nullptr);
+            //assert(se != nullptr);
         }
         (yyval.exprtype) = new Id(se);
         delete [](yyvsp[0].strtype);
