@@ -1,6 +1,0 @@
-program
-    WhileStmt
-        IntegerLiteral	value: 1	type: int
-        CompoundStmt
-            DeclStmt
-                Id	name: a	scope: 1	type: int

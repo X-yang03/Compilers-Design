@@ -70,48 +70,36 @@ SymbolTable::SymbolTable(SymbolTable *prev)
 SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
-    SymbolTable* CurrentTable = this;
-    SymbolEntry* SE = nullptr;
-    while(CurrentTable != nullptr){
-        std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrentTable->level<<std::endl;
-        if(CurrentTable->symbolTable.find(name) != CurrentTable->symbolTable.end()){
-            SE = CurrentTable->symbolTable.find(name)->second;
-            break;
-        }
-        CurrentTable = CurrentTable->getPrev();
+    if(symbolTable.find(name)!=symbolTable.end()){
+        return symbolTable[name];
     }
-    return SE;
-    // SymbolEntry* SE = symbolTable.find(name)->second;
-    // //std::cout<<"this is SympolTable.cpp lookup find name "<<name<<std::endl;
-    // if(SE == NULL){
-    //     SymbolTable* CurrTable = this;
-    //     while( SE == NULL){
-    //         std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrTable->level<<std::endl;
-    //         CurrTable = CurrTable->getPrev();
-    //         if(CurrTable == NULL){
-    //             return nullptr;
-    //             //break;
-    //         }
-    //         SE = CurrTable->symbolTable.find(name)->second;
-    //         if(SE != NULL){
-    //             return SE;
-    //         }
+    else{
+        if(this->getPrev()!=nullptr){
+            return this->getPrev()->lookup(name);
+        }else{
+            return nullptr;
+        }
+    }
+
+
+
+    // SymbolTable* CurrentTable = this;
+    // SymbolEntry* SE = nullptr;
+    // while(CurrentTable != nullptr){
+    //     std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrentTable->level<<std::endl;
+    //     if(CurrentTable->symbolTable.find(name) != CurrentTable->symbolTable.end()){
+    //         SE = CurrentTable->symbolTable.find(name)->second;
+    //         break;
     //     }
+    //     CurrentTable = CurrentTable->getPrev();
     // }
     // return SE;
-    //return nullptr;
+    
 }
 
 // install the entry into current symbol table.
 void SymbolTable::install(std::string name, SymbolEntry* entry)
 {
-    //SymbolEntry* SE = symbolTable.find(name)->second;
-    //if(SE != NULL){
-    //    std::cout<<"this is SymbolTable.cpp install the entry "<<name<<" is redefined"<<std::endl;
-    //}else{
-        //symbolTable[name] = entry;
-    //}
-    //symbolTable[name] = entry;
     symbolTable[name] = entry;    
 }
 
