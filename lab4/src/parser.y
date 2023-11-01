@@ -82,7 +82,9 @@ AssignStmt
     ;
 BlockStmt
     :   LBRACE 
-        {identifiers = new SymbolTable(identifiers);} 
+        {
+            identifiers = new SymbolTable(identifiers);
+        } 
         Stmts RBRACE 
         {
             $$ = new CompoundStmt($3);
@@ -181,7 +183,7 @@ DeclStmt
     :
     Type ID SEMICOLON {
         SymbolEntry *se;
-        std::cout<<identifiers->getLevel()<<std::endl;
+        std::cout<<"this is DeclStmt "<<identifiers->getLevel()<<std::endl;
         se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
         identifiers->install($2, se);
         $$ = new DeclStmt(new Id(se));

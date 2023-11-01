@@ -71,7 +71,7 @@ SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
     SymbolEntry* SE = symbolTable.find(name)->second;
-    std::cout<<"find name "<<name<<std::endl;
+    std::cout<<"this is SympolTable.cpp lookup find name "<<name<<std::endl;
     if(SE == NULL){
         SymbolTable* CurrTable = this;
         while( SE == NULL){
