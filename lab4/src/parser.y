@@ -295,12 +295,6 @@ Type
         $$ = TypeSystem::floatType;
     }
     ;
-/* FuncParams
-    : FuncParams PARSE FuncParam{
-
-    }
-FuncParam 
-    : */
 DeclStmt
     :
     Type ID SEMICOLON {
@@ -315,6 +309,7 @@ DeclStmt
 FuncDef
     :
     Type ID {
+        // 返回值类型是ID的type，函数定义中需要创建新的符号表
         Type *funcType;
         funcType = new FunctionType($1,{});
         SymbolEntry *se = new IdentifierSymbolEntry(funcType, $2, identifiers->getLevel());
@@ -326,7 +321,7 @@ FuncDef
             se = identifiers->lookup($2);
             assert(se != nullptr);
             if($5!=nullptr){
-                ((FunctionType*)(se->getType()))->setparamsType(((FuncDefParamsNode*)$5)->getParamsType());
+                ((FunctionType*)(se->getType()))/*强转为Function Type*/->setparamsType/*设置参数类型*/(((FuncDefParamsNode*)$5)->getParamsType());
             }   
         }  
     RPAREN
