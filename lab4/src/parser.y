@@ -76,6 +76,9 @@ LVal
             assert(se != nullptr);
         }
         $$ = new Id(se);
+        
+        std::cout<<$$->getType()->toStr();
+        std::cout<<"test"<<std::endl;
         delete []$1;
     }
     ;
@@ -167,7 +170,9 @@ MulExp
     :
     UnaryExp{$$=$1;}
     |
-    MulExp MUL UnaryExp {}
+    MulExp MUL UnaryExp {
+
+    }
     |
     MulExp DIV UnaryExp {}
     |

@@ -18,6 +18,11 @@ void Ast::output()
         root->output(4);
 }
 
+Type* ExprNode::getType()
+{
+    return symbolEntry->getType();
+}
+
 void BinaryExpr::output(int level)
 {
     std::string op_str;

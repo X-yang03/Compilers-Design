@@ -4,6 +4,7 @@
 #include <fstream>
 
 class SymbolEntry;
+class Type;
 
 class Node
 {
@@ -22,6 +23,7 @@ protected:
     SymbolEntry *symbolEntry;
 public:
     ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
+    Type* getType();
 };
 
 class BinaryExpr : public ExprNode
