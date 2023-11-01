@@ -70,24 +70,35 @@ SymbolTable::SymbolTable(SymbolTable *prev)
 SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
-    SymbolEntry* SE = symbolTable.find(name)->second;
-    std::cout<<"this is SympolTable.cpp lookup find name "<<name<<std::endl;
-    if(SE == NULL){
-        SymbolTable* CurrTable = this;
-        while( SE == NULL){
-            std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrTable->level<<std::endl;
-            CurrTable = CurrTable->getPrev();
-            if(CurrTable == NULL){
-                return nullptr;
-                //break;
-            }
-            SE = CurrTable->symbolTable.find(name)->second;
-            if(SE != NULL){
-                return SE;
-            }
+    SymbolTable* CurrentTable = this;
+    SymbolEntry* SE = nullptr;
+    while(CurrentTable != nullptr){
+        std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrentTable->level<<std::endl;
+        if(CurrentTable->symbolTable.find(name) != CurrentTable->symbolTable.end()){
+            SE = CurrentTable->symbolTable.find(name)->second;
+            break;
         }
+        CurrentTable = CurrentTable->getPrev();
     }
     return SE;
+    // SymbolEntry* SE = symbolTable.find(name)->second;
+    // //std::cout<<"this is SympolTable.cpp lookup find name "<<name<<std::endl;
+    // if(SE == NULL){
+    //     SymbolTable* CurrTable = this;
+    //     while( SE == NULL){
+    //         std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrTable->level<<std::endl;
+    //         CurrTable = CurrTable->getPrev();
+    //         if(CurrTable == NULL){
+    //             return nullptr;
+    //             //break;
+    //         }
+    //         SE = CurrTable->symbolTable.find(name)->second;
+    //         if(SE != NULL){
+    //             return SE;
+    //         }
+    //     }
+    // }
+    // return SE;
     //return nullptr;
 }
 
