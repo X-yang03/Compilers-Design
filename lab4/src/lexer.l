@@ -262,7 +262,7 @@ WHITE           [\t ]
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
-    yylval.numtype = decimal;
+    yylval.iType = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
     preToken = 0;
     return INTEGER;
@@ -270,7 +270,7 @@ WHITE           [\t ]
 {OCTAL} {
     int oct = 0;
     sscanf(yytext, "%o", &oct);
-    yylval.numtype = oct;
+    yylval.iType = oct;
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
     preToken = 0;
     return INTEGER;
@@ -278,7 +278,7 @@ WHITE           [\t ]
 {HEXDECIMAL} {
     int hex = 0;
     sscanf(yytext,"%016x",&hex);
-    yylval.numtype = hex;
+    yylval.iType = hex;
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
     preToken = 0;
     return INTEGER;
@@ -286,7 +286,7 @@ WHITE           [\t ]
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.numtype = f;
+    yylval.fType = f;
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
     return FLOATNUM;
@@ -295,7 +295,7 @@ WHITE           [\t ]
 {HEX_FLOAT} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.numtype = f;    
+    yylval.fType = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
     preToken = 0;
     return FLOATNUM;

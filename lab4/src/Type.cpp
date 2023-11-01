@@ -3,9 +3,11 @@
 
 IntType TypeSystem::commonInt = IntType(4);
 VoidType TypeSystem::commonVoid = VoidType();
+FloatType TypeSystem::commonFloat = FloatType(4);
 
 Type* TypeSystem::intType = &commonInt;
 Type* TypeSystem::voidType = &commonVoid;
+Type* TypeSystem::floatType = &commonFloat;
 
 std::string IntType::toStr()
 {
@@ -15,6 +17,11 @@ std::string IntType::toStr()
 std::string VoidType::toStr()
 {
     return "void";
+}
+
+std::string FloatType::toStr()
+{
+    return "float";
 }
 
 void FunctionType::setparamsType(std::vector<Type*> in)

@@ -24,9 +24,6 @@ protected:
     SymbolEntry *symbolEntry;
 public:
     ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
-    //WE ADD
-    Type* getType();
-
 };
 
 class BinaryExpr : public ExprNode

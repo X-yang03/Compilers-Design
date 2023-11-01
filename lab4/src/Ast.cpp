@@ -18,7 +18,6 @@ void Ast::output()
         root->output(4);
 }
 
-//WE ADD
 Type* ExprNode::getType()
 {
     return symbolEntry->getType();

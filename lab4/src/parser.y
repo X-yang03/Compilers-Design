@@ -14,7 +14,8 @@
 }
 
 %union {
-    double numtype;
+    int iType;
+    double fType;
     char* strtype;
     StmtNode* stmttype;
     ExprNode* exprtype;
@@ -23,7 +24,8 @@
 
 %start Program
 %token <strtype> ID 
-%token <numtype> INTEGER FLOATNUM
+%token <iType>  INTEGER
+%token <fType>  FLOATNUM
 %token IF ELSE WHILE
 %token INT VOID FLOAT
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON LBRACKET RBRACKET PARSE
@@ -32,8 +34,8 @@
 %token CONST RETURN CONTINUE BREAK
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
+%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
 %type <stmttype> FuncParams FuncParam
-%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp 
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
 //%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
@@ -75,6 +77,9 @@ LVal
             assert(se != nullptr);
         }
         $$ = new Id(se);
+        
+        std::cout<<$$->getType()->toStr();
+        std::cout<<"test"<<std::endl;
         delete []$1;
     }
     ;
@@ -134,6 +139,8 @@ Cond
     :
     LOrExp {$$ = $1;}
     ;
+
+//基本表达式
 PrimaryExp
     :
     LVal {
@@ -143,18 +150,48 @@ PrimaryExp
         SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, $1);
         $$ = new Constant(se);
     }
+    | FLOATNUM {
+        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::floatType,$1);
+        $$ = new Constant(se);
+    }
+    | LPAREN Exp RPAREN{
+        $$ = $2;
+    }
     ;
+
+//一元表达式,未完待写
+UnaryExp
+    :
+    PrimaryExp{$$=$1;}
+    ;
+
+
+//Todo
+MulExp
+    :
+    UnaryExp{$$=$1;}
+    |
+    MulExp MUL UnaryExp {
+
+    }
+    |
+    MulExp DIV UnaryExp {}
+    |
+    MulExp MOD UnaryExp {}
+    ;
+    
+
 AddExp
     :
-    PrimaryExp {$$ = $1;}
+    MulExp{$$=$1;}
     |
-    AddExp ADD PrimaryExp
+    AddExp ADD MulExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::ADD, $1, $3);
     }
     |
-    AddExp SUB PrimaryExp
+    AddExp SUB MulExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::SUB, $1, $3);
@@ -216,29 +253,28 @@ RelExp
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::GE, $1, $3);
     }
-    | RelExp EQ AddExp
-    {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::EQ, $1, $3);
-    }
-    |
-    RelExp NEQ AddExp
-    {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::NEQ, $1, $3);
-    }
     ;
+
+EqExp
+    :
+    RelExp{$$=$1;}
+    |
+    EqExp EQ RelExp{}
+    |
+    EqExp NEQ RelExp{}
+    ;
+
 LAndExp
     :
-    RelExp {$$ = $1;}
+    EqExp {$$ = $1;}
     |
-    LAndExp AND RelExp
+    LAndExp AND EqExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::AND, $1, $3);
     }
     ;
-LOrExp
+LOrExp 
     :
     LAndExp {$$ = $1;}
     |
@@ -254,6 +290,9 @@ Type
     }
     | VOID {
         $$ = TypeSystem::voidType;
+    }
+    | FLOAT {
+        $$ = TypeSystem::floatType;
     }
     ;
 /* FuncParams
