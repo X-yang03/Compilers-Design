@@ -38,6 +38,30 @@ void BinaryExpr::output(int level)
         case LESS:
             op_str = "less";
             break;
+        case MUL:
+            op_str = "mul";
+            break;
+        case DIV:
+            op_str = "div";
+            break;
+        case MOD:
+            op_str = "mod";
+            break;
+        case LE:
+            op_str = "LESS OR EQUAL";
+            break;
+        case GREATER:
+            op_str = "greater";
+            break;
+        case GE:
+            op_str="greater or equal";
+            break;
+        case EQ:
+            op_str = "equal";
+            break;
+        case NEQ:
+            op_str = "not equal";
+            break;
     }
     fprintf(yyout, "%*cBinaryExpr\top: %s\n", level, ' ', op_str.c_str());
     expr1->output(level + 4);
