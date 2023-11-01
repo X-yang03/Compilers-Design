@@ -142,6 +142,13 @@ PrimaryExp
         SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, $1);
         $$ = new Constant(se);
     }
+    | FLOATNUM {
+        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::floatType,$1);
+        $$ = new Constant(se);
+    }
+    | LPAREN Exp RPAREN{
+        $$ = $2;
+    }
     ;
 AddExp
     :

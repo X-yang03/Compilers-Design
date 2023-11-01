@@ -8,12 +8,13 @@ class Type
 private:
     int kind;
 protected:
-    enum {INT, VOID, FUNC};
+    enum {INT, VOID, FUNC,FLOAT};
 public:
     Type(int kind) : kind(kind) {};
     virtual ~Type() {};
     virtual std::string toStr() = 0;
     bool isInt() const {return kind == INT;};
+    bool isFloat() const {return kind == FLOAT;}
     bool isVoid() const {return kind == VOID;};
     bool isFunc() const {return kind == FUNC;};
 };
@@ -34,6 +35,15 @@ public:
     std::string toStr();
 };
 
+class FloatType : public Type
+{
+private:
+    int size;
+public:
+    FloatType(int size):Type(Type::FLOAT),size(size){};
+    std::string toStr();
+};
+
 class FunctionType : public Type
 {
 private:
@@ -50,8 +60,10 @@ class TypeSystem
 private:
     static IntType commonInt;
     static VoidType commonVoid;
+    static FloatType commonFloat;
 public:
     static Type *intType;
+    static Type *floatType;
     static Type *voidType;
 };
 
