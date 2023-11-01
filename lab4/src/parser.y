@@ -31,7 +31,7 @@
 %token POS MINUS 
 %token CONST RETURN CONTINUE BREAK
 
-%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt
+%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef
 %type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
@@ -60,7 +60,7 @@ Stmt
     | ReturnStmt {$$=$1;}
     | DeclStmt {$$=$1;}
     | FuncDef {$$=$1;}
-    | BreakStmt {$$=$1;}
+    
     ;
 LVal
     : ID {
@@ -220,23 +220,23 @@ FuncDef
     ;
 
 
-FuncParams
-    : FuncParams parser FuncParam{
+// FuncParams
+//     : FuncParams PARSE FuncParam{
 
-    }
-    | FuncParam{
+//     }
+//     | FuncParam{
 
-    }
-    | %empty {
-        $$ = nullptr
-    }
+//     }
+//     | %empty {
+        
+//     }
 
-FuncParam
-    : Type ID   {
-        SymbolEntry *se = new IdentifierSymbolEntry($1,$2,identifiers->getLevel());
-        identifiers.install($2,se);
-        //-----
-    }
+// FuncParam
+//     : Type ID   {
+//         SymbolEntry *se = new IdentifierSymbolEntry($1,$2,identifiers->getLevel());
+//         identifiers.install($2,se);
+//         //-----
+//     }
 
 %%
 
