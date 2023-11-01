@@ -31,7 +31,7 @@
 %token POS MINUS 
 %token CONST RETURN CONTINUE BREAK
 
-%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
+%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef
 %type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
@@ -56,6 +56,7 @@ Stmt
     : AssignStmt {$$=$1;}
     | BlockStmt {$$=$1;}
     | IfStmt {$$=$1;}
+    | WhileStmt{$$ = $1;}
     | ReturnStmt {$$=$1;}
     | DeclStmt {$$=$1;}
     | FuncDef {$$=$1;}
@@ -101,6 +102,10 @@ IfStmt
         $$ = new IfElseStmt($3, $5, $7);
     }
     ;
+WhileStmt 
+    : WHILE LPAREN Cond RPAREN Stmt{
+        $$ = new WhileStmt($3, $5);
+    }
 ReturnStmt
     :
     RETURN Exp SEMICOLON{

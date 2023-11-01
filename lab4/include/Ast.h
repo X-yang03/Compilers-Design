@@ -100,6 +100,16 @@ public:
     void output(int level);
 };
 
+class WhileStmt : public StmtNode
+{
+private:
+    ExprNode *cond;
+    StmtNode *Stmt;
+public:
+    WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt){};
+    void output(int level);
+};
+
 class ReturnStmt : public StmtNode
 {
 private:
