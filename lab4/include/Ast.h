@@ -2,8 +2,10 @@
 #define __AST_H__
 
 #include <fstream>
+#include <vector>
 
 class SymbolEntry;
+class Type;
 
 class Node
 {
@@ -22,6 +24,9 @@ protected:
     SymbolEntry *symbolEntry;
 public:
     ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
+    //WE ADD
+    Type* getType();
+
 };
 
 class BinaryExpr : public ExprNode
@@ -70,6 +75,22 @@ public:
     SeqNode(StmtNode *stmt1, StmtNode *stmt2) : stmt1(stmt1), stmt2(stmt2){};
     void output(int level);
 };
+
+// we add 
+class DefNode : public StmtNode
+{
+private:
+    bool isConst;
+    bool isArray;
+    Id* id;
+    Node* initVal;//对于非数组，是ExprNode；对于数组，是InitValueNode
+public:
+    DefNode(Id* id, Node* initVal, bool isConst, bool isArray) : 
+        isConst(isConst), isArray(isArray), id(id), initVal(initVal){};
+    Id* getId() {return id;}
+    void output(int level);
+};
+
 
 class DeclStmt : public StmtNode
 {
@@ -141,6 +162,18 @@ private:
     ExprNode *expr;
 public:
     AssignStmt(ExprNode *lval, ExprNode *expr) : lval(lval), expr(expr) {};
+    void output(int level);
+};
+
+//WE ADD
+class FuncDefParamsNode : public StmtNode
+{
+private:
+    std::vector<Id*> paramsList;
+public:
+    FuncDefParamsNode() {};
+    void addNext(Id* next);
+    std::vector<Type*> getParamsType();
     void output(int level);
 };
 

@@ -32,7 +32,8 @@
 %token CONST RETURN CONTINUE BREAK
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
-%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
+%type <stmttype> FuncParams FuncParam
+%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp 
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
 //%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
@@ -159,6 +160,34 @@ AddExp
         $$ = new BinaryExpr(se, BinaryExpr::SUB, $1, $3);
     }
     ;
+/* UnaryExp
+    :   PrimaryExp {
+            $$ = $1;
+        }
+    |   ID LPAREN FuncParams RPAREN {
+            SymbolEntry *se;
+            se = identifiers->lookup($1);
+            if(se == nullptr)
+            {
+                fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+                delete [](char*)$1;
+                assert(se != nullptr);
+            }
+            SymbolEntry *tmp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel());
+            $$ = new FuncCallNode(tmp, new Id(se), (FuncCallParamsNode*)$3);
+        }
+    |   POS UnaryExp {
+            $$ = $2;
+        }
+    |   MINUS UnaryExp {
+            SymbolEntry *tmp = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+            $$ = new OneOpExpr(tmp, OneOpExpr::SUB, $2);
+        }
+    |   NOT UnaryExp {
+            SymbolEntry *tmp = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+            $$ = new OneOpExpr(tmp, OneOpExpr::NOT, $2);
+        }
+    ; */
 RelExp
     :
     AddExp {$$ = $1;}
@@ -227,6 +256,12 @@ Type
         $$ = TypeSystem::voidType;
     }
     ;
+/* FuncParams
+    : FuncParams PARSE FuncParam{
+
+    }
+FuncParam 
+    : */
 DeclStmt
     :
     Type ID SEMICOLON {
@@ -247,19 +282,53 @@ FuncDef
         identifiers->install($2, se);
         identifiers = new SymbolTable(identifiers);
     }
-    LPAREN RPAREN
+    LPAREN FuncParams{
+            SymbolEntry *se;
+            se = identifiers->lookup($2);
+            assert(se != nullptr);
+            if($5!=nullptr){
+                ((FunctionType*)(se->getType()))->setparamsType(((FuncDefParamsNode*)$5)->getParamsType());
+            }   
+        }  
+    RPAREN
     BlockStmt
     {
         SymbolEntry *se;
         se = identifiers->lookup($2);
         assert(se != nullptr);
-        $$ = new FunctionDef(se, $6);
+        $$ = new FunctionDef(se, $8);
         SymbolTable *top = identifiers;
         identifiers = identifiers->getPrev();
         delete top;
         delete []$2;
     }
     ;
+// 函数参数列表
+FuncParams
+    :   FuncParams PARSE FuncParam {
+            FuncDefParamsNode* node = (FuncDefParamsNode*)$1;
+            node->addNext(((DefNode*)$3)->getId());
+            $$ = node;
+        }
+    |   FuncParam {
+            FuncDefParamsNode* node = new FuncDefParamsNode();
+            node->addNext(((DefNode*)$1)->getId());
+            $$ = node;
+        }
+    |   %empty {
+            $$ = nullptr;
+        }
+    ;
+
+// 函数参数
+FuncParam
+    :   Type ID {
+            SymbolEntry *se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
+            identifiers->install($2, se);
+            $$ = new DefNode(new Id(se), nullptr, false, false);
+        }
+    ;
+
 
 
 // FuncParams

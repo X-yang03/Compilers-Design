@@ -18,6 +18,12 @@ void Ast::output()
         root->output(4);
 }
 
+//WE ADD
+Type* ExprNode::getType()
+{
+    return symbolEntry->getType();
+}
+
 void BinaryExpr::output(int level)
 {
     std::string op_str;
@@ -101,6 +107,21 @@ void SeqNode::output(int level)
     stmt2->output(level + 4);
 }
 
+//we add
+void DefNode::output(int level)
+{
+    std::string constStr = isConst ? "true" : "false";
+    std::string arrayStr = isArray ? "true" : "false";
+    fprintf(yyout, "%*cDefNode\tisConst:%s\tisArray:%s\n", level, ' ', constStr.c_str(), arrayStr.c_str());
+    id->output(level+4);
+    if(initVal == nullptr){
+        fprintf(yyout, "%*cnull\n", level+4, ' ');
+    }
+    else{
+        initVal->output(level+4);
+    }
+}
+
 void DeclStmt::output(int level)
 {
     fprintf(yyout, "%*cDeclStmt\n", level, ' ');
@@ -149,6 +170,31 @@ void AssignStmt::output(int level)
     lval->output(level + 4);
     expr->output(level + 4);
 }
+
+
+//WE ADD BEGIN
+void FuncDefParamsNode::addNext(Id* next)
+{
+    paramsList.push_back(next);
+}
+
+std::vector<Type*> FuncDefParamsNode::getParamsType()
+{
+    std::vector<Type*> typeArray;
+    for(auto param : paramsList){
+        typeArray.push_back(param->getType());
+    }
+    return typeArray;
+}
+
+void FuncDefParamsNode::output(int level)
+{
+    fprintf(yyout, "%*cFuncDefParamsNode\n", level, ' ');
+    for(auto param : paramsList){
+        param->output(level+4);
+    }
+}
+//WE ADD END
 
 void FunctionDef::output(int level)
 {
