@@ -104,6 +104,15 @@ void WhileStmt::output(int level){
     Stmt->output(level + 4);    
 }
 
+
+void ContinueStmt::output(int level){
+    fprintf(yyout,"%*cContinueStmt\n",level,' ');
+}
+
+void BreakStmt::output(int level){
+    fprintf(yyout,"%*cBreakStmt\n",level,' ');
+}
+
 void ReturnStmt::output(int level)
 {
     fprintf(yyout, "%*cReturnStmt\n", level, ' ');

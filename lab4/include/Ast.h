@@ -119,6 +119,20 @@ public:
     void output(int level);
 };
 
+class ContinueStmt : public StmtNode //continue
+{
+private:
+public:
+    void output(int level);
+    
+};
+
+class BreakStmt: public StmtNode
+{
+public:
+    void output(int level);
+};
+
 class AssignStmt : public StmtNode
 {
 private:

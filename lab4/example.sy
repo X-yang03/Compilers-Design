@@ -1,3 +1,5 @@
 while(1){
     int a;
+    break;
+    continue;
 }
