@@ -80,20 +80,6 @@ SymbolEntry* SymbolTable::lookup(std::string name)
             return nullptr;
         }
     }
-
-
-
-    // SymbolTable* CurrentTable = this;
-    // SymbolEntry* SE = nullptr;
-    // while(CurrentTable != nullptr){
-    //     std::cout<<"this is SymbolTable.cpp lookup the table level is "<<CurrentTable->level<<std::endl;
-    //     if(CurrentTable->symbolTable.find(name) != CurrentTable->symbolTable.end()){
-    //         SE = CurrentTable->symbolTable.find(name)->second;
-    //         break;
-    //     }
-    //     CurrentTable = CurrentTable->getPrev();
-    // }
-    // return SE;
     
 }
 
