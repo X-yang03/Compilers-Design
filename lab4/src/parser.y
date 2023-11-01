@@ -14,7 +14,8 @@
 }
 
 %union {
-    double numtype;
+    int iType;
+    double fType;
     char* strtype;
     StmtNode* stmttype;
     ExprNode* exprtype;
@@ -23,7 +24,8 @@
 
 %start Program
 %token <strtype> ID 
-%token <numtype> INTEGER FLOATNUM
+%token <iType>  INTEGER
+%token <fType>  FLOATNUM
 %token IF ELSE WHILE
 %token INT VOID FLOAT
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON LBRACKET RBRACKET PARSE
@@ -216,7 +218,7 @@ LAndExp
         $$ = new BinaryExpr(se, BinaryExpr::AND, $1, $3);
     }
     ;
-LOrExp
+LOrExp 
     :
     LAndExp {$$ = $1;}
     |
@@ -232,6 +234,9 @@ Type
     }
     | VOID {
         $$ = TypeSystem::voidType;
+    }
+    | FLOAT {
+        $$ = TypeSystem::floatType;
     }
     ;
 DeclStmt
