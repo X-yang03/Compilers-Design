@@ -36,7 +36,7 @@
 %token CONST RETURN CONTINUE BREAK
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
-%type <stmttype> VarDefList VarDef
+%type <stmttype> VarDefList VarDef ConstDefList ConstDef
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
 %type <stmttype> FuncParams FuncParam
 %type <type> Type
@@ -348,9 +348,12 @@ Type
     }
     ;
 DeclStmt
-    :
-    Type VarDefList SEMICOLON {
-            $$ = $2;
+    : CONST Type ConstDefList SEMICOLON{
+        $$ = $3;
+    }
+
+    | Type VarDefList SEMICOLON {
+        $$ = $2;
     }
     /* Type ID SEMICOLON {
         SymbolEntry *se;
@@ -361,6 +364,35 @@ DeclStmt
         delete []$2;
     } */
     ;
+
+ConstDefList 
+    : ConstDefList PARSE ConstDef{
+            DeclStmt* node = (DeclStmt*) $1;
+            node->addNext((DefNode*)$3);
+            $$ = node;
+    }
+    | ConstDef {
+            DeclStmt* node = new DeclStmt(true);
+            node->addNext((DefNode*)$1);
+            $$ = node; 
+    }
+
+ConstDef 
+    : ID ASSIGN Exp {
+        //const 必须赋初值
+            Type* type;
+            if(currentType->isInt()){
+                type = TypeSystem::intType;
+            }
+            else{
+                type = TypeSystem::floatType;
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            $$ = new DefNode(new Id(se), (Node*)$3, true, false);
+        }
+    // todo 数组变量的定义
 VarDefList
     :   VarDefList PARSE VarDef {
             DeclStmt* node = (DeclStmt*) $1;
