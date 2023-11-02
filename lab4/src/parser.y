@@ -37,8 +37,8 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
-%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
-%type <stmttype> FuncParams FuncParam 
+%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
+%type <stmttype> FuncParams FuncParam
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
 //%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
@@ -144,29 +144,10 @@ Exp
     AddExp {$$ = $1;}
     ; */
 
-
 Cond
     :
     LOrExp {$$ = $1;}
     ;
-
-// FuncRealParams
-//     :
-//     FuncRealParams PARSE Exp{
-//         FuncCallParamsNode* node = (FuncCallParamsNode*) $1;
-//         node->addNext($3);
-//         $$ = node;
-//     }
-//     |
-//     Exp{
-//         FuncCallParamsNode* node = new FuncCallParamsNode();
-//         node->addNext($1);
-//         $$ = node;
-//     }
-//     |
-//     %empty{
-//         $$ = nullptr;
-//     }
 
 //基本表达式
 PrimaryExp
@@ -187,83 +168,27 @@ PrimaryExp
     }
     ;
 
-
-
-// 一元表达式,未完待写
+//一元表达式,未完待写
 UnaryExp
     :
     PrimaryExp{$$=$1;}
-    |
-    ADD UnaryExp{
-        $$ = $2;
-    }
-    |
-    SUB UnaryExp{
-        SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
-        $$ = new UnaryOpExpr(se, UnaryOpExpr::SUB, $2);
-    }
-    |
-    NOT UnaryExp{
-         SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
-         $$ = new UnaryOpExpr(se, UnaryOpExpr::NOT, $2);
-    }
-    // |
-    // ID LPAREN FuncRealParams RPAREN{ // 函数调用
-    //     SymbolEntry *se;
-    //     se = identifiers->lookup($1);
-    //     if(se == nullptr)
-    //     {
-    //         fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
-    //         delete [](char*)$1;
-    //         assert(se != nullptr);
-    //     }
-    //     SymbolEntry *tmp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel());
-    //     $$ = new FuncCallNode(tmp, new Id(se), (FuncCallParamsNode*)$3);
-    // }
-
     ;
 
 
-// mult div
+//Todo
 MulExp
     :
     UnaryExp{$$=$1;}
     |
     MulExp MUL UnaryExp {
-            SymbolEntry *se;
-            if($1->getType()->isInt() && $3->getType()->isInt()){
-                se = new TemporarySymbolEntry(TypeSystem::intType,SymbolTable::getLabel());
-            }
-            else{
-                se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolTable::getLabel());
-            }
-            $$ = new BinaryExpr(se,BinaryExpr::MUL,$1,$3);
+
     }
     |
-    MulExp DIV UnaryExp {
-        SymbolEntry *se;
-        if($1->getType()->isInt() && $3->getType()->isInt()){
-                se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        $$ = new BinaryExpr(se, BinaryExpr::DIV, $1, $3);
-    }
+    MulExp DIV UnaryExp {}
     |
-    MulExp MOD UnaryExp {
-        SymbolEntry *se;
-        if($1->getType()->isInt() && $3->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        $$ = new BinaryExpr(se, BinaryExpr::MOD, $1, $3);
-    }
+    MulExp MOD UnaryExp {}
     ;
     
-// add
 
 AddExp
     :
@@ -271,100 +196,103 @@ AddExp
     |
     AddExp ADD MulExp
     {
-        SymbolEntry *se;
-        if($1->getType()->isInt() && $3->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::ADD, $1, $3);
     }
     |
     AddExp SUB MulExp
     {
-       SymbolEntry *se;
-        if($1->getType()->isInt() && $3->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::SUB, $1, $3);
     }
     ;
-
-// relation 
+/* UnaryExp
+    :   PrimaryExp {
+            $$ = $1;
+        }
+    |   ID LPAREN FuncParams RPAREN {
+            SymbolEntry *se;
+            se = identifiers->lookup($1);
+            if(se == nullptr)
+            {
+                fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+                delete [](char*)$1;
+                assert(se != nullptr);
+            }
+            SymbolEntry *tmp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel());
+            $$ = new FuncCallNode(tmp, new Id(se), (FuncCallParamsNode*)$3);
+        }
+    |   POS UnaryExp {
+            $$ = $2;
+        }
+    |   MINUS UnaryExp {
+            SymbolEntry *tmp = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+            $$ = new OneOpExpr(tmp, OneOpExpr::SUB, $2);
+        }
+    |   NOT UnaryExp {
+            SymbolEntry *tmp = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+            $$ = new OneOpExpr(tmp, OneOpExpr::NOT, $2);
+        }
+    ; */
 RelExp
     :
     AddExp {$$ = $1;}
     |
     RelExp LESS AddExp
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::LESS, $1, $3);
     }
     |
     RelExp GREATER AddExp
     {
         printf("greater!\n");
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::GREATER, $1, $3);
     }
     |
     RelExp LE AddExp
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::LE, $1, $3);
     }
     |
     RelExp GE AddExp
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::GE, $1, $3);
     }
     ;
 
-// equal ==
 EqExp
     :
     RelExp{$$=$1;}
     |
-    EqExp EQ RelExp{
-         SymbolEntry* se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-         $$ = new BinaryExpr(se, BinaryExpr::EQ, $1, $3);
-    }
+    EqExp EQ RelExp{}
     |
-    EqExp NEQ RelExp{
-         SymbolEntry* se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-         $$ = new BinaryExpr(se, BinaryExpr::NEQ, $1, $3);
-    }
+    EqExp NEQ RelExp{}
     ;
 
-// AND
 LAndExp
     :
     EqExp {$$ = $1;}
     |
     LAndExp AND EqExp
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::AND, $1, $3);
     }
     ;
-
-// OR
 LOrExp 
     :
     LAndExp {$$ = $1;}
     |
     LOrExp OR LAndExp
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::OR, $1, $3);
     }
     ;
-
 Type
     : INT {
         $$ = TypeSystem::intType;
@@ -381,7 +309,7 @@ Type
     ;
 DeclStmt
     : CONST Type ConstDefList SEMICOLON{
-        $$ = $3;
+        $$ = $2;
     }
 
     | Type VarDefList SEMICOLON {
@@ -404,27 +332,11 @@ ConstDefList
             $$ = node;
     }
     | ConstDef {
-            DeclStmt* node = new DeclStmt(true);
-            node->addNext((DefNode*)$1);
-            $$ = node; 
+            
     }
 
-ConstDef 
-    : ID ASSIGN Exp {
-        //const 必须赋初值
-            Type* type;
-            if(currentType->isInt()){
-                type = TypeSystem::intType;
-            }
-            else{
-                type = TypeSystem::floatType;
-            }
-            SymbolEntry *se;
-            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
-            $$ = new DefNode(new Id(se), (Node*)$3, true, false);
-        }
-    // todo 数组变量的定义
+ConstDef
+    :
 VarDefList
     :   VarDefList PARSE VarDef {
             DeclStmt* node = (DeclStmt*) $1;
@@ -497,7 +409,7 @@ FuncDef
         delete []$2;
     }
     ;
-// 函数形参列表
+// 函数参数列表
 FuncParams
     :   FuncParams PARSE FuncParam {
             FuncDefParamsNode* node = (FuncDefParamsNode*)$1;
