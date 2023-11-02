@@ -172,12 +172,37 @@ MulExp
     UnaryExp{$$=$1;}
     |
     MulExp MUL UnaryExp {
-
+            SymbolEntry *se;
+            if($1->getType()->isInt() && $3->getType()->isInt()){
+                se = new TemporarySymbolEntry(TypeSystem::intType,SymbolTable::getLabel());
+            }
+            else{
+                se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolEntry::getLabel());
+            }
+            $$ = new new BinaryExpr(se,BinaryExpr::MUL,$1,$3);
     }
     |
-    MulExp DIV UnaryExp {}
+    MulExp DIV UnaryExp {
+        SymbolEntry *se;
+        if($1->getType()->isInt() && $3->getType()->isInt()){
+                se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        }
+        else{
+            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
+        }
+        $$ = new BinaryExpr(se, BinaryExpr::DIV, $1, $3);
+    }
     |
-    MulExp MOD UnaryExp {}
+    MulExp MOD UnaryExp {
+        SymbolEntry *se;
+        if($1->getType()->isInt() && $3->getType()->isInt()){
+            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        }
+        else{
+            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
+        }
+        $$ = new BinaryExpr(se, BinaryExpr::MOD, $1, $3);
+    }
     ;
     
 
