@@ -175,6 +175,20 @@ PrimaryExp
 UnaryExp
     :
     PrimaryExp{$$=$1;}
+    |
+    ADD UnaryExp{
+        $$ = $2;
+    }
+    |
+    SUB UnaryExp{
+       //  SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+        // $$ = new UnaryOpExpr(se, UnaryOpExpr::SUB, $2);
+    }
+    |
+    NOT UnaryExp{
+        //  SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
+        //  $$ = new UnrayOpExpr(se, UnaryOpExpr::NOT, $2);
+    }
     ;
 
 

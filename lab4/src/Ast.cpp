@@ -73,6 +73,24 @@ void BinaryExpr::output(int level)
     expr2->output(level + 4);
 }
 
+void UnaryOpExpr::output(int level){
+     std::string op_str;
+    switch(op)
+    {
+        case ADD:
+            op_str = "add";
+            break;
+        case SUB:
+            op_str = "sub";
+            break;
+        case NOT:
+            op_str = "not";
+            break;
+    }
+    fprintf(yyout, "%*cBinaryExpr\top: %s\n", level, ' ', op_str.c_str());
+    expr->output(level + 4);
+}
+
 void Constant::output(int level)
 {
     std::string type, value;
