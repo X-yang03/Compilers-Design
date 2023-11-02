@@ -102,7 +102,7 @@ void Constant::output(int level)
 
 bool Id::isArray()
 {
-    return getType()->isArray();
+    return symbolEntry->getType()->isArray();
 }
 
 void Id::output(int level)
