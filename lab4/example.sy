@@ -1,17 +1,1 @@
-int main(int args){
-    int ff[10];
-    int a , b, c = 10;
-    int a;
-    c = a+b;
-    c= a*b;
-    if(c<b){
-        b=0;
-    }
-    else
-    {
-        c = 0;
-    }
-
-    const int d = 5;
-    return a;
-}
+float a[10][1+1][5*3] = {{0},{10+2},{}};

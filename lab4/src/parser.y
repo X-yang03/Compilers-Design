@@ -37,7 +37,7 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
-%type <stmttype> ArrIndices 
+%type <stmttype> ArrIndices ArrayInitVal ArrayInitValList
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
 %type <stmttype> FuncParams FuncParam FuncRealParams
 %type <type> Type
@@ -413,6 +413,33 @@ ConstDef
         }
     // todo 数组变量的定义
 
+ArrayInitVal 
+    :   Exp {
+            ArrayinitNode* node = new ArrayinitNode(false);
+            node->setLeafNode((ExprNode*)$1);
+            $$ = node;
+        }
+    |   LBRACE ArrayInitValList RBRACE{
+            $$ = $2;
+        }
+    |   LBRACE RBRACE{
+            $$ = new ArrayinitNode(false);
+    }
+    ; 
+
+ArrayInitValList
+    :   ArrayInitValList PARSE ArrayInitVal{
+            ArrayinitNode* node = (ArrayinitNode*)$1;
+            node->append((ArrayinitNode*)$3);
+            $$ = node;
+        }
+    |   ArrayInitVal{
+            ArrayinitNode* newNode = new ArrayinitNode(false);
+            newNode->append((ArrayinitNode*)$1);
+            $$ = newNode;
+        }
+    ;
+
 VarDefList
     :   VarDefList PARSE VarDef {
             DeclStmt* node = (DeclStmt*) $1;
@@ -467,6 +494,21 @@ VarDef
             Id* id = new Id(se);
             id->addIndices((ArrayindiceNode*)$2);
             $$ = new DefNode(id, nullptr, false, true);
+        }
+    |   ID ArrIndices ASSIGN ArrayInitVal{
+            Type* type;
+            if(currentType->isInt()){
+                type = new IntArrayType();
+            }
+            else{
+                type = new FloatArrayType();
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            Id* id = new Id(se);
+            id->addIndices((ArrayindiceNode*)$2);
+            $$ = new DefNode(id, (Node*)$4, false, true);//类型向上转换
         }
 FuncDef
     :

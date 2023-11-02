@@ -27,6 +27,7 @@ public:
     Type* getType();
 };
 
+
 class BinaryExpr : public ExprNode
 {
 private:
@@ -102,7 +103,24 @@ public:
     void output(int level);
 };
 
-// we add 
+// we add
+
+//数组初始化，用树结构来维护初始值
+class ArrayinitNode : public StmtNode
+{
+private:
+    bool isConst;
+    ExprNode* leafNode;//用于output
+    std::vector<ArrayinitNode*> innerList;//容器为空则是叶节点
+public:
+    ArrayinitNode(bool isConst) : 
+        isConst(isConst), leafNode(nullptr){};
+    void setLeafNode(ExprNode* leaf){leafNode = leaf;};
+    void append(ArrayinitNode* next){innerList.push_back(next);};
+    bool isLeaf(){return innerList.empty();};
+    void output(int level);
+};
+
 class DefNode : public StmtNode
 {
 private:

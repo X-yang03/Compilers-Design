@@ -156,6 +156,21 @@ void SeqNode::output(int level)
 }
 
 //we add
+
+void ArrayinitNode::output(int level)
+{
+    std::string constStr = isConst ? "true" : "false";
+    fprintf(yyout, "%*cArrayinitNode\tisConst:%s\n", level, ' ', constStr.c_str());
+    for(auto child : innerList)
+    {
+        child->output(level+4);
+    }
+    if(leafNode!=nullptr){
+        leafNode->output(level+4);
+    }
+}
+
+
 void DefNode::output(int level)
 {
     std::string constStr = isConst ? "true" : "false";
