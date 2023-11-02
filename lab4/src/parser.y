@@ -37,7 +37,7 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
-%type <stmttype> ArrIndices ArrayInitVal ArrayInitValList
+%type <stmttype> ArrIndices ArrayInitVal ArrayInitValList ConstArrayInitVal ConstArrayInitValList
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
 %type <stmttype> FuncParams FuncParam FuncRealParams
 %type <type> Type
@@ -436,7 +436,7 @@ ConstDef
             $$ = new DefNode(new Id(se), (Node*)$3, true, false);
         }
     // todo 数组变量的定义
-        |   ID ArrIndices ASSIGN ArrayInitVal{
+        |   ID ArrIndices ASSIGN ConstArrayInitVal{
             Type* type;
             if(currentType->isInt()){
                 type = new IntArrayType();
@@ -451,6 +451,33 @@ ConstDef
             id->addIndices((ArrayindiceNode*)$2);
             $$ = new DefNode(id, (Node*)$4, true, true);
         }
+
+ConstArrayInitVal 
+    :   Exp {
+            ArrayinitNode* node = new ArrayinitNode(true);
+            node->setLeafNode((ExprNode*)$1);
+            $$ = node;
+        }
+    |   LBRACE ConstArrayInitValList RBRACE{
+            $$ = $2;
+        }
+    |   LBRACE RBRACE{
+            $$ = new ArrayinitNode(true);
+    }
+    ; 
+
+ ConstArrayInitValList
+    :   ConstArrayInitValList PARSE ConstArrayInitVal{
+            ArrayinitNode* node = (ArrayinitNode*)$1;
+            node->append((ArrayinitNode*)$3);
+            $$ = node;
+        }
+    |   ConstArrayInitVal{
+            ArrayinitNode* newNode = new ArrayinitNode(true);
+            newNode->append((ArrayinitNode*)$1);
+            $$ = newNode;
+        }
+    ;   
 
 ArrayInitVal 
     :   Exp {
