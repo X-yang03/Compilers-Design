@@ -355,12 +355,13 @@ Type
     ;
 DeclStmt
     : CONST Type ConstDefList SEMICOLON{
-        $$ = $2;
+        $$ = $3;
     }
 
     | Type VarDefList SEMICOLON {
         $$ = $2;
     }
+
     /* Type ID SEMICOLON {
         SymbolEntry *se;
         std::cout<<"this is DeclStmt "<<identifiers->getLevel()<<std::endl;
@@ -378,11 +379,28 @@ ConstDefList
             $$ = node;
     }
     | ConstDef {
-            
+            DeclStmt* node = new DeclStmt(true);
+            node->addNext((DefNode*)$1);
+            $$ = node; 
     }
 
-ConstDef
-    :
+ConstDef 
+    : ID ASSIGN Exp {
+        //const 必须赋初值
+            Type* type;
+            if(currentType->isInt()){
+                type = TypeSystem::intType;
+            }
+            else{
+                type = TypeSystem::floatType;
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            $$ = new DefNode(new Id(se), (Node*)$3, true, false);
+        }
+    // todo 数组变量的定义
+
 VarDefList
     :   VarDefList PARSE VarDef {
             DeclStmt* node = (DeclStmt*) $1;

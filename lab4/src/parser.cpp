@@ -163,25 +163,26 @@ enum yysymbol_kind_t
   YYSYMBOL_ReturnStmt = 54,                /* ReturnStmt  */
   YYSYMBOL_Exp = 55,                       /* Exp  */
   YYSYMBOL_Cond = 56,                      /* Cond  */
-  YYSYMBOL_PrimaryExp = 57,                /* PrimaryExp  */
-  YYSYMBOL_UnaryExp = 58,                  /* UnaryExp  */
-  YYSYMBOL_MulExp = 59,                    /* MulExp  */
-  YYSYMBOL_AddExp = 60,                    /* AddExp  */
-  YYSYMBOL_RelExp = 61,                    /* RelExp  */
-  YYSYMBOL_EqExp = 62,                     /* EqExp  */
-  YYSYMBOL_LAndExp = 63,                   /* LAndExp  */
-  YYSYMBOL_LOrExp = 64,                    /* LOrExp  */
-  YYSYMBOL_Type = 65,                      /* Type  */
-  YYSYMBOL_DeclStmt = 66,                  /* DeclStmt  */
-  YYSYMBOL_ConstDefList = 67,              /* ConstDefList  */
-  YYSYMBOL_ConstDef = 68,                  /* ConstDef  */
-  YYSYMBOL_VarDefList = 69,                /* VarDefList  */
-  YYSYMBOL_VarDef = 70,                    /* VarDef  */
-  YYSYMBOL_FuncDef = 71,                   /* FuncDef  */
-  YYSYMBOL_72_2 = 72,                      /* $@2  */
-  YYSYMBOL_73_3 = 73,                      /* $@3  */
-  YYSYMBOL_FuncParams = 74,                /* FuncParams  */
-  YYSYMBOL_FuncParam = 75                  /* FuncParam  */
+  YYSYMBOL_FuncRealParams = 57,            /* FuncRealParams  */
+  YYSYMBOL_PrimaryExp = 58,                /* PrimaryExp  */
+  YYSYMBOL_UnaryExp = 59,                  /* UnaryExp  */
+  YYSYMBOL_MulExp = 60,                    /* MulExp  */
+  YYSYMBOL_AddExp = 61,                    /* AddExp  */
+  YYSYMBOL_RelExp = 62,                    /* RelExp  */
+  YYSYMBOL_EqExp = 63,                     /* EqExp  */
+  YYSYMBOL_LAndExp = 64,                   /* LAndExp  */
+  YYSYMBOL_LOrExp = 65,                    /* LOrExp  */
+  YYSYMBOL_Type = 66,                      /* Type  */
+  YYSYMBOL_DeclStmt = 67,                  /* DeclStmt  */
+  YYSYMBOL_ConstDefList = 68,              /* ConstDefList  */
+  YYSYMBOL_ConstDef = 69,                  /* ConstDef  */
+  YYSYMBOL_VarDefList = 70,                /* VarDefList  */
+  YYSYMBOL_VarDef = 71,                    /* VarDef  */
+  YYSYMBOL_FuncDef = 72,                   /* FuncDef  */
+  YYSYMBOL_73_2 = 73,                      /* $@2  */
+  YYSYMBOL_74_3 = 74,                      /* $@3  */
+  YYSYMBOL_FuncParams = 75,                /* FuncParams  */
+  YYSYMBOL_FuncParam = 76                  /* FuncParam  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -298,7 +299,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -507,18 +508,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  44
+#define YYFINAL  45
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   120
+#define YYLAST   130
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  42
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  34
+#define YYNNTS  35
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  71
+#define YYNRULES  75
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  124
+#define YYNSTATES  131
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   296
@@ -573,12 +574,12 @@ static const yytype_int16 yyrline[] =
 {
        0,    51,    51,    56,    57,    62,    63,    64,    65,    66,
       67,    68,    69,    70,    73,    91,    97,    96,   109,   112,
-     117,   122,   127,   133,   139,   150,   156,   159,   163,   167,
-     177,   179,   183,   188,   198,   200,   211,   222,   238,   240,
-     252,   268,   270,   276,   283,   289,   299,   301,   306,   315,
-     317,   327,   329,   337,   341,   345,   351,   355,   369,   374,
-     381,   397,   402,   409,   422,   439,   447,   439,   470,   475,
-     480,   487
+     117,   122,   127,   133,   139,   149,   154,   160,   166,   173,
+     176,   180,   184,   192,   194,   198,   203,   208,   227,   229,
+     233,   235,   241,   243,   249,   285,   287,   293,   300,   306,
+     315,   317,   319,   324,   326,   334,   336,   343,   347,   351,
+     357,   361,   376,   381,   388,   405,   410,   417,   430,   447,
+     455,   447,   478,   483,   488,   495
 };
 #endif
 
@@ -601,10 +602,11 @@ static const char *const yytname[] =
   "GREATER", "GE", "ASSIGN", "EQ", "NEQ", "NOT", "POS", "MINUS", "CONST",
   "RETURN", "CONTINUE", "BREAK", "THEN", "$accept", "Program", "Stmts",
   "Stmt", "LVal", "AssignStmt", "BlockStmt", "$@1", "IfStmt", "WhileStmt",
-  "ContinueStmt", "BreakStmt", "ReturnStmt", "Exp", "Cond", "PrimaryExp",
-  "UnaryExp", "MulExp", "AddExp", "RelExp", "EqExp", "LAndExp", "LOrExp",
-  "Type", "DeclStmt", "ConstDefList", "ConstDef", "VarDefList", "VarDef",
-  "FuncDef", "$@2", "$@3", "FuncParams", "FuncParam", YY_NULLPTR
+  "ContinueStmt", "BreakStmt", "ReturnStmt", "Exp", "Cond",
+  "FuncRealParams", "PrimaryExp", "UnaryExp", "MulExp", "AddExp", "RelExp",
+  "EqExp", "LAndExp", "LOrExp", "Type", "DeclStmt", "ConstDefList",
+  "ConstDef", "VarDefList", "VarDef", "FuncDef", "$@2", "$@3",
+  "FuncParams", "FuncParam", YY_NULLPTR
 };
 
 static const char *
@@ -614,12 +616,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-30)
+#define YYPACT_NINF (-31)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-66)
+#define YYTABLE_NINF (-70)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -628,19 +630,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      31,   -30,     7,    20,   -30,   -30,   -30,   -30,    50,     4,
-      28,    32,    36,    31,   -30,   -19,   -30,   -30,   -30,   -30,
-     -30,   -30,   -30,    52,   -30,   -30,     4,     4,    31,    69,
-     -30,   -30,     4,     4,     4,     4,   -30,    59,   -30,   -30,
-     -18,    46,   -30,   -30,   -30,   -30,     4,    23,    -5,   -30,
-      64,    46,    65,    51,    56,    71,    84,    12,    67,    37,
-     -30,    86,   -30,   -30,   -30,   -30,     4,     4,     4,     4,
-       4,    85,     4,    88,   -30,    99,    31,     4,     4,     4,
-       4,     4,     4,     4,     4,    31,   -30,     4,   -30,    69,
-     -30,   -30,   -30,   -30,   -18,   -18,   -30,   -30,    50,    72,
-     -30,    97,    46,    46,    46,    46,    65,    65,    51,    56,
-     -30,   -30,   -30,   103,    89,   -30,    31,   -30,    50,    94,
-     -30,   -30,    95,   -30
+      15,   -31,     2,     8,   -31,   -31,   -31,   -31,    80,    59,
+      35,    44,    31,    15,   -31,     4,   -31,   -31,   -31,   -31,
+     -31,   -31,   -31,    30,   -31,   -31,    59,    59,    15,    58,
+      65,   -31,   -31,    59,    59,    59,    59,   -31,    69,   -31,
+     -31,    46,   -15,   -31,   -31,   -31,   -31,    59,    -4,     3,
+     -31,    68,   -15,    45,    10,    60,    67,    81,     1,    66,
+      18,   -31,    59,    83,   -31,   -31,   -31,   -31,    59,    59,
+      59,    59,    59,    90,    59,    95,   -31,   105,    15,    59,
+      59,    59,    59,    59,    59,    59,    59,    15,   -31,    59,
+     -31,    58,   -31,    17,   -31,   -31,   -31,   -31,    46,    46,
+     -31,   -31,    80,    78,   -31,   103,   -15,   -15,   -15,   -15,
+      45,    45,    10,    60,   -31,   -31,   -31,   -31,    59,   109,
+      94,   -31,    15,   -31,   -31,    80,   101,   -31,   -31,   102,
+     -31
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -648,74 +651,77 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,    14,     0,     0,    53,    54,    55,    16,     0,     0,
+       0,    14,     0,     0,    57,    58,    59,    16,     0,     0,
        0,     0,     0,     2,     3,     0,     5,     6,     7,     8,
       13,    12,     9,     0,    10,    11,     0,     0,     0,     0,
-      27,    28,     0,     0,     0,     0,    26,     0,    30,    34,
-      38,    24,    21,    22,     1,     4,     0,    63,     0,    62,
-       0,    41,    46,    49,    51,    25,     0,     0,     0,     0,
-      59,     0,    31,    32,    33,    23,     0,     0,     0,     0,
-       0,     0,     0,     0,    57,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    17,     0,    56,     0,
-      29,    35,    36,    37,    39,    40,    15,    64,    70,    63,
-      61,    18,    42,    44,    43,    45,    47,    48,    50,    52,
-      20,    60,    58,     0,    66,    69,     0,    71,     0,     0,
-      19,    68,     0,    67
+      14,    30,    31,     0,     0,     0,     0,    29,     0,    33,
+      38,    42,    24,    21,    22,     1,     4,     0,    67,     0,
+      66,     0,    45,    50,    53,    55,    25,     0,     0,     0,
+       0,    63,    28,     0,    34,    35,    36,    23,     0,     0,
+       0,     0,     0,     0,     0,     0,    61,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    17,     0,
+      60,     0,    27,     0,    32,    39,    40,    41,    43,    44,
+      15,    68,    74,    67,    65,    18,    46,    48,    47,    49,
+      51,    52,    54,    56,    20,    64,    62,    37,     0,     0,
+      70,    73,     0,    26,    75,     0,     0,    19,    72,     0,
+      71
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -30,   -30,    82,   -11,     0,   -30,   -10,   -30,   -30,   -30,
-     -30,   -30,   -30,   -29,    87,   -30,    -4,    17,     1,     8,
-      30,    33,   -30,    -7,   -30,   -30,    26,   -30,    43,   -30,
-     -30,   -30,   -30,     2
+     -31,   -31,    87,   -11,     0,   -31,   -12,   -31,   -31,   -31,
+     -31,   -31,   -31,   -30,    92,   -31,   -31,    14,    -6,    19,
+     -27,    36,    34,   -31,    -7,   -31,   -31,    32,   -31,    47,
+     -31,   -31,   -31,   -31,     5
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    12,    13,    14,    36,    16,    17,    28,    18,    19,
-      20,    21,    22,    37,    50,    38,    39,    40,    51,    52,
-      53,    54,    55,    23,    24,    59,    60,    48,    49,    25,
-      73,   119,   114,   115
+       0,    12,    13,    14,    37,    16,    17,    28,    18,    19,
+      20,    21,    22,    38,    51,    93,    39,    40,    41,    42,
+      53,    54,    55,    56,    23,    24,    60,    61,    49,    50,
+      25,    75,   126,   120,   121
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      15,    29,    45,    61,    66,    67,    68,     1,    30,    31,
-      41,    74,    46,    15,    75,     1,    32,    71,     2,    26,
-       3,     4,     5,     6,    33,    34,     7,    86,    15,    62,
-      63,    64,    27,    41,     1,   -65,    44,     2,    35,     3,
-       4,     5,     6,    97,    42,     7,    45,    41,    43,     8,
-       9,    10,    11,    88,    72,    47,    89,    15,   111,     4,
-       5,     6,    91,    92,    93,   101,    69,    70,     8,     9,
-      10,    11,    58,    41,   110,    65,    15,    76,   102,   103,
-     104,   105,    83,    81,    82,    15,    94,    95,    41,   106,
-     107,   113,    77,    78,    79,    80,    84,    85,    87,    90,
-      98,    96,    99,    72,   116,   120,   117,   122,   118,     7,
-      57,   113,   123,   108,    56,   112,    15,   109,   100,     0,
-     121
+      15,    29,    46,    63,     1,    71,    72,     2,   -69,     3,
+       4,     5,     6,    15,    26,     7,    88,    73,     1,    76,
+      27,     2,    77,     3,     4,     5,     6,    74,    15,     7,
+     117,    45,    92,    48,    90,    47,   118,    91,     8,     9,
+      10,    11,    83,    84,   101,    52,    52,    46,    64,    65,
+      66,    43,     8,     9,    10,    11,   110,   111,    15,   115,
+      44,    59,    30,    31,    32,    98,    99,   105,    68,    69,
+      70,    33,    79,    80,    81,    82,   114,    62,    15,    34,
+      35,    78,    95,    96,    97,    67,    85,    15,   123,     4,
+       5,     6,    86,    36,    87,   119,    94,    89,   106,   107,
+     108,   109,    52,    52,    52,    52,   100,   102,   103,    74,
+     122,   127,   124,   125,   129,    58,     7,   130,   119,    57,
+     113,   112,    15,   116,   104,     0,     0,     0,     0,     0,
+     128
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-       0,     8,    13,    32,    22,    23,    24,     3,     4,     5,
-       9,    16,    31,    13,    19,     3,    12,    46,     6,    12,
-       8,     9,    10,    11,    20,    21,    14,    15,    28,    33,
-      34,    35,    12,    32,     3,    12,     0,     6,    34,     8,
-       9,    10,    11,    72,    16,    14,    57,    46,    16,    37,
-      38,    39,    40,    16,    31,     3,    19,    57,    87,     9,
-      10,    11,    66,    67,    68,    76,    20,    21,    37,    38,
-      39,    40,     3,    72,    85,    16,    76,    13,    77,    78,
-      79,    80,    26,    32,    33,    85,    69,    70,    87,    81,
-      82,    98,    27,    28,    29,    30,    25,    13,    31,    13,
-      12,    16,     3,    31,     7,   116,     3,    13,    19,    14,
-      28,   118,   122,    83,    27,    89,   116,    84,    75,    -1,
-     118
+       0,     8,    13,    33,     3,    20,    21,     6,    12,     8,
+       9,    10,    11,    13,    12,    14,    15,    47,     3,    16,
+      12,     6,    19,     8,     9,    10,    11,    31,    28,    14,
+      13,     0,    62,     3,    16,    31,    19,    19,    37,    38,
+      39,    40,    32,    33,    74,    26,    27,    58,    34,    35,
+      36,    16,    37,    38,    39,    40,    83,    84,    58,    89,
+      16,     3,     3,     4,     5,    71,    72,    78,    22,    23,
+      24,    12,    27,    28,    29,    30,    87,    12,    78,    20,
+      21,    13,    68,    69,    70,    16,    26,    87,   118,     9,
+      10,    11,    25,    34,    13,   102,    13,    31,    79,    80,
+      81,    82,    83,    84,    85,    86,    16,    12,     3,    31,
+       7,   122,     3,    19,    13,    28,    14,   129,   125,    27,
+      86,    85,   122,    91,    77,    -1,    -1,    -1,    -1,    -1,
+     125
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -724,17 +730,18 @@ static const yytype_int8 yystos[] =
 {
        0,     3,     6,     8,     9,    10,    11,    14,    37,    38,
       39,    40,    43,    44,    45,    46,    47,    48,    50,    51,
-      52,    53,    54,    65,    66,    71,    12,    12,    49,    65,
-       4,     5,    12,    20,    21,    34,    46,    55,    57,    58,
-      59,    60,    16,    16,     0,    45,    31,     3,    69,    70,
-      56,    60,    61,    62,    63,    64,    56,    44,     3,    67,
-      68,    55,    58,    58,    58,    16,    22,    23,    24,    20,
-      21,    55,    31,    72,    16,    19,    13,    27,    28,    29,
-      30,    32,    33,    26,    25,    13,    15,    31,    16,    19,
-      13,    58,    58,    58,    59,    59,    16,    55,    12,     3,
-      70,    45,    60,    60,    60,    60,    61,    61,    62,    63,
-      45,    55,    68,    65,    74,    75,     7,     3,    19,    73,
-      45,    75,    13,    48
+      52,    53,    54,    66,    67,    72,    12,    12,    49,    66,
+       3,     4,     5,    12,    20,    21,    34,    46,    55,    58,
+      59,    60,    61,    16,    16,     0,    45,    31,     3,    70,
+      71,    56,    61,    62,    63,    64,    65,    56,    44,     3,
+      68,    69,    12,    55,    59,    59,    59,    16,    22,    23,
+      24,    20,    21,    55,    31,    73,    16,    19,    13,    27,
+      28,    29,    30,    32,    33,    26,    25,    13,    15,    31,
+      16,    19,    55,    57,    13,    59,    59,    59,    60,    60,
+      16,    55,    12,     3,    71,    45,    61,    61,    61,    61,
+      62,    62,    63,    64,    45,    55,    69,    13,    19,    66,
+      75,    76,     7,    55,     3,    19,    74,    45,    76,    13,
+      48
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -742,12 +749,12 @@ static const yytype_int8 yyr1[] =
 {
        0,    42,    43,    44,    44,    45,    45,    45,    45,    45,
       45,    45,    45,    45,    46,    47,    49,    48,    50,    50,
-      51,    52,    53,    54,    55,    56,    57,    57,    57,    57,
-      58,    58,    58,    58,    59,    59,    59,    59,    60,    60,
-      60,    61,    61,    61,    61,    61,    62,    62,    62,    63,
-      63,    64,    64,    65,    65,    65,    66,    66,    67,    67,
-      68,    69,    69,    70,    70,    72,    73,    71,    74,    74,
-      74,    75
+      51,    52,    53,    54,    55,    56,    57,    57,    57,    58,
+      58,    58,    58,    59,    59,    59,    59,    59,    60,    60,
+      60,    60,    61,    61,    61,    62,    62,    62,    62,    62,
+      63,    63,    63,    64,    64,    65,    65,    66,    66,    66,
+      67,    67,    68,    68,    69,    70,    70,    71,    71,    73,
+      74,    72,    75,    75,    75,    76
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -755,12 +762,12 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     1,     2,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     4,     0,     4,     5,     7,
-       5,     2,     2,     3,     1,     1,     1,     1,     1,     3,
-       1,     2,     2,     2,     1,     3,     3,     3,     1,     3,
-       3,     1,     3,     3,     3,     3,     1,     3,     3,     1,
-       3,     1,     3,     1,     1,     1,     4,     3,     3,     1,
-       3,     3,     1,     1,     3,     0,     0,     8,     3,     1,
-       0,     2
+       5,     2,     2,     3,     1,     1,     3,     1,     0,     1,
+       1,     1,     3,     1,     2,     2,     2,     4,     1,     3,
+       3,     3,     1,     3,     3,     1,     3,     3,     3,     3,
+       1,     3,     3,     1,     3,     1,     3,     1,     1,     1,
+       4,     3,     3,     1,     3,     3,     1,     1,     3,     0,
+       0,     8,     3,     1,     0,     2
 };
 
 
@@ -1228,13 +1235,13 @@ yyreduce:
             {
         ast.setRoot((yyvsp[0].stmttype));
     }
-#line 1232 "src/parser.cpp"
+#line 1239 "src/parser.cpp"
     break;
 
   case 3: /* Stmts: Stmt  */
 #line 56 "src/parser.y"
            {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1238 "src/parser.cpp"
+#line 1245 "src/parser.cpp"
     break;
 
   case 4: /* Stmts: Stmts Stmt  */
@@ -1242,61 +1249,61 @@ yyreduce:
                 {
         (yyval.stmttype) = new SeqNode((yyvsp[-1].stmttype), (yyvsp[0].stmttype));
     }
-#line 1246 "src/parser.cpp"
+#line 1253 "src/parser.cpp"
     break;
 
   case 5: /* Stmt: AssignStmt  */
 #line 62 "src/parser.y"
                  {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1252 "src/parser.cpp"
+#line 1259 "src/parser.cpp"
     break;
 
   case 6: /* Stmt: BlockStmt  */
 #line 63 "src/parser.y"
                 {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1258 "src/parser.cpp"
+#line 1265 "src/parser.cpp"
     break;
 
   case 7: /* Stmt: IfStmt  */
 #line 64 "src/parser.y"
              {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1264 "src/parser.cpp"
+#line 1271 "src/parser.cpp"
     break;
 
   case 8: /* Stmt: WhileStmt  */
 #line 65 "src/parser.y"
                {(yyval.stmttype) = (yyvsp[0].stmttype);}
-#line 1270 "src/parser.cpp"
+#line 1277 "src/parser.cpp"
     break;
 
   case 9: /* Stmt: ReturnStmt  */
 #line 66 "src/parser.y"
                  {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1276 "src/parser.cpp"
+#line 1283 "src/parser.cpp"
     break;
 
   case 10: /* Stmt: DeclStmt  */
 #line 67 "src/parser.y"
                {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1282 "src/parser.cpp"
+#line 1289 "src/parser.cpp"
     break;
 
   case 11: /* Stmt: FuncDef  */
 #line 68 "src/parser.y"
               {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1288 "src/parser.cpp"
+#line 1295 "src/parser.cpp"
     break;
 
   case 12: /* Stmt: BreakStmt  */
 #line 69 "src/parser.y"
                {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1294 "src/parser.cpp"
+#line 1301 "src/parser.cpp"
     break;
 
   case 13: /* Stmt: ContinueStmt  */
 #line 70 "src/parser.y"
                   {(yyval.stmttype)=(yyvsp[0].stmttype);}
-#line 1300 "src/parser.cpp"
+#line 1307 "src/parser.cpp"
     break;
 
   case 14: /* LVal: ID  */
@@ -1316,7 +1323,7 @@ yyreduce:
         std::cout<<"test"<<std::endl;
         delete [](yyvsp[0].strtype);
     }
-#line 1320 "src/parser.cpp"
+#line 1327 "src/parser.cpp"
     break;
 
   case 15: /* AssignStmt: LVal ASSIGN Exp SEMICOLON  */
@@ -1324,7 +1331,7 @@ yyreduce:
                               {
         (yyval.stmttype) = new AssignStmt((yyvsp[-3].exprtype), (yyvsp[-1].exprtype));
     }
-#line 1328 "src/parser.cpp"
+#line 1335 "src/parser.cpp"
     break;
 
   case 16: /* $@1: %empty  */
@@ -1332,7 +1339,7 @@ yyreduce:
         {
             identifiers = new SymbolTable(identifiers);
         }
-#line 1336 "src/parser.cpp"
+#line 1343 "src/parser.cpp"
     break;
 
   case 17: /* BlockStmt: LBRACE $@1 Stmts RBRACE  */
@@ -1343,7 +1350,7 @@ yyreduce:
             identifiers = identifiers->getPrev();
             delete top;
         }
-#line 1347 "src/parser.cpp"
+#line 1354 "src/parser.cpp"
     break;
 
   case 18: /* IfStmt: IF LPAREN Cond RPAREN Stmt  */
@@ -1351,7 +1358,7 @@ yyreduce:
                                             {
         (yyval.stmttype) = new IfStmt((yyvsp[-2].exprtype), (yyvsp[0].stmttype));
     }
-#line 1355 "src/parser.cpp"
+#line 1362 "src/parser.cpp"
     break;
 
   case 19: /* IfStmt: IF LPAREN Cond RPAREN Stmt ELSE Stmt  */
@@ -1359,7 +1366,7 @@ yyreduce:
                                            {
         (yyval.stmttype) = new IfElseStmt((yyvsp[-4].exprtype), (yyvsp[-2].stmttype), (yyvsp[0].stmttype));
     }
-#line 1363 "src/parser.cpp"
+#line 1370 "src/parser.cpp"
     break;
 
   case 20: /* WhileStmt: WHILE LPAREN Cond RPAREN Stmt  */
@@ -1367,7 +1374,7 @@ yyreduce:
                                    {
         (yyval.stmttype) = new WhileStmt((yyvsp[-2].exprtype), (yyvsp[0].stmttype));
     }
-#line 1371 "src/parser.cpp"
+#line 1378 "src/parser.cpp"
     break;
 
   case 21: /* ContinueStmt: CONTINUE SEMICOLON  */
@@ -1375,7 +1382,7 @@ yyreduce:
                         {
         (yyval.stmttype) = new ContinueStmt();
     }
-#line 1379 "src/parser.cpp"
+#line 1386 "src/parser.cpp"
     break;
 
   case 22: /* BreakStmt: BREAK SEMICOLON  */
@@ -1383,7 +1390,7 @@ yyreduce:
                      {
         (yyval.stmttype) = new BreakStmt();
     }
-#line 1387 "src/parser.cpp"
+#line 1394 "src/parser.cpp"
     break;
 
   case 23: /* ReturnStmt: RETURN Exp SEMICOLON  */
@@ -1391,336 +1398,338 @@ yyreduce:
                         {
         (yyval.stmttype) = new ReturnStmt((yyvsp[-1].exprtype));
     }
-#line 1395 "src/parser.cpp"
+#line 1402 "src/parser.cpp"
     break;
 
   case 24: /* Exp: AddExp  */
 #line 139 "src/parser.y"
            {(yyval.exprtype) = (yyvsp[0].exprtype);}
-#line 1401 "src/parser.cpp"
+#line 1408 "src/parser.cpp"
     break;
 
   case 25: /* Cond: LOrExp  */
-#line 150 "src/parser.y"
+#line 149 "src/parser.y"
            {(yyval.exprtype) = (yyvsp[0].exprtype);}
-#line 1407 "src/parser.cpp"
+#line 1414 "src/parser.cpp"
     break;
 
-  case 26: /* PrimaryExp: LVal  */
-#line 156 "src/parser.y"
-         {
-        (yyval.exprtype) = (yyvsp[0].exprtype);
-    }
-#line 1415 "src/parser.cpp"
-    break;
-
-  case 27: /* PrimaryExp: INTEGER  */
-#line 159 "src/parser.y"
-              {
-        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, (yyvsp[0].iType));
-        (yyval.exprtype) = new Constant(se);
+  case 26: /* FuncRealParams: FuncRealParams PARSE Exp  */
+#line 154 "src/parser.y"
+                            {
+        FuncCallParamsNode* node = (FuncCallParamsNode*) (yyvsp[-2].stmttype);
+        node->append((yyvsp[0].exprtype));
+        (yyval.stmttype) = node;
     }
 #line 1424 "src/parser.cpp"
     break;
 
-  case 28: /* PrimaryExp: FLOATNUM  */
-#line 163 "src/parser.y"
+  case 27: /* FuncRealParams: Exp  */
+#line 160 "src/parser.y"
+       {
+        FuncCallParamsNode* node = new FuncCallParamsNode();
+        node->append((yyvsp[0].exprtype));
+        (yyval.stmttype) = node;
+    }
+#line 1434 "src/parser.cpp"
+    break;
+
+  case 28: /* FuncRealParams: %empty  */
+#line 166 "src/parser.y"
+          {
+        (yyval.stmttype) = nullptr;
+    }
+#line 1442 "src/parser.cpp"
+    break;
+
+  case 29: /* PrimaryExp: LVal  */
+#line 173 "src/parser.y"
+         {
+        (yyval.exprtype) = (yyvsp[0].exprtype);
+    }
+#line 1450 "src/parser.cpp"
+    break;
+
+  case 30: /* PrimaryExp: INTEGER  */
+#line 176 "src/parser.y"
+              {
+        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, (yyvsp[0].iType));
+        (yyval.exprtype) = new Constant(se);
+    }
+#line 1459 "src/parser.cpp"
+    break;
+
+  case 31: /* PrimaryExp: FLOATNUM  */
+#line 180 "src/parser.y"
                {
         SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::floatType,(yyvsp[0].fType));
         (yyval.exprtype) = new Constant(se);
     }
-#line 1433 "src/parser.cpp"
+#line 1468 "src/parser.cpp"
     break;
 
-  case 29: /* PrimaryExp: LPAREN Exp RPAREN  */
-#line 167 "src/parser.y"
+  case 32: /* PrimaryExp: LPAREN Exp RPAREN  */
+#line 184 "src/parser.y"
                        {
         (yyval.exprtype) = (yyvsp[-1].exprtype);
     }
-#line 1441 "src/parser.cpp"
+#line 1476 "src/parser.cpp"
     break;
 
-  case 30: /* UnaryExp: PrimaryExp  */
-#line 177 "src/parser.y"
+  case 33: /* UnaryExp: PrimaryExp  */
+#line 192 "src/parser.y"
               {(yyval.exprtype)=(yyvsp[0].exprtype);}
-#line 1447 "src/parser.cpp"
+#line 1482 "src/parser.cpp"
     break;
 
-  case 31: /* UnaryExp: ADD UnaryExp  */
-#line 179 "src/parser.y"
+  case 34: /* UnaryExp: ADD UnaryExp  */
+#line 194 "src/parser.y"
                 {
         (yyval.exprtype) = (yyvsp[0].exprtype);
     }
-#line 1455 "src/parser.cpp"
+#line 1490 "src/parser.cpp"
     break;
 
-  case 32: /* UnaryExp: SUB UnaryExp  */
-#line 183 "src/parser.y"
-                {
-       //  SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
-        // $$ = new UnaryOpExpr(se, UnaryOpExpr::SUB, $2);
-    }
-#line 1464 "src/parser.cpp"
-    break;
-
-  case 33: /* UnaryExp: NOT UnaryExp  */
-#line 188 "src/parser.y"
-                {
-        //  SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
-        //  $$ = new UnrayOpExpr(se, UnaryOpExpr::NOT, $2);
-    }
-#line 1473 "src/parser.cpp"
-    break;
-
-  case 34: /* MulExp: UnaryExp  */
+  case 35: /* UnaryExp: SUB UnaryExp  */
 #line 198 "src/parser.y"
+                {
+        SymbolEntry *se = new TemporarySymbolEntry((yyvsp[0].exprtype)->getType(), SymbolTable::getLabel());
+        (yyval.exprtype) = new UnaryOpExpr(se, UnaryOpExpr::SUB, (yyvsp[0].exprtype));
+    }
+#line 1499 "src/parser.cpp"
+    break;
+
+  case 36: /* UnaryExp: NOT UnaryExp  */
+#line 203 "src/parser.y"
+                {
+         SymbolEntry *se = new TemporarySymbolEntry((yyvsp[0].exprtype)->getType(), SymbolTable::getLabel());
+         (yyval.exprtype) = new UnaryOpExpr(se, UnaryOpExpr::NOT, (yyvsp[0].exprtype));
+    }
+#line 1508 "src/parser.cpp"
+    break;
+
+  case 37: /* UnaryExp: ID LPAREN FuncRealParams RPAREN  */
+#line 208 "src/parser.y"
+                                   { // 函数调用
+        SymbolEntry *se;
+        se = identifiers->lookup((yyvsp[-3].strtype));
+        if(se == nullptr)
+        {
+            fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)(yyvsp[-3].strtype));
+            delete [](char*)(yyvsp[-3].strtype);
+            assert(se != nullptr);
+        }
+        SymbolEntry *tmp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel());
+        (yyval.exprtype) = new FuncCallNode(tmp, new Id(se), (FuncCallParamsNode*)(yyvsp[-1].stmttype));
+    }
+#line 1525 "src/parser.cpp"
+    break;
+
+  case 38: /* MulExp: UnaryExp  */
+#line 227 "src/parser.y"
             {(yyval.exprtype)=(yyvsp[0].exprtype);}
-#line 1479 "src/parser.cpp"
+#line 1531 "src/parser.cpp"
     break;
 
-  case 35: /* MulExp: MulExp MUL UnaryExp  */
-#line 200 "src/parser.y"
+  case 39: /* MulExp: MulExp MUL UnaryExp  */
+#line 229 "src/parser.y"
                         {
-            SymbolEntry *se;
-            if((yyvsp[-2].exprtype)->getType()->isInt() && (yyvsp[0].exprtype)->getType()->isInt()){
-                se = new TemporarySymbolEntry(TypeSystem::intType,SymbolTable::getLabel());
-            }
-            else{
-                se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolTable::getLabel());
-            }
-            (yyval.exprtype) = new BinaryExpr(se,BinaryExpr::MUL,(yyvsp[-2].exprtype),(yyvsp[0].exprtype));
+
     }
-#line 1494 "src/parser.cpp"
+#line 1539 "src/parser.cpp"
     break;
 
-  case 36: /* MulExp: MulExp DIV UnaryExp  */
-#line 211 "src/parser.y"
-                        {
-        SymbolEntry *se;
-        if((yyvsp[-2].exprtype)->getType()->isInt() && (yyvsp[0].exprtype)->getType()->isInt()){
-                se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::DIV, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
-#line 1509 "src/parser.cpp"
-    break;
-
-  case 37: /* MulExp: MulExp MOD UnaryExp  */
-#line 222 "src/parser.y"
-                        {
-        SymbolEntry *se;
-        if((yyvsp[-2].exprtype)->getType()->isInt() && (yyvsp[0].exprtype)->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::MOD, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
-#line 1524 "src/parser.cpp"
-    break;
-
-  case 38: /* AddExp: MulExp  */
-#line 238 "src/parser.y"
-          {(yyval.exprtype)=(yyvsp[0].exprtype);}
-#line 1530 "src/parser.cpp"
-    break;
-
-  case 39: /* AddExp: AddExp ADD MulExp  */
-#line 241 "src/parser.y"
-    {
-        SymbolEntry *se;
-        if((yyvsp[-2].exprtype)->getType()->isInt() && (yyvsp[0].exprtype)->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::ADD, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
+  case 40: /* MulExp: MulExp DIV UnaryExp  */
+#line 233 "src/parser.y"
+                        {}
 #line 1545 "src/parser.cpp"
     break;
 
-  case 40: /* AddExp: AddExp SUB MulExp  */
-#line 253 "src/parser.y"
-    {
-       SymbolEntry *se;
-        if((yyvsp[-2].exprtype)->getType()->isInt() && (yyvsp[0].exprtype)->getType()->isInt()){
-            se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        }
-        else{
-            se = new TemporarySymbolEntry(TypeSystem::floatType, SymbolTable::getLabel());
-        }
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::SUB, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
-#line 1560 "src/parser.cpp"
+  case 41: /* MulExp: MulExp MOD UnaryExp  */
+#line 235 "src/parser.y"
+                        {}
+#line 1551 "src/parser.cpp"
     break;
 
-  case 41: /* RelExp: AddExp  */
-#line 268 "src/parser.y"
-           {(yyval.exprtype) = (yyvsp[0].exprtype);}
+  case 42: /* AddExp: MulExp  */
+#line 241 "src/parser.y"
+          {(yyval.exprtype)=(yyvsp[0].exprtype);}
+#line 1557 "src/parser.cpp"
+    break;
+
+  case 43: /* AddExp: AddExp ADD MulExp  */
+#line 244 "src/parser.y"
+    {
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::ADD, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
+    }
 #line 1566 "src/parser.cpp"
     break;
 
-  case 42: /* RelExp: RelExp LESS AddExp  */
-#line 271 "src/parser.y"
+  case 44: /* AddExp: AddExp SUB MulExp  */
+#line 250 "src/parser.y"
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::LESS, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::SUB, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
     }
 #line 1575 "src/parser.cpp"
     break;
 
-  case 43: /* RelExp: RelExp GREATER AddExp  */
-#line 277 "src/parser.y"
+  case 45: /* RelExp: AddExp  */
+#line 285 "src/parser.y"
+           {(yyval.exprtype) = (yyvsp[0].exprtype);}
+#line 1581 "src/parser.cpp"
+    break;
+
+  case 46: /* RelExp: RelExp LESS AddExp  */
+#line 288 "src/parser.y"
+    {
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::LESS, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
+    }
+#line 1590 "src/parser.cpp"
+    break;
+
+  case 47: /* RelExp: RelExp GREATER AddExp  */
+#line 294 "src/parser.y"
     {
         printf("greater!\n");
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::GREATER, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
     }
-#line 1585 "src/parser.cpp"
+#line 1600 "src/parser.cpp"
     break;
 
-  case 44: /* RelExp: RelExp LE AddExp  */
-#line 284 "src/parser.y"
+  case 48: /* RelExp: RelExp LE AddExp  */
+#line 301 "src/parser.y"
     {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::LE, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
     }
-#line 1594 "src/parser.cpp"
-    break;
-
-  case 45: /* RelExp: RelExp GE AddExp  */
-#line 290 "src/parser.y"
-    {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::GE, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
-#line 1603 "src/parser.cpp"
-    break;
-
-  case 46: /* EqExp: RelExp  */
-#line 299 "src/parser.y"
-          {(yyval.exprtype)=(yyvsp[0].exprtype);}
 #line 1609 "src/parser.cpp"
     break;
 
-  case 47: /* EqExp: EqExp EQ RelExp  */
-#line 301 "src/parser.y"
-                   {
-         SymbolEntry* se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-         (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::EQ, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
+  case 49: /* RelExp: RelExp GE AddExp  */
+#line 307 "src/parser.y"
+    {
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::GE, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
     }
 #line 1618 "src/parser.cpp"
     break;
 
-  case 48: /* EqExp: EqExp NEQ RelExp  */
-#line 306 "src/parser.y"
-                    {
-         SymbolEntry* se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-         (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::NEQ, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
-#line 1627 "src/parser.cpp"
-    break;
-
-  case 49: /* LAndExp: EqExp  */
+  case 50: /* EqExp: RelExp  */
 #line 315 "src/parser.y"
-          {(yyval.exprtype) = (yyvsp[0].exprtype);}
-#line 1633 "src/parser.cpp"
+          {(yyval.exprtype)=(yyvsp[0].exprtype);}
+#line 1624 "src/parser.cpp"
     break;
 
-  case 50: /* LAndExp: LAndExp AND EqExp  */
-#line 318 "src/parser.y"
-    {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::AND, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
+  case 51: /* EqExp: EqExp EQ RelExp  */
+#line 317 "src/parser.y"
+                   {}
+#line 1630 "src/parser.cpp"
+    break;
+
+  case 52: /* EqExp: EqExp NEQ RelExp  */
+#line 319 "src/parser.y"
+                    {}
+#line 1636 "src/parser.cpp"
+    break;
+
+  case 53: /* LAndExp: EqExp  */
+#line 324 "src/parser.y"
+          {(yyval.exprtype) = (yyvsp[0].exprtype);}
 #line 1642 "src/parser.cpp"
     break;
 
-  case 51: /* LOrExp: LAndExp  */
+  case 54: /* LAndExp: LAndExp AND EqExp  */
 #line 327 "src/parser.y"
-            {(yyval.exprtype) = (yyvsp[0].exprtype);}
-#line 1648 "src/parser.cpp"
+    {
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::AND, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
+    }
+#line 1651 "src/parser.cpp"
     break;
 
-  case 52: /* LOrExp: LOrExp OR LAndExp  */
-#line 330 "src/parser.y"
-    {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::OR, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
-    }
+  case 55: /* LOrExp: LAndExp  */
+#line 334 "src/parser.y"
+            {(yyval.exprtype) = (yyvsp[0].exprtype);}
 #line 1657 "src/parser.cpp"
     break;
 
-  case 53: /* Type: INT  */
+  case 56: /* LOrExp: LOrExp OR LAndExp  */
 #line 337 "src/parser.y"
-          {
-        (yyval.type) = TypeSystem::intType;
-        currentType = TypeSystem::intType;
+    {
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        (yyval.exprtype) = new BinaryExpr(se, BinaryExpr::OR, (yyvsp[-2].exprtype), (yyvsp[0].exprtype));
     }
 #line 1666 "src/parser.cpp"
     break;
 
-  case 54: /* Type: VOID  */
-#line 341 "src/parser.y"
-           {
-        (yyval.type) = TypeSystem::voidType;
-        currentType = TypeSystem::voidType;
+  case 57: /* Type: INT  */
+#line 343 "src/parser.y"
+          {
+        (yyval.type) = TypeSystem::intType;
+        currentType = TypeSystem::intType;
     }
 #line 1675 "src/parser.cpp"
     break;
 
-  case 55: /* Type: FLOAT  */
-#line 345 "src/parser.y"
-            {
-        (yyval.type) = TypeSystem::floatType;
-        currentType = TypeSystem::floatType;
+  case 58: /* Type: VOID  */
+#line 347 "src/parser.y"
+           {
+        (yyval.type) = TypeSystem::voidType;
+        currentType = TypeSystem::voidType;
     }
 #line 1684 "src/parser.cpp"
     break;
 
-  case 56: /* DeclStmt: CONST Type ConstDefList SEMICOLON  */
+  case 59: /* Type: FLOAT  */
 #line 351 "src/parser.y"
+            {
+        (yyval.type) = TypeSystem::floatType;
+        currentType = TypeSystem::floatType;
+    }
+#line 1693 "src/parser.cpp"
+    break;
+
+  case 60: /* DeclStmt: CONST Type ConstDefList SEMICOLON  */
+#line 357 "src/parser.y"
                                        {
         (yyval.stmttype) = (yyvsp[-1].stmttype);
     }
-#line 1692 "src/parser.cpp"
+#line 1701 "src/parser.cpp"
     break;
 
-  case 57: /* DeclStmt: Type VarDefList SEMICOLON  */
-#line 355 "src/parser.y"
+  case 61: /* DeclStmt: Type VarDefList SEMICOLON  */
+#line 361 "src/parser.y"
                                 {
         (yyval.stmttype) = (yyvsp[-1].stmttype);
     }
-#line 1700 "src/parser.cpp"
+#line 1709 "src/parser.cpp"
     break;
 
-  case 58: /* ConstDefList: ConstDefList PARSE ConstDef  */
-#line 369 "src/parser.y"
+  case 62: /* ConstDefList: ConstDefList PARSE ConstDef  */
+#line 376 "src/parser.y"
                                  {
             DeclStmt* node = (DeclStmt*) (yyvsp[-2].stmttype);
             node->addNext((DefNode*)(yyvsp[0].stmttype));
             (yyval.stmttype) = node;
     }
-#line 1710 "src/parser.cpp"
+#line 1719 "src/parser.cpp"
     break;
 
-  case 59: /* ConstDefList: ConstDef  */
-#line 374 "src/parser.y"
+  case 63: /* ConstDefList: ConstDef  */
+#line 381 "src/parser.y"
                {
             DeclStmt* node = new DeclStmt(true);
             node->addNext((DefNode*)(yyvsp[0].stmttype));
             (yyval.stmttype) = node; 
     }
-#line 1720 "src/parser.cpp"
+#line 1729 "src/parser.cpp"
     break;
 
-  case 60: /* ConstDef: ID ASSIGN Exp  */
-#line 381 "src/parser.y"
+  case 64: /* ConstDef: ID ASSIGN Exp  */
+#line 388 "src/parser.y"
                     {
         //const 必须赋初值
             Type* type;
@@ -1735,31 +1744,31 @@ yyreduce:
             identifiers->install((yyvsp[-2].strtype), se);
             (yyval.stmttype) = new DefNode(new Id(se), (Node*)(yyvsp[0].exprtype), true, false);
         }
-#line 1739 "src/parser.cpp"
+#line 1748 "src/parser.cpp"
     break;
 
-  case 61: /* VarDefList: VarDefList PARSE VarDef  */
-#line 397 "src/parser.y"
+  case 65: /* VarDefList: VarDefList PARSE VarDef  */
+#line 405 "src/parser.y"
                                 {
             DeclStmt* node = (DeclStmt*) (yyvsp[-2].stmttype);
             node->addNext((DefNode*)(yyvsp[0].stmttype));
             (yyval.stmttype) = node;
         }
-#line 1749 "src/parser.cpp"
+#line 1758 "src/parser.cpp"
     break;
 
-  case 62: /* VarDefList: VarDef  */
-#line 402 "src/parser.y"
+  case 66: /* VarDefList: VarDef  */
+#line 410 "src/parser.y"
                {
             DeclStmt* node = new DeclStmt(false);
             node->addNext((DefNode*)(yyvsp[0].stmttype));
             (yyval.stmttype) = node;
         }
-#line 1759 "src/parser.cpp"
+#line 1768 "src/parser.cpp"
     break;
 
-  case 63: /* VarDef: ID  */
-#line 409 "src/parser.y"
+  case 67: /* VarDef: ID  */
+#line 417 "src/parser.y"
            {
             Type* type;
             if(currentType->isInt()){
@@ -1773,11 +1782,11 @@ yyreduce:
             identifiers->install((yyvsp[0].strtype), se);
             (yyval.stmttype) = new DefNode(new Id(se), nullptr, false, false);
         }
-#line 1777 "src/parser.cpp"
+#line 1786 "src/parser.cpp"
     break;
 
-  case 64: /* VarDef: ID ASSIGN Exp  */
-#line 422 "src/parser.y"
+  case 68: /* VarDef: ID ASSIGN Exp  */
+#line 430 "src/parser.y"
                       {
             Type* type;
             if(currentType->isInt()){
@@ -1791,11 +1800,11 @@ yyreduce:
             identifiers->install((yyvsp[-2].strtype), se);
             (yyval.stmttype) = new DefNode(new Id(se), (Node*)(yyvsp[0].exprtype), false, false);
         }
-#line 1795 "src/parser.cpp"
+#line 1804 "src/parser.cpp"
     break;
 
-  case 65: /* $@2: %empty  */
-#line 439 "src/parser.y"
+  case 69: /* $@2: %empty  */
+#line 447 "src/parser.y"
             {
         // 返回值类型是ID的type，函数定义中需要创建新的符号表
         Type *funcType;
@@ -1804,11 +1813,11 @@ yyreduce:
         identifiers->install((yyvsp[0].strtype), se);
         identifiers = new SymbolTable(identifiers);
     }
-#line 1808 "src/parser.cpp"
+#line 1817 "src/parser.cpp"
     break;
 
-  case 66: /* $@3: %empty  */
-#line 447 "src/parser.y"
+  case 70: /* $@3: %empty  */
+#line 455 "src/parser.y"
                      {
             SymbolEntry *se;
             se = identifiers->lookup((yyvsp[-3].strtype));
@@ -1817,11 +1826,11 @@ yyreduce:
                 ((FunctionType*)(se->getType()))/*强转为Function Type*/->setparamsType/*设置参数类型*/(((FuncDefParamsNode*)(yyvsp[0].stmttype))->getParamsType());
             }   
         }
-#line 1821 "src/parser.cpp"
+#line 1830 "src/parser.cpp"
     break;
 
-  case 67: /* FuncDef: Type ID $@2 LPAREN FuncParams $@3 RPAREN BlockStmt  */
-#line 457 "src/parser.y"
+  case 71: /* FuncDef: Type ID $@2 LPAREN FuncParams $@3 RPAREN BlockStmt  */
+#line 465 "src/parser.y"
     {
         SymbolEntry *se;
         se = identifiers->lookup((yyvsp[-6].strtype));
@@ -1832,49 +1841,49 @@ yyreduce:
         delete top;
         delete [](yyvsp[-6].strtype);
     }
-#line 1836 "src/parser.cpp"
+#line 1845 "src/parser.cpp"
     break;
 
-  case 68: /* FuncParams: FuncParams PARSE FuncParam  */
-#line 470 "src/parser.y"
+  case 72: /* FuncParams: FuncParams PARSE FuncParam  */
+#line 478 "src/parser.y"
                                    {
             FuncDefParamsNode* node = (FuncDefParamsNode*)(yyvsp[-2].stmttype);
             node->addNext(((DefNode*)(yyvsp[0].stmttype))->getId());
             (yyval.stmttype) = node;
         }
-#line 1846 "src/parser.cpp"
+#line 1855 "src/parser.cpp"
     break;
 
-  case 69: /* FuncParams: FuncParam  */
-#line 475 "src/parser.y"
+  case 73: /* FuncParams: FuncParam  */
+#line 483 "src/parser.y"
                   {
             FuncDefParamsNode* node = new FuncDefParamsNode();
             node->addNext(((DefNode*)(yyvsp[0].stmttype))->getId());
             (yyval.stmttype) = node;
         }
-#line 1856 "src/parser.cpp"
+#line 1865 "src/parser.cpp"
     break;
 
-  case 70: /* FuncParams: %empty  */
-#line 480 "src/parser.y"
+  case 74: /* FuncParams: %empty  */
+#line 488 "src/parser.y"
                {
             (yyval.stmttype) = nullptr;
         }
-#line 1864 "src/parser.cpp"
+#line 1873 "src/parser.cpp"
     break;
 
-  case 71: /* FuncParam: Type ID  */
-#line 487 "src/parser.y"
+  case 75: /* FuncParam: Type ID  */
+#line 495 "src/parser.y"
                 {
             SymbolEntry *se = new IdentifierSymbolEntry((yyvsp[-1].type), (yyvsp[0].strtype), identifiers->getLevel());
             identifiers->install((yyvsp[0].strtype), se);
             (yyval.stmttype) = new DefNode(new Id(se), nullptr, false, false);
         }
-#line 1874 "src/parser.cpp"
+#line 1883 "src/parser.cpp"
     break;
 
 
-#line 1878 "src/parser.cpp"
+#line 1887 "src/parser.cpp"
 
       default: break;
     }
@@ -2067,7 +2076,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 514 "src/parser.y"
+#line 522 "src/parser.y"
 
 
 int yyerror(char const* message)
