@@ -1,5 +1,6 @@
 int main(int args){
-    int a, b, c = 10;
-    float a  = 3.0;
+    int a , b, c = 10;
+    int a;
+    const int d = 5;
     return a;
 }
