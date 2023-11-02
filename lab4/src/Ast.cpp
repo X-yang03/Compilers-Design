@@ -111,6 +111,16 @@ void Id::output(int level)
             name.c_str(), scope, type.c_str());
 }
 
+std::string Id::getName()
+{
+    return symbolEntry->toStr();
+}
+
+std::string Id::getType()
+{
+    return symbolEntry->getType()->toStr();
+}
+
 void ArrayindiceNode::addNext(ExprNode* next)
 {
     arrindexList.push_back(next);
@@ -219,11 +229,11 @@ void FuncDefParamsNode::addNext(Id* next)
 
 std::vector<Type*> FuncDefParamsNode::getParamsType()
 {
-    std::vector<Type*> typeArray;
-    for(auto param : paramsList){
-        typeArray.push_back(param->getType());
-    }
-    return typeArray;
+     std::vector<Type*> typeArray;
+    // for(auto param : paramsList){
+    //     typeArray.push_back(param->getType());
+    // }
+     return typeArray;
 }
 
 void FuncDefParamsNode::output(int level)
@@ -248,18 +258,15 @@ void FunctionDef::output(int level)
 void FuncCallNode::output(int level)
 {
     // std::string name, type;
-    // int scope;
-    // SymbolEntry* funcEntry = funcId->getSymbolEntry();
-    // name = funcEntry->toStr();
-    // type = funcEntry->getType()->toStr();
-    // scope = dynamic_cast<IdentifierSymbolEntry*>(funcEntry)->getScope();
-    // fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\tscope: %d\n", 
-    //         level, ' ', name.c_str(), type.c_str(), scope);
+    // name = funcId->getName();
+    // type = funcId->getType();
+    // fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\n", 
+    //         level, ' ', name.c_str(), type.c_str());
     // if(params!=nullptr){
     //     params->output(level+4);
     // }
     // else{
-    //     fprintf(yyout, "%*cFuncCallParamsNode NULL\n", level+4, ' ');
+    //     fprintf(yyout, "%*cFuncCallWithNoParams\n", level+4, ' ');
     // }
 }
 
@@ -276,13 +283,4 @@ void FuncCallParamsNode::output(int level)
     }
 }
 
-// void CompoundStmt::output(int level)
-// {
-//     fprintf(yyout, "%*cCompoundStmt\n", level, ' ');
-//     if(stmt == nullptr){
-//         fprintf(yyout, "%*cNull Stmt\n", level+4, ' ');
-//     }
-//     else{
-//         stmt->output(level + 4);
-//     }
-// }
+

@@ -60,6 +60,8 @@ class Id : public ExprNode
 public:
     Id(SymbolEntry *se) : ExprNode(se){};
     void output(int level);
+    std::string getName();
+    std::string getType();
 };
 
 class StmtNode : public Node
@@ -210,7 +212,7 @@ public:
 class FuncCallParamsNode : public StmtNode
 {
 private:
-    std::vector<ExprNode*> paramsList;
+    std::vector<ExprNode*> paramsList; //参数列表
 public:
     FuncCallParamsNode(){};
     void append(ExprNode* next);
@@ -220,8 +222,8 @@ public:
 class FuncCallNode : public ExprNode
 {
 private:
-    Id* funcId;
-    FuncCallParamsNode* params;
+    Id* funcId;  //函数名
+    FuncCallParamsNode* params; //参数
 public:
     FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
     void output(int level);
