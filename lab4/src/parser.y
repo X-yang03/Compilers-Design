@@ -154,13 +154,13 @@ FuncRealParams
     :
     FuncRealParams PARSE Exp{
         FuncCallParamsNode* node = (FuncCallParamsNode*) $1;
-        node->addNext($3);
+        node->append($3);
         $$ = node;
     }
     |
     Exp{
         FuncCallParamsNode* node = new FuncCallParamsNode();
-        node->addNext($1);
+        node->append($1);
         $$ = node;
     }
     |

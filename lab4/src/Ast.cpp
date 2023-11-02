@@ -263,7 +263,7 @@ void FuncCallNode::output(int level)
     // }
 }
 
-void FuncCallParamsNode::addNext(ExprNode* next)
+void FuncCallParamsNode::append(ExprNode* next)
 {
     paramsList.push_back(next);
 }

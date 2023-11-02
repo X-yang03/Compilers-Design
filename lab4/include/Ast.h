@@ -213,7 +213,7 @@ private:
     std::vector<ExprNode*> paramsList;
 public:
     FuncCallParamsNode(){};
-    void addNext(ExprNode* next);
+    void append(ExprNode* next);
     void output(int level);
 };
 
