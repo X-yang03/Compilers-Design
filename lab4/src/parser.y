@@ -412,6 +412,21 @@ ConstDef
             $$ = new DefNode(new Id(se), (Node*)$3, true, false);
         }
     // todo 数组变量的定义
+        |   ID ArrIndices ASSIGN ArrayInitVal{
+            Type* type;
+            if(currentType->isInt()){
+                type = new IntArrayType();
+            }
+            else{
+                type = new FloatArrayType();
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            Id* id = new Id(se);
+            id->addIndices((ArrayindiceNode*)$2);
+            $$ = new DefNode(id, (Node*)$4, true, true);
+        }
 
 ArrayInitVal 
     :   Exp {
@@ -508,7 +523,7 @@ VarDef
             identifiers->install($1, se);
             Id* id = new Id(se);
             id->addIndices((ArrayindiceNode*)$2);
-            $$ = new DefNode(id, (Node*)$4, false, true);//类型向上转换
+            $$ = new DefNode(id, (Node*)$4, false, true);
         }
 FuncDef
     :
