@@ -187,7 +187,7 @@ MulExp
                 se = new TemporarySymbolEntry(TypeSystem::intType,SymbolTable::getLabel());
             }
             else{
-                se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolEntry::getLabel());
+                se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolTable::getLabel());
             }
             $$ = new new BinaryExpr(se,BinaryExpr::MUL,$1,$3);
     }
