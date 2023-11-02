@@ -3,6 +3,14 @@ int main(int args){
     int a;
     c = a+b;
     c= a*b;
+    if(c<b){
+        b=0;
+    }
+    else
+    {
+        c = 0;
+    }
+
     const int d = 5;
     return a;
 }

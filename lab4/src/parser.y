@@ -189,6 +189,7 @@ UnaryExp
          SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
          $$ = new UnaryOpExpr(se, UnaryOpExpr::NOT, $2);
     }
+
     ;
 
 
