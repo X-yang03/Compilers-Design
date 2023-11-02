@@ -37,8 +37,8 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
-%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
-%type <stmttype> FuncParams FuncParam
+%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
+%type <stmttype> FuncParams FuncParam 
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
 //%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
@@ -150,6 +150,24 @@ Cond
     LOrExp {$$ = $1;}
     ;
 
+// FuncRealParams
+//     :
+//     FuncRealParams PARSE Exp{
+//         FuncCallParamsNode* node = (FuncCallParamsNode*) $1;
+//         node->addNext($3);
+//         $$ = node;
+//     }
+//     |
+//     Exp{
+//         FuncCallParamsNode* node = new FuncCallParamsNode();
+//         node->addNext($1);
+//         $$ = node;
+//     }
+//     |
+//     %empty{
+//         $$ = nullptr;
+//     }
+
 //基本表达式
 PrimaryExp
     :
@@ -189,6 +207,19 @@ UnaryExp
          SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
          $$ = new UnaryOpExpr(se, UnaryOpExpr::NOT, $2);
     }
+    // |
+    // ID LPAREN FuncRealParams RPAREN{ // 函数调用
+    //     SymbolEntry *se;
+    //     se = identifiers->lookup($1);
+    //     if(se == nullptr)
+    //     {
+    //         fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+    //         delete [](char*)$1;
+    //         assert(se != nullptr);
+    //     }
+    //     SymbolEntry *tmp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel());
+    //     $$ = new FuncCallNode(tmp, new Id(se), (FuncCallParamsNode*)$3);
+    // }
 
     ;
 
@@ -466,7 +497,7 @@ FuncDef
         delete []$2;
     }
     ;
-// 函数参数列表
+// 函数形参列表
 FuncParams
     :   FuncParams PARSE FuncParam {
             FuncDefParamsNode* node = (FuncDefParamsNode*)$1;
