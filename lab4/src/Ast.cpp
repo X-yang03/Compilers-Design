@@ -87,7 +87,7 @@ void UnaryOpExpr::output(int level){
             op_str = "not";
             break;
     }
-    fprintf(yyout, "%*cBinaryExpr\top: %s\n", level, ' ', op_str.c_str());
+    fprintf(yyout, "%*cUnaryOpExpr\top: %s\n", level, ' ', op_str.c_str());
     expr->output(level + 4);
 }
 
