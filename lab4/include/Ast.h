@@ -65,6 +65,16 @@ public:
 class StmtNode : public Node
 {};
 
+class ArrayindiceNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> arrindexList;
+public:
+    ArrayindiceNode(){};
+    void addNext(ExprNode* next);
+    void output(int level);
+};
+
 class CompoundStmt : public StmtNode
 {
 private:
