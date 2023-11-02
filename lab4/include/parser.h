@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 10 "src/parser.y"
+#line 12 "src/parser.y"
 
     #include "Ast.h"
     #include "SymbolTable.h"
@@ -109,7 +109,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "src/parser.y"
+#line 18 "src/parser.y"
 
     int iType;
     double fType;

@@ -121,10 +121,17 @@ void DefNode::output(int level)
     }
 }
 
+void DeclStmt::addNext(DefNode* next)
+{
+    defList.push_back(next);
+}
+
 void DeclStmt::output(int level)
 {
     fprintf(yyout, "%*cDeclStmt\n", level, ' ');
-    id->output(level + 4);
+    for(auto def : defList){
+        def->output(level+4);
+    }
 }
 
 void IfStmt::output(int level)

@@ -93,9 +93,11 @@ public:
 class DeclStmt : public StmtNode
 {
 private:
-    Id *id;
+    bool isConst;
+    std::vector<DefNode*> defList;
 public:
-    DeclStmt(Id *id) : id(id){};
+    DeclStmt(bool isConst) : isConst(isConst){};
+    void addNext(DefNode* next);
     void output(int level);
 };
 
