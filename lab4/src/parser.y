@@ -394,7 +394,7 @@ DeclStmt
     }
 
     ;
-// 数组
+// 数组下标
 ArrIndices 
     :   ArrIndices LBRACKET Exp RBRACKET {
             ArrayindiceNode* node = (ArrayindiceNode*)$1;
@@ -629,6 +629,23 @@ FuncParam
             SymbolEntry *se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
             identifiers->install($2, se);
             $$ = new DefNode(new Id(se), nullptr, false, false);
+        }
+    | Type ID LBRACKET RBRACKET ArrIndices{
+            Type* arrayType = nullptr; 
+            if($1==TypeSystem::intType){
+                arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            else if($1==TypeSystem::floatType){
+                arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            //最高维未指定，记为默认值-1
+            SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
+            identifiers->install($2, se);
+            Id* id = new Id(se);
+            id->addIndices((ArrayindiceNode*)$5);
+            $$ = new DefNode(id, nullptr, false, true);
         }
     ;
 
