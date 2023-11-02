@@ -100,6 +100,11 @@ void Constant::output(int level)
             value.c_str(), type.c_str());
 }
 
+bool Id::isArray()
+{
+    return getType()->isArray();
+}
+
 void Id::output(int level)
 {
     std::string name, type;
@@ -109,9 +114,12 @@ void Id::output(int level)
     scope = dynamic_cast<IdentifierSymbolEntry*>(symbolEntry)->getScope();
     fprintf(yyout, "%*cId\tname: %s\tscope: %d\ttype: %s\n", level, ' ',
             name.c_str(), scope, type.c_str());
+    if(isArray() && indices!=nullptr){
+        indices->output(level+4);
+    }
 }
 
-void ArrayindiceNode::addNext(ExprNode* next)
+void ArrayindiceNode::append(ExprNode* next)
 {
     arrindexList.push_back(next);
 }

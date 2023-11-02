@@ -55,13 +55,6 @@ public:
     void output(int level);
 };
 
-class Id : public ExprNode
-{
-public:
-    Id(SymbolEntry *se) : ExprNode(se){};
-    void output(int level);
-};
-
 class StmtNode : public Node
 {};
 
@@ -71,9 +64,23 @@ private:
     std::vector<ExprNode*> arrindexList;
 public:
     ArrayindiceNode(){};
-    void addNext(ExprNode* next);
+    void append(ExprNode* next);
     void output(int level);
 };
+
+class Id : public ExprNode
+{
+private:
+    ArrayindiceNode* indices;
+public:
+    Id(SymbolEntry *se) : ExprNode(se), indices(nullptr){};
+    SymbolEntry* getSymbolEntry() {return symbolEntry;}
+    bool isArray();     //必须配合indices!=nullptr使用（a[]的情况）
+    void addIndices(ArrayindiceNode* idx) {indices = idx;}
+    void output(int level);
+};
+
+
 
 class CompoundStmt : public StmtNode
 {

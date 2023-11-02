@@ -7,16 +7,23 @@ program
                         Sequence
                             Sequence
                                 Sequence
-                                    DeclStmt
-                                        DefNode	isConst:false	isArray:false
-                                            Id	name: a	scope: 2	type: int
-                                            null
-                                        DefNode	isConst:false	isArray:false
-                                            Id	name: b	scope: 2	type: int
-                                            null
-                                        DefNode	isConst:false	isArray:false
-                                            Id	name: c	scope: 2	type: int
-                                            IntegerLiteral	value: 10	type: int
+                                    Sequence
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:true
+                                                Id	name: ff	scope: 2	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 10	type: int
+                                                null
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: a	scope: 2	type: int
+                                                null
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: b	scope: 2	type: int
+                                                null
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: c	scope: 2	type: int
+                                                IntegerLiteral	value: 10	type: int
                                     DeclStmt
                                         DefNode	isConst:false	isArray:false
                                             Id	name: a	scope: 2	type: int

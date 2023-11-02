@@ -37,6 +37,7 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
+%type <stmttype> ArrIndices 
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
 %type <stmttype> FuncParams FuncParam FuncRealParams
 %type <type> Type
@@ -371,6 +372,18 @@ DeclStmt
         delete []$2;
     } */
     ;
+ArrIndices 
+    :   ArrIndices LBRACKET Exp RBRACKET {
+            ArrayindiceNode* node = (ArrayindiceNode*)$1;
+            node->append($3);
+            $$ = node;          
+        }
+    |   LBRACKET Exp RBRACKET {
+            ArrayindiceNode* node = new ArrayindiceNode();
+            node->append($2);
+            $$ = node;
+        }
+    ;
 
 ConstDefList 
     : ConstDefList PARSE ConstDef{
@@ -441,7 +454,21 @@ VarDef
             $$ = new DefNode(new Id(se), (Node*)$3, false, false);
         }
     // todo 数组变量的定义
-
+    |   ID ArrIndices {
+            Type* type;
+            if(currentType->isInt()){
+                type = new IntArrayType();
+            }
+            else{
+                type = new FloatArrayType();
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            Id* id = new Id(se);
+            id->addIndices((ArrayindiceNode*)$2);
+            $$ = new DefNode(id, nullptr, false, true);
+        }
 FuncDef
     :
     Type ID {
