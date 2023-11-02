@@ -111,6 +111,21 @@ void Id::output(int level)
             name.c_str(), scope, type.c_str());
 }
 
+void ArrayindiceNode::addNext(ExprNode* next)
+{
+    arrindexList.push_back(next);
+}
+
+void ArrayindiceNode::output(int level)
+{
+    fprintf(yyout, "%*cArrayindiceNode\n", level, ' ');
+    for(auto expr : arrindexList)
+    {
+        expr->output(level+4);
+    }
+}
+
+
 void CompoundStmt::output(int level)
 {
     fprintf(yyout, "%*cCompoundStmt\n", level, ' ');
