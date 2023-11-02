@@ -647,6 +647,22 @@ FuncParam
             id->addIndices((ArrayindiceNode*)$5);
             $$ = new DefNode(id, nullptr, false, true);
         }
+    |   Type ID LBRACKET RBRACKET{
+            Type* arrayType = nullptr; 
+            if($1==TypeSystem::intType){
+                arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            else if($1==TypeSystem::floatType){
+                arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            //最高维未指定，记为默认值-1
+            SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
+            identifiers->install($2, se);
+            Id* id = new Id(se);
+            $$ = new DefNode(id, nullptr, false, true);
+        }
     ;
 
 
