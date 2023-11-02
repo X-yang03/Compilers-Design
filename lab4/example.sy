@@ -1,6 +1,8 @@
 int main(int args){
     int a , b, c = 10;
     int a;
+    c = a+b;
+    c= a*b;
     const int d = 5;
     return a;
 }
