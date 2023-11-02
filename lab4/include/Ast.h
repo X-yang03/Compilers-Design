@@ -207,25 +207,25 @@ public:
 };
 
 // 函数调用
-// class FuncCallParamsNode : public StmtNode
-// {
-// private:
-//     std::vector<ExprNode*> paramsList;
-// public:
-//     FuncCallParamsNode(){};
-//     void addNext(ExprNode* next);
-//     void output(int level);
-// };
+class FuncCallParamsNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> paramsList;
+public:
+    FuncCallParamsNode(){};
+    void addNext(ExprNode* next);
+    void output(int level);
+};
 
-// class FuncCallNode : public ExprNode
-// {
-// private:
-//     Id* funcId;
-//     FuncCallParamsNode* params;
-// public:
-//     FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
-//     void output(int level);
-// };
+class FuncCallNode : public ExprNode
+{
+private:
+    Id* funcId;
+    FuncCallParamsNode* params;
+public:
+    FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
+    void output(int level);
+};
 
 class Ast
 {
