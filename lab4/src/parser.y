@@ -348,7 +348,6 @@ VarDef
             $$ = new DefNode(new Id(se), nullptr, false, false);
         }
     |   ID ASSIGN Exp {
-            // 首先将ID插入符号表中
             Type* type;
             if(currentType->isInt()){
                 type = TypeSystem::intType;
