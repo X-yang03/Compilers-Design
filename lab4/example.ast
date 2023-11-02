@@ -1,15 +1,21 @@
 program
-    Sequence
-        Sequence
-            DeclStmt
-                Id	name: a	scope: 0	type: int
-            FunctionDefine function name: func, type: int(int, int)
-                CompoundStmt
-                    AssignStmt
-                        Id	name: b	scope: 1	type: int
-                        IntegerLiteral	value: 1	type: int
-        FunctionDefine function name: main, type: int(int, int)
-            CompoundStmt
-                AssignStmt
-                    Id	name: a	scope: 1	type: int
-                    IntegerLiteral	value: 10	type: int
+    FunctionDefine function name: main, type: int(int)
+        CompoundStmt
+            Sequence
+                Sequence
+                    DeclStmt
+                        DefNode	isConst:false	isArray:false
+                            Id	name: a	scope: 2	type: int
+                            null
+                        DefNode	isConst:false	isArray:false
+                            Id	name: b	scope: 2	type: int
+                            null
+                        DefNode	isConst:false	isArray:false
+                            Id	name: c	scope: 2	type: int
+                            IntegerLiteral	value: 10	type: int
+                    DeclStmt
+                        DefNode	isConst:false	isArray:false
+                            Id	name: a	scope: 2	type: float
+                            IntegerLiteral	value: 3	type: float
+                ReturnStmt
+                    Id	name: a	scope: 2	type: float

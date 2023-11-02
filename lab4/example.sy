@@ -1,8 +1,5 @@
-int a;
-int func(int a, int b){
-    b = 1;
-}
-
-int main(int a, int b){
-    a = 10;
+int main(int args){
+    int a, b, c = 10;
+    float a  = 3.0;
+    return a;
 }

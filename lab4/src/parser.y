@@ -5,6 +5,8 @@
     extern Ast ast;
     int yylex();
     int yyerror( char const * );
+
+    Type* currentType;
 }
 
 %code requires {
@@ -34,7 +36,8 @@
 %token CONST RETURN CONTINUE BREAK
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt
-%type <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
+%type <stmttype> VarDefList VarDef
+%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp
 %type <stmttype> FuncParams FuncParam
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
@@ -135,6 +138,12 @@ Exp
     :
     AddExp {$$ = $1;}
     ;
+
+/* ConstExp
+    :   
+    AddExp {$$ = $1;}
+    ; */
+
 Cond
     :
     LOrExp {$$ = $1;}
@@ -312,25 +321,72 @@ LOrExp
 Type
     : INT {
         $$ = TypeSystem::intType;
+        currentType = TypeSystem::intType;
     }
     | VOID {
         $$ = TypeSystem::voidType;
+        currentType = TypeSystem::voidType;
     }
     | FLOAT {
         $$ = TypeSystem::floatType;
+        currentType = TypeSystem::floatType;
     }
     ;
 DeclStmt
     :
-    Type ID SEMICOLON {
+    Type VarDefList SEMICOLON {
+            $$ = $2;
+    }
+    /* Type ID SEMICOLON {
         SymbolEntry *se;
         std::cout<<"this is DeclStmt "<<identifiers->getLevel()<<std::endl;
         se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
         identifiers->install($2, se);
         $$ = new DeclStmt(new Id(se));
         delete []$2;
-    }
+    } */
     ;
+VarDefList
+    :   VarDefList PARSE VarDef {
+            DeclStmt* node = (DeclStmt*) $1;
+            node->addNext((DefNode*)$3);
+            $$ = node;
+        }
+    |   VarDef {
+            DeclStmt* node = new DeclStmt(false);
+            node->addNext((DefNode*)$1);
+            $$ = node;
+        }
+    ;
+VarDef
+    :   ID {
+            Type* type;
+            if(currentType->isInt()){
+                type = TypeSystem::intType;
+            }
+            else{
+                type = TypeSystem::floatType;
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            $$ = new DefNode(new Id(se), nullptr, false, false);
+        }
+    |   ID ASSIGN Exp {
+            Type* type;
+            if(currentType->isInt()){
+                type = TypeSystem::intType;
+            }
+            else{
+                type = TypeSystem::floatType;
+            }
+            SymbolEntry *se;
+            se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
+            identifiers->install($1, se);
+            $$ = new DefNode(new Id(se), (Node*)$3, false, false);
+        }
+    // todo 数组变量的定义
+
 FuncDef
     :
     Type ID {
