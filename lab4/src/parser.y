@@ -86,6 +86,21 @@ LVal
         std::cout<<"test"<<std::endl;
         delete []$1;
     }
+    |
+    ID ArrIndices {
+        SymbolEntry *se;
+        se = identifiers->lookup($1);
+        if(se == nullptr)
+        {
+            fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+            delete [](char*)$1;
+            assert(se != nullptr);
+        }
+        Id* newId = new Id(se);
+        newId->addIndices((ArrayindiceNode*)$2);
+        $$ =  newId;
+        delete []$1;
+    }
     ;
 AssignStmt
     :
