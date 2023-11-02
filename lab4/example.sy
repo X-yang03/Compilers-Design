@@ -7,4 +7,5 @@ int func1(int a[]){
 
 int func2(int a[][1]){
     int b = 1;
+    int arr[1][2] = {{1,2}, {3, 44}};
 }
