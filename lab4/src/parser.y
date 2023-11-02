@@ -189,7 +189,7 @@ MulExp
             else{
                 se = new TemporarySymbolEntry(TypeSystem::floatType,SymbolTable::getLabel());
             }
-            $$ = new new BinaryExpr(se,BinaryExpr::MUL,$1,$3);
+            $$ = new BinaryExpr(se,BinaryExpr::MUL,$1,$3);
     }
     |
     MulExp DIV UnaryExp {
