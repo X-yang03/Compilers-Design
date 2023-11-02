@@ -9,11 +9,10 @@
 }
 %{
 
-    int nowLevel = 0;
     
     int columnNo = 0;
 
-    bool preToken = 0; //0表示加减号 ，1表示为正负号
+    //bool preToken = 0; //0表示加减号 ，1表示为正负号
 
     extern dump_type_t dump_type;
 
@@ -97,80 +96,71 @@ WHITE           [\t ]
 "return" {
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
     return RETURN;
 }
 "!=" {
     dump_tokens("NEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return NEQ;
 }
 "==" {
     dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return EQ;
 }
 
 "=" {
     dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1; //跟在 = 后的+ -为正负号
+
     return ASSIGN;
 }
 
 "<="    {
     dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LE;
 }
 
 "<" {
     dump_tokens("LESS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LESS;
 }
 
 ">="    {
     dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return GE;
 }
 
 ">" {
     dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return GREATER;
 }
 
 "+" {
-    if(!preToken){
+  
         dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return ADD;
-    }else{
-        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-        return POS;
-    }
+    
 }
 
 "-" {
-    if(!preToken){
         dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return SUB;
-    }else{
-        dump_tokens("MINUS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-        return MINUS;
-    }
 }
 
 "*" {
     dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
+
     return MUL;
 }
 "/" {
     dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
+
     return DIV;
 }
 "%" {
@@ -179,36 +169,36 @@ WHITE           [\t ]
 }
 ";" {
     dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return SEMICOLON;
 }
 
 "(" {
     dump_tokens("LPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LPAREN;
 }
 
 ")" {
     dump_tokens("RPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 0;
+
     return RPAREN;
 }
 
 "{" {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    nowLevel++;
+
     return LBRACE;
 }
 
 "}" {
     dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    nowLevel-- ;
+
     return RBRACE;
 }
 "," {
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return PARSE;
 }
 "while" {
@@ -233,13 +223,13 @@ WHITE           [\t ]
 
 "&&"    {
     dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
-    preToken = 1;
+
     return AND;
 }
 
 "||"    {
     dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
-    preToken = 1;
+
     return OR;
 }
 
@@ -264,7 +254,6 @@ WHITE           [\t ]
     decimal = atoi(yytext);
     yylval.iType = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
-    preToken = 0;
     return INTEGER;
 }
 {OCTAL} {
@@ -272,7 +261,7 @@ WHITE           [\t ]
     sscanf(yytext, "%o", &oct);
     yylval.iType = oct;
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
-    preToken = 0;
+
     return INTEGER;
 }
 {HEXDECIMAL} {
@@ -280,7 +269,6 @@ WHITE           [\t ]
     sscanf(yytext,"%016x",&hex);
     yylval.iType = hex;
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
-    preToken = 0;
     return INTEGER;
 }
 {FLOAT_NUMBER} {
@@ -288,7 +276,6 @@ WHITE           [\t ]
     sscanf(yytext, "%f", &f);
     yylval.fType = f;
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    preToken = 0;
     return FLOATNUM;
 }
 
@@ -297,7 +284,6 @@ WHITE           [\t ]
     sscanf(yytext, "%f", &f);
     yylval.fType = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    preToken = 0;
     return FLOATNUM;
 }
 
@@ -307,7 +293,6 @@ WHITE           [\t ]
     strcpy(lexeme, yytext);
     yylval.strtype = lexeme;
     dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
-    preToken = 0;
     return ID;
 }
 
