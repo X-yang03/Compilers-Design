@@ -79,7 +79,7 @@ public:
     void addIndices(ArrayindiceNode* idx) {indices = idx;}
     void output(int level);
     std::string getName();
-    std::string getType();
+    Type* getType();
 };
 
 

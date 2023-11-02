@@ -122,9 +122,9 @@ std::string Id::getName()
     return symbolEntry->toStr();
 }
 
-std::string Id::getType()
+Type* Id::getType()
 {
-    return symbolEntry->getType()->toStr();
+    return symbolEntry->getType();
 }
 
 void ArrayindiceNode::append(ExprNode* next)
@@ -236,9 +236,9 @@ void FuncDefParamsNode::addNext(Id* next)
 std::vector<Type*> FuncDefParamsNode::getParamsType()
 {
      std::vector<Type*> typeArray;
-    // for(auto param : paramsList){
-    //     typeArray.push_back(param->getType());
-    // }
+    for(auto param : paramsList){
+        typeArray.push_back(param->getType());
+    }
      return typeArray;
 }
 
@@ -263,17 +263,17 @@ void FunctionDef::output(int level)
 
 void FuncCallNode::output(int level)
 {
-    // std::string name, type;
-    // name = funcId->getName();
-    // type = funcId->getType();
-    // fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\n", 
-    //         level, ' ', name.c_str(), type.c_str());
-    // if(params!=nullptr){
-    //     params->output(level+4);
-    // }
-    // else{
-    //     fprintf(yyout, "%*cFuncCallWithNoParams\n", level+4, ' ');
-    // }
+    std::string name, type;
+    name = funcId->getName();
+    type = funcId->getType()->toStr();
+    fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\n", 
+            level, ' ', name.c_str(), type.c_str());
+    if(params!=nullptr){
+        params->output(level+4);
+    }
+    else{
+        fprintf(yyout, "%*cFuncCallWithNoParams\n", level+4, ' ');
+    }
 }
 
 void FuncCallParamsNode::append(ExprNode* next)
