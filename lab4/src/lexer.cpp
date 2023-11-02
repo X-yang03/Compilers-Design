@@ -575,11 +575,10 @@ char *yytext;
 
 #line 11 "src/lexer.l"
 
-    int nowLevel = 0;
     
     int columnNo = 0;
 
-    bool preToken = 0; //0表示加减号 ，1表示为正负号
+    //bool preToken = 0; //0表示加减号 ，1表示为正负号
 
     extern dump_type_t dump_type;
 
@@ -595,11 +594,11 @@ char *yytext;
     }
 
     /* Your code here, if desired (lab3). */
-#line 599 "src/lexer.cpp"
+#line 598 "src/lexer.cpp"
 /* definitions section */
 
 /*  Your code here (lab3). */
-#line 603 "src/lexer.cpp"
+#line 602 "src/lexer.cpp"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -815,11 +814,11 @@ YY_DECL
 		}
 
 	{
-#line 50 "src/lexer.l"
+#line 49 "src/lexer.l"
 
-#line 52 "src/lexer.l"
+#line 51 "src/lexer.l"
     /* rules section */
-#line 823 "src/lexer.cpp"
+#line 822 "src/lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -888,7 +887,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 53 "src/lexer.l"
+#line 52 "src/lexer.l"
 {
     columnNo = 0;
     dump_tokens("SINGLECOMMENT\t%d\n",yylineno);
@@ -896,7 +895,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 58 "src/lexer.l"
+#line 57 "src/lexer.l"
 {
     BEGIN COMMENT;
     columnNo+=2;
@@ -904,18 +903,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 63 "src/lexer.l"
+#line 62 "src/lexer.l"
 { columnNo++;}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 65 "src/lexer.l"
+#line 64 "src/lexer.l"
 {columnNo = 0;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 67 "src/lexer.l"
+#line 66 "src/lexer.l"
 {
     BEGIN INITIAL;
     columnNo+=2;
@@ -923,7 +922,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 73 "src/lexer.l"
+#line 72 "src/lexer.l"
 {     //输出 INT  int    行号    列号
     dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
     return INT;
@@ -931,7 +930,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 78 "src/lexer.l"
+#line 77 "src/lexer.l"
 {
     dump_tokens("FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return FLOAT;
@@ -939,7 +938,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 83 "src/lexer.l"
+#line 82 "src/lexer.l"
 {
     dump_tokens("VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return VOID;
@@ -947,7 +946,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 88 "src/lexer.l"
+#line 87 "src/lexer.l"
 {
     dump_tokens("IF\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return IF;
@@ -955,7 +954,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 93 "src/lexer.l"
+#line 92 "src/lexer.l"
 {
     dump_tokens("ELSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return ELSE;
@@ -963,126 +962,117 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 98 "src/lexer.l"
+#line 97 "src/lexer.l"
 {
     dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
     return RETURN;
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 104 "src/lexer.l"
+#line 102 "src/lexer.l"
 {
     dump_tokens("NEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return NEQ;
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 109 "src/lexer.l"
+#line 107 "src/lexer.l"
 {
     dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return EQ;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 115 "src/lexer.l"
+#line 113 "src/lexer.l"
 {
     dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1; //跟在 = 后的+ -为正负号
+
     return ASSIGN;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 121 "src/lexer.l"
+#line 119 "src/lexer.l"
 {
     dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LE;
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 127 "src/lexer.l"
+#line 125 "src/lexer.l"
 {
     dump_tokens("LESS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LESS;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 133 "src/lexer.l"
+#line 131 "src/lexer.l"
 {
     dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return GE;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 139 "src/lexer.l"
+#line 137 "src/lexer.l"
 {
     dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return GREATER;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 145 "src/lexer.l"
+#line 143 "src/lexer.l"
 {
-    if(!preToken){
+  
         dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return ADD;
-    }else{
-        dump_tokens("POS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-        return POS;
-    }
+    
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 155 "src/lexer.l"
+#line 150 "src/lexer.l"
 {
-    if(!preToken){
         dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return SUB;
-    }else{
-        dump_tokens("MINUS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-        return MINUS;
-    }
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 165 "src/lexer.l"
+#line 155 "src/lexer.l"
 {
     dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
+
     return MUL;
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 171 "src/lexer.l"
+#line 161 "src/lexer.l"
 {
     dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     //here add
-    preToken = 1;
+
     return DIV;
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 177 "src/lexer.l"
+#line 167 "src/lexer.l"
 {
     dump_tokens("MOD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return MOD;
@@ -1090,61 +1080,61 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 181 "src/lexer.l"
+#line 171 "src/lexer.l"
 {
     dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return SEMICOLON;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 187 "src/lexer.l"
+#line 177 "src/lexer.l"
 {
     dump_tokens("LPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return LPAREN;
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 193 "src/lexer.l"
+#line 183 "src/lexer.l"
 {
     dump_tokens("RPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 0;
+
     return RPAREN;
 }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 199 "src/lexer.l"
+#line 189 "src/lexer.l"
 {
     dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    nowLevel++;
+
     return LBRACE;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 205 "src/lexer.l"
+#line 195 "src/lexer.l"
 {
     dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    nowLevel-- ;
+
     return RBRACE;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 210 "src/lexer.l"
+#line 200 "src/lexer.l"
 {
     dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    preToken = 1;
+
     return PARSE;
 }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 215 "src/lexer.l"
+#line 205 "src/lexer.l"
 {
     dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return WHILE;
@@ -1152,7 +1142,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 220 "src/lexer.l"
+#line 210 "src/lexer.l"
 {
     dump_tokens("CONTINUE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return CONTINUE;
@@ -1160,7 +1150,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 225 "src/lexer.l"
+#line 215 "src/lexer.l"
 {
     dump_tokens("BREAK\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
     return BREAK;
@@ -1168,7 +1158,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 230 "src/lexer.l"
+#line 220 "src/lexer.l"
 {
     dump_tokens("CONST\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     return CONST;
@@ -1176,25 +1166,25 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 235 "src/lexer.l"
+#line 225 "src/lexer.l"
 {
     dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
-    preToken = 1;
+
     return AND;
 }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 241 "src/lexer.l"
+#line 231 "src/lexer.l"
 {
     dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
-    preToken = 1;
+
     return OR;
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 247 "src/lexer.l"
+#line 237 "src/lexer.l"
 {
     dump_tokens("NOT\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     return NOT;
@@ -1202,7 +1192,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 252 "src/lexer.l"
+#line 242 "src/lexer.l"
 {
     dump_tokens("LBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     return LBRACKET;
@@ -1210,7 +1200,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 257 "src/lexer.l"
+#line 247 "src/lexer.l"
 {
     dump_tokens("RBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
     return RBRACKET;
@@ -1218,98 +1208,93 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 263 "src/lexer.l"
+#line 253 "src/lexer.l"
 {
     int decimal;
     decimal = atoi(yytext);
     yylval.iType = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
-    preToken = 0;
     return INTEGER;
 }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 271 "src/lexer.l"
+#line 260 "src/lexer.l"
 {
     int oct = 0;
     sscanf(yytext, "%o", &oct);
     yylval.iType = oct;
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
-    preToken = 0;
+
     return INTEGER;
 }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 279 "src/lexer.l"
+#line 268 "src/lexer.l"
 {
     int hex = 0;
     sscanf(yytext,"%016x",&hex);
     yylval.iType = hex;
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
-    preToken = 0;
     return INTEGER;
 }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 287 "src/lexer.l"
+#line 275 "src/lexer.l"
 {
     float f ;
     sscanf(yytext, "%f", &f);
     yylval.fType = f;
     dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    preToken = 0;
     return FLOATNUM;
 }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 296 "src/lexer.l"
+#line 283 "src/lexer.l"
 {
     float f ;
     sscanf(yytext, "%f", &f);
     yylval.fType = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    preToken = 0;
     return FLOATNUM;
 }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 305 "src/lexer.l"
+#line 291 "src/lexer.l"
 {
     char *lexeme;
     lexeme = new char[strlen(yytext) + 1];
     strcpy(lexeme, yytext);
     yylval.strtype = lexeme;
     dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
-    preToken = 0;
     return ID;
 }
 	YY_BREAK
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 315 "src/lexer.l"
+#line 300 "src/lexer.l"
 {
     columnNo = 0; //换行时列数置0
 }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 319 "src/lexer.l"
+#line 304 "src/lexer.l"
 {
     columnNo+=1;
 }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 323 "src/lexer.l"
+#line 308 "src/lexer.l"
 ECHO;
 	YY_BREAK
-#line 1313 "src/lexer.cpp"
+#line 1298 "src/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -2286,4 +2271,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 323 "src/lexer.l"
+#line 308 "src/lexer.l"
