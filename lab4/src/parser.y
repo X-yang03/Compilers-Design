@@ -37,7 +37,7 @@
 
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt ExpStmt
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
-%type <stmttype> ArrIndices ArrayInitVal ArrayInitValList
+%type <stmttype> ArrIndices ArrayInitVal ArrayInitValList ConstArrayInitVal ConstArrayInitValList
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
 %type <stmttype> FuncParams FuncParam FuncRealParams
 %type <type> Type
@@ -409,7 +409,7 @@ DeclStmt
     }
 
     ;
-// 数组
+// 数组下标
 ArrIndices 
     :   ArrIndices LBRACKET Exp RBRACKET {
             ArrayindiceNode* node = (ArrayindiceNode*)$1;
@@ -451,7 +451,7 @@ ConstDef
             $$ = new DefNode(new Id(se), (Node*)$3, true, false);
         }
     // todo 数组变量的定义
-        |   ID ArrIndices ASSIGN ArrayInitVal{
+        |   ID ArrIndices ASSIGN ConstArrayInitVal{
             Type* type;
             if(currentType->isInt()){
                 type = new IntArrayType();
@@ -466,6 +466,33 @@ ConstDef
             id->addIndices((ArrayindiceNode*)$2);
             $$ = new DefNode(id, (Node*)$4, true, true);
         }
+
+ConstArrayInitVal 
+    :   Exp {
+            ArrayinitNode* node = new ArrayinitNode(true);
+            node->setLeafNode((ExprNode*)$1);
+            $$ = node;
+        }
+    |   LBRACE ConstArrayInitValList RBRACE{
+            $$ = $2;
+        }
+    |   LBRACE RBRACE{
+            $$ = new ArrayinitNode(true);
+    }
+    ; 
+
+ ConstArrayInitValList
+    :   ConstArrayInitValList PARSE ConstArrayInitVal{
+            ArrayinitNode* node = (ArrayinitNode*)$1;
+            node->append((ArrayinitNode*)$3);
+            $$ = node;
+        }
+    |   ConstArrayInitVal{
+            ArrayinitNode* newNode = new ArrayinitNode(true);
+            newNode->append((ArrayinitNode*)$1);
+            $$ = newNode;
+        }
+    ;   
 
 ArrayInitVal 
     :   Exp {
@@ -617,6 +644,39 @@ FuncParam
             SymbolEntry *se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
             identifiers->install($2, se);
             $$ = new DefNode(new Id(se), nullptr, false, false);
+        }
+    | Type ID LBRACKET RBRACKET ArrIndices{
+            Type* arrayType = nullptr; 
+            if($1==TypeSystem::intType){
+                arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            else if($1==TypeSystem::floatType){
+                arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            //最高维未指定，记为默认值-1
+            SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
+            identifiers->install($2, se);
+            Id* id = new Id(se);
+            id->addIndices((ArrayindiceNode*)$5);
+            $$ = new DefNode(id, nullptr, false, true);
+        }
+    |   Type ID LBRACKET RBRACKET{
+            Type* arrayType = nullptr; 
+            if($1==TypeSystem::intType){
+                arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            else if($1==TypeSystem::floatType){
+                arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
+            }
+            //最高维未指定，记为默认值-1
+            SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
+            identifiers->install($2, se);
+            Id* id = new Id(se);
+            $$ = new DefNode(id, nullptr, false, true);
         }
     ;
 
