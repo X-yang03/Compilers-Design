@@ -1,1 +1,11 @@
 int a;;;;
+a+0;
+0+1;
+
+int alpha(){
+    return 0;
+}
+
+int main(){
+    alpha();
+}

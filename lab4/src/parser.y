@@ -70,6 +70,7 @@ Stmt
     | BreakStmt{$$=$1;}
     | ContinueStmt{$$=$1;}
     | SEMICOLON{$$ = new EmptyStmtNode() ;}
+    | ExpStmt SEMICOLON {$$ = $1;}
     ;
 LVal
     : ID {
