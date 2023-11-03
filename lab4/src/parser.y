@@ -34,7 +34,7 @@
 %token ADD SUB MUL DIV MOD OR AND LESS LE GREATER GE ASSIGN EQ NEQ NOT
 %token CONST RETURN CONTINUE BREAK
 
-%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt ExpStmt
+%type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt ExpStmt Exps
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
 %type <stmttype> ArrIndices ArrayInitVal ArrayInitValList ConstArrayInitVal ConstArrayInitValList
 %type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
@@ -69,7 +69,7 @@ Stmt
     | BreakStmt{$$=$1;}
     | ContinueStmt{$$=$1;}
     | SEMICOLON{$$ = new EmptyStmtNode() ;}
-    | ExpStmt SEMICOLON {$$ = $1;}
+    | ExpStmt{$$ = $1;}
     ;
 LVal
     : ID {
@@ -153,7 +153,11 @@ ReturnStmt
     ;
 
 ExpStmt
-    :   ExpStmt PARSE Exp {
+    :   Exps SEMICOLON{$$ = $1;}
+    ;
+
+Exps
+    :  ExpStmt PARSE Exp {
             ExprStmtNode* node = (ExprStmtNode*)$1;
             node->append($3);
             $$ = node;
