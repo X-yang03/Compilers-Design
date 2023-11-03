@@ -61,7 +61,6 @@ Stmts
     ;
 Stmt
     : AssignStmt {$$=$1;}
-    | ExpStmt SEMICOLON{$$=$1;}
     | BlockStmt {$$=$1;}
     | IfStmt {$$=$1;}
     | WhileStmt{$$ = $1;}
@@ -156,12 +155,12 @@ ReturnStmt
 ExpStmt
     :   ExpStmt PARSE Exp {
             ExprStmtNode* node = (ExprStmtNode*)$1;
-            node->addNext($3);
+            node->append($3);
             $$ = node;
         }
     |   Exp {
             ExprStmtNode* node = new ExprStmtNode();
-            node->addNext($1);
+            node->append($1);
             $$ = node;
         }
     ;
