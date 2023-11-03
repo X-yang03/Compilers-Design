@@ -304,4 +304,18 @@ void FuncCallParamsNode::output(int level)
     }
 }
 
+void ExprStmtNode::addNext(ExprNode* next)
+{
+    exprList.push_back(next);
+}
+
+void ExprStmtNode::output(int level)
+{
+    fprintf(yyout, "%*cExprStmtNode\n", level, ' ');
+    for(auto expr : exprList)
+    {
+        expr->output(level+4);
+    }
+}
+
 

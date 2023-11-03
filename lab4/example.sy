@@ -1,1 +1,9 @@
-const float a[10][1+1][5*3] = {{0},{10+2},{}};
+int alpha(){
+    return 0;
+}
+
+int main(){
+    int a;
+    a = alpha();
+    a+0;
+}

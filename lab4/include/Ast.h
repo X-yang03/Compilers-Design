@@ -244,7 +244,7 @@ public:
     void output(int level);
 };
 
-class FuncCallNode : public ExprNode
+class FuncCallNode : public ExprNode  
 {
 private:
     Id* funcId;  //函数名
@@ -254,6 +254,7 @@ public:
     void output(int level);
 };
 
+
 class Ast
 {
 private:
@@ -262,6 +263,16 @@ public:
     Ast() {root = nullptr;}
     void setRoot(Node*n) {root = n;}
     void output();
+};
+
+class ExprStmtNode : public StmtNode
+{//注意：该类由ExprStmt与ArrayIndices共享，二者的行为完全一致
+private:
+    std::vector<ExprNode*> exprList;
+public:
+    ExprStmtNode(){};
+    void addNext(ExprNode* next);
+    void output(int level);
 };
 
 #endif
