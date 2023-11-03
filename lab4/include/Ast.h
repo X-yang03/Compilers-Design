@@ -266,12 +266,12 @@ public:
 };
 
 class ExprStmtNode : public StmtNode
-{//注意：该类由ExprStmt与ArrayIndices共享，二者的行为完全一致
+{
 private:
     std::vector<ExprNode*> exprList;
 public:
     ExprStmtNode(){};
-    void addNext(ExprNode* next);
+    void append(ExprNode* next);
     void output(int level);
 };
 

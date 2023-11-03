@@ -304,7 +304,7 @@ void FuncCallParamsNode::output(int level)
     }
 }
 
-void ExprStmtNode::addNext(ExprNode* next)
+void ExprStmtNode::append(ExprNode* next)
 {
     exprList.push_back(next);
 }
