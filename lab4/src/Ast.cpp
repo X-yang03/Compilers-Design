@@ -91,6 +91,11 @@ void UnaryOpExpr::output(int level){
     expr->output(level + 4);
 }
 
+void EmptyStmtNode::output(int level)
+{
+    fprintf(yyout, "%*cEmptyStmt\n", level, ' ');
+}
+
 void Constant::output(int level)
 {
     std::string type, value;

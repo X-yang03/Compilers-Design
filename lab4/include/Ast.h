@@ -211,6 +211,13 @@ public:
     void output(int level);
 };
 
+class EmptyStmtNode : public StmtNode
+{
+public:
+    EmptyStmtNode(){};
+    void output(int level);
+};
+
 //WE ADD
 class FuncDefParamsNode : public StmtNode
 {
