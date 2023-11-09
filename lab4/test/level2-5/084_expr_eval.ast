@@ -1,0 +1,509 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                DeclStmt
+                                                                    DefNode	isConst:true	isArray:false
+                                                                        Id	name: TOKEN_NUM	type: int
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                    DefNode	isConst:true	isArray:false
+                                                                        Id	name: TOKEN_OTHER	type: int
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                DeclStmt
+                                                                    DefNode	isConst:false	isArray:false
+                                                                        Id	name: last_char	type: int
+                                                                        IntegerLiteral	value: 32	type: int
+                                                                    DefNode	isConst:false	isArray:false
+                                                                        Id	name: num	type: int
+                                                                        null
+                                                                    DefNode	isConst:false	isArray:false
+                                                                        Id	name: other	type: int
+                                                                        null
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: cur_token	type: int
+                                                                    null
+                                                        FunctionDefine function name: next_char, type: int()
+                                                            CompoundStmt
+                                                                Sequence
+                                                                    AssignStmt
+                                                                        Id	name: last_char	type: int
+                                                                        FuncCallNode	funcName: getch	 funcType: int()
+                                                                            FuncCallWithNoParams
+                                                                    ReturnStmt
+                                                                        Id	name: last_char	type: int
+                                                    FunctionDefine function name: is_space, type: int(int)
+                                                        CompoundStmt
+                                                            IfElseStmt
+                                                                BinaryExpr	op: or
+                                                                    BinaryExpr	op: equal
+                                                                        Id	name: c	type: int
+                                                                        IntegerLiteral	value: 32	type: int
+                                                                    BinaryExpr	op: equal
+                                                                        Id	name: c	type: int
+                                                                        IntegerLiteral	value: 10	type: int
+                                                                CompoundStmt
+                                                                    ReturnStmt
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                CompoundStmt
+                                                                    ReturnStmt
+                                                                        IntegerLiteral	value: 0	type: int
+                                                FunctionDefine function name: is_num, type: int(int)
+                                                    CompoundStmt
+                                                        IfElseStmt
+                                                            BinaryExpr	op: and
+                                                                BinaryExpr	op: greater or equal
+                                                                    Id	name: c	type: int
+                                                                    IntegerLiteral	value: 48	type: int
+                                                                BinaryExpr	op: LESS OR EQUAL
+                                                                    Id	name: c	type: int
+                                                                    IntegerLiteral	value: 57	type: int
+                                                            CompoundStmt
+                                                                ReturnStmt
+                                                                    IntegerLiteral	value: 1	type: int
+                                                            CompoundStmt
+                                                                ReturnStmt
+                                                                    IntegerLiteral	value: 0	type: int
+                                            FunctionDefine function name: next_token, type: int()
+                                                CompoundStmt
+                                                    Sequence
+                                                        Sequence
+                                                            WhileStmt
+                                                                FuncCallNode	funcName: is_space	 funcType: int(int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: last_char	type: int
+                                                                ExprStmtNode
+                                                                    FuncCallNode	funcName: next_char	 funcType: int()
+                                                                        FuncCallWithNoParams
+                                                            IfElseStmt
+                                                                FuncCallNode	funcName: is_num	 funcType: int(int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: last_char	type: int
+                                                                CompoundStmt
+                                                                    Sequence
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: num	type: int
+                                                                                BinaryExpr	op: sub
+                                                                                    Id	name: last_char	type: int
+                                                                                    IntegerLiteral	value: 48	type: int
+                                                                            WhileStmt
+                                                                                FuncCallNode	funcName: is_num	 funcType: int(int)
+                                                                                    FuncCallParamsNode
+                                                                                        FuncCallNode	funcName: next_char	 funcType: int()
+                                                                                            FuncCallWithNoParams
+                                                                                CompoundStmt
+                                                                                    AssignStmt
+                                                                                        Id	name: num	type: int
+                                                                                        BinaryExpr	op: sub
+                                                                                            BinaryExpr	op: add
+                                                                                                BinaryExpr	op: mul
+                                                                                                    Id	name: num	type: int
+                                                                                                    IntegerLiteral	value: 10	type: int
+                                                                                                Id	name: last_char	type: int
+                                                                                            IntegerLiteral	value: 48	type: int
+                                                                        AssignStmt
+                                                                            Id	name: cur_token	type: int
+                                                                            Id	name: TOKEN_NUM	type: int
+                                                                CompoundStmt
+                                                                    Sequence
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: other	type: int
+                                                                                Id	name: last_char	type: int
+                                                                            ExprStmtNode
+                                                                                FuncCallNode	funcName: next_char	 funcType: int()
+                                                                                    FuncCallWithNoParams
+                                                                        AssignStmt
+                                                                            Id	name: cur_token	type: int
+                                                                            Id	name: TOKEN_OTHER	type: int
+                                                        ReturnStmt
+                                                            Id	name: cur_token	type: int
+                                        FunctionDefine function name: panic, type: int()
+                                            CompoundStmt
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        Sequence
+                                                                            ExprStmtNode
+                                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                                    FuncCallParamsNode
+                                                                                        IntegerLiteral	value: 112	type: int
+                                                                            ExprStmtNode
+                                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                                    FuncCallParamsNode
+                                                                                        IntegerLiteral	value: 97	type: int
+                                                                        ExprStmtNode
+                                                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                                FuncCallParamsNode
+                                                                                    IntegerLiteral	value: 110	type: int
+                                                                    ExprStmtNode
+                                                                        FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                            FuncCallParamsNode
+                                                                                IntegerLiteral	value: 105	type: int
+                                                                ExprStmtNode
+                                                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                        FuncCallParamsNode
+                                                                            IntegerLiteral	value: 99	type: int
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                    FuncCallParamsNode
+                                                                        IntegerLiteral	value: 33	type: int
+                                                        ExprStmtNode
+                                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                FuncCallParamsNode
+                                                                    IntegerLiteral	value: 10	type: int
+                                                    ReturnStmt
+                                                        UnaryOpExpr	op: sub
+                                                            IntegerLiteral	value: 1	type: int
+                                    FunctionDefine function name: get_op_prec, type: int(int)
+                                        CompoundStmt
+                                            Sequence
+                                                Sequence
+                                                    IfStmt
+                                                        BinaryExpr	op: or
+                                                            BinaryExpr	op: equal
+                                                                Id	name: op	type: int
+                                                                IntegerLiteral	value: 43	type: int
+                                                            BinaryExpr	op: equal
+                                                                Id	name: op	type: int
+                                                                IntegerLiteral	value: 45	type: int
+                                                        ReturnStmt
+                                                            IntegerLiteral	value: 10	type: int
+                                                    IfStmt
+                                                        BinaryExpr	op: or
+                                                            BinaryExpr	op: or
+                                                                BinaryExpr	op: equal
+                                                                    Id	name: op	type: int
+                                                                    IntegerLiteral	value: 42	type: int
+                                                                BinaryExpr	op: equal
+                                                                    Id	name: op	type: int
+                                                                    IntegerLiteral	value: 47	type: int
+                                                            BinaryExpr	op: equal
+                                                                Id	name: op	type: int
+                                                                IntegerLiteral	value: 37	type: int
+                                                        ReturnStmt
+                                                            IntegerLiteral	value: 20	type: int
+                                                ReturnStmt
+                                                    IntegerLiteral	value: 0	type: int
+                                FunctionDefine function name: stack_push, type: void(int array, int)
+                                    CompoundStmt
+                                        Sequence
+                                            AssignStmt
+                                                Id	name: s	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 0	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: s	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 0	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                                            AssignStmt
+                                                Id	name: s	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: s	type: int array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 0	type: int
+                                                Id	name: v	type: int
+                            FunctionDefine function name: stack_pop, type: int(int array)
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: last	type: int
+                                                    Id	name: s	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: s	type: int array
+                                                                ArrayindiceNode
+                                                                    IntegerLiteral	value: 0	type: int
+                                            AssignStmt
+                                                Id	name: s	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 0	type: int
+                                                BinaryExpr	op: sub
+                                                    Id	name: s	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 0	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                                        ReturnStmt
+                                            Id	name: last	type: int
+                        FunctionDefine function name: stack_peek, type: int(int array)
+                            CompoundStmt
+                                ReturnStmt
+                                    Id	name: s	type: int array
+                                        ArrayindiceNode
+                                            Id	name: s	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 0	type: int
+                    FunctionDefine function name: stack_size, type: int(int array)
+                        CompoundStmt
+                            ReturnStmt
+                                Id	name: s	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 0	type: int
+                FunctionDefine function name: eval_op, type: int(int, int, int)
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            IfStmt
+                                                BinaryExpr	op: equal
+                                                    Id	name: op	type: int
+                                                    IntegerLiteral	value: 43	type: int
+                                                ReturnStmt
+                                                    BinaryExpr	op: add
+                                                        Id	name: lhs	type: int
+                                                        Id	name: rhs	type: int
+                                            IfStmt
+                                                BinaryExpr	op: equal
+                                                    Id	name: op	type: int
+                                                    IntegerLiteral	value: 45	type: int
+                                                ReturnStmt
+                                                    BinaryExpr	op: sub
+                                                        Id	name: lhs	type: int
+                                                        Id	name: rhs	type: int
+                                        IfStmt
+                                            BinaryExpr	op: equal
+                                                Id	name: op	type: int
+                                                IntegerLiteral	value: 42	type: int
+                                            ReturnStmt
+                                                BinaryExpr	op: mul
+                                                    Id	name: lhs	type: int
+                                                    Id	name: rhs	type: int
+                                    IfStmt
+                                        BinaryExpr	op: equal
+                                            Id	name: op	type: int
+                                            IntegerLiteral	value: 47	type: int
+                                        ReturnStmt
+                                            BinaryExpr	op: div
+                                                Id	name: lhs	type: int
+                                                Id	name: rhs	type: int
+                                IfStmt
+                                    BinaryExpr	op: equal
+                                        Id	name: op	type: int
+                                        IntegerLiteral	value: 37	type: int
+                                    ReturnStmt
+                                        BinaryExpr	op: mod
+                                            Id	name: lhs	type: int
+                                            Id	name: rhs	type: int
+                            ReturnStmt
+                                IntegerLiteral	value: 0	type: int
+            FunctionDefine function name: eval, type: int()
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:true
+                                                        Id	name: oprs	type: int array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 256	type: int
+                                                        ArrayinitNode	isConst:false
+                                                    DefNode	isConst:false	isArray:true
+                                                        Id	name: ops	type: int array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 256	type: int
+                                                        ArrayinitNode	isConst:false
+                                                IfStmt
+                                                    BinaryExpr	op: not equal
+                                                        Id	name: cur_token	type: int
+                                                        Id	name: TOKEN_NUM	type: int
+                                                    ReturnStmt
+                                                        FuncCallNode	funcName: panic	 funcType: int()
+                                                            FuncCallWithNoParams
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: stack_push	 funcType: void(int array, int)
+                                                    FuncCallParamsNode
+                                                        Id	name: oprs	type: int array
+                                                        Id	name: num	type: int
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: next_token	 funcType: int()
+                                                FuncCallWithNoParams
+                                    WhileStmt
+                                        BinaryExpr	op: equal
+                                            Id	name: cur_token	type: int
+                                            Id	name: TOKEN_OTHER	type: int
+                                        CompoundStmt
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        DeclStmt
+                                                                            DefNode	isConst:false	isArray:false
+                                                                                Id	name: op	type: int
+                                                                                Id	name: other	type: int
+                                                                        IfStmt
+                                                                            UnaryOpExpr	op: not
+                                                                                FuncCallNode	funcName: get_op_prec	 funcType: int(int)
+                                                                                    FuncCallParamsNode
+                                                                                        Id	name: op	type: int
+                                                                            BreakStmt
+                                                                    ExprStmtNode
+                                                                        FuncCallNode	funcName: next_token	 funcType: int()
+                                                                            FuncCallWithNoParams
+                                                                WhileStmt
+                                                                    BinaryExpr	op: and
+                                                                        FuncCallNode	funcName: stack_size	 funcType: int(int array)
+                                                                            FuncCallParamsNode
+                                                                                Id	name: ops	type: int array
+                                                                        BinaryExpr	op: greater or equal
+                                                                            FuncCallNode	funcName: get_op_prec	 funcType: int(int)
+                                                                                FuncCallParamsNode
+                                                                                    FuncCallNode	funcName: stack_peek	 funcType: int(int array)
+                                                                                        FuncCallParamsNode
+                                                                                            Id	name: ops	type: int array
+                                                                            FuncCallNode	funcName: get_op_prec	 funcType: int(int)
+                                                                                FuncCallParamsNode
+                                                                                    Id	name: op	type: int
+                                                                    CompoundStmt
+                                                                        Sequence
+                                                                            Sequence
+                                                                                DeclStmt
+                                                                                    DefNode	isConst:false	isArray:false
+                                                                                        Id	name: cur_op	type: int
+                                                                                        FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                                                            FuncCallParamsNode
+                                                                                                Id	name: ops	type: int array
+                                                                                DeclStmt
+                                                                                    DefNode	isConst:false	isArray:false
+                                                                                        Id	name: rhs	type: int
+                                                                                        FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                                                            FuncCallParamsNode
+                                                                                                Id	name: oprs	type: int array
+                                                                                    DefNode	isConst:false	isArray:false
+                                                                                        Id	name: lhs	type: int
+                                                                                        FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                                                            FuncCallParamsNode
+                                                                                                Id	name: oprs	type: int array
+                                                                            ExprStmtNode
+                                                                                FuncCallNode	funcName: stack_push	 funcType: void(int array, int)
+                                                                                    FuncCallParamsNode
+                                                                                        Id	name: oprs	type: int array
+                                                                                        FuncCallNode	funcName: eval_op	 funcType: int(int, int, int)
+                                                                                            FuncCallParamsNode
+                                                                                                Id	name: cur_op	type: int
+                                                                                                Id	name: lhs	type: int
+                                                                                                Id	name: rhs	type: int
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: stack_push	 funcType: void(int array, int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: ops	type: int array
+                                                                        Id	name: op	type: int
+                                                        IfStmt
+                                                            BinaryExpr	op: not equal
+                                                                Id	name: cur_token	type: int
+                                                                Id	name: TOKEN_NUM	type: int
+                                                            ReturnStmt
+                                                                FuncCallNode	funcName: panic	 funcType: int()
+                                                                    FuncCallWithNoParams
+                                                    ExprStmtNode
+                                                        FuncCallNode	funcName: stack_push	 funcType: void(int array, int)
+                                                            FuncCallParamsNode
+                                                                Id	name: oprs	type: int array
+                                                                Id	name: num	type: int
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: next_token	 funcType: int()
+                                                        FuncCallWithNoParams
+                                ExprStmtNode
+                                    FuncCallNode	funcName: next_token	 funcType: int()
+                                        FuncCallWithNoParams
+                            WhileStmt
+                                FuncCallNode	funcName: stack_size	 funcType: int(int array)
+                                    FuncCallParamsNode
+                                        Id	name: ops	type: int array
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: cur_op	type: int
+                                                    FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                        FuncCallParamsNode
+                                                            Id	name: ops	type: int array
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: rhs	type: int
+                                                    FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                        FuncCallParamsNode
+                                                            Id	name: oprs	type: int array
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: lhs	type: int
+                                                    FuncCallNode	funcName: stack_pop	 funcType: int(int array)
+                                                        FuncCallParamsNode
+                                                            Id	name: oprs	type: int array
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: stack_push	 funcType: void(int array, int)
+                                                FuncCallParamsNode
+                                                    Id	name: oprs	type: int array
+                                                    FuncCallNode	funcName: eval_op	 funcType: int(int, int, int)
+                                                        FuncCallParamsNode
+                                                            Id	name: cur_op	type: int
+                                                            Id	name: lhs	type: int
+                                                            Id	name: rhs	type: int
+                        ReturnStmt
+                            FuncCallNode	funcName: stack_peek	 funcType: int(int array)
+                                FuncCallParamsNode
+                                    Id	name: oprs	type: int array
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: count	type: int
+                                        FuncCallNode	funcName: getint	 funcType: int()
+                                            FuncCallWithNoParams
+                                ExprStmtNode
+                                    FuncCallNode	funcName: getch	 funcType: int()
+                                        FuncCallWithNoParams
+                            ExprStmtNode
+                                FuncCallNode	funcName: next_token	 funcType: int()
+                                    FuncCallWithNoParams
+                        WhileStmt
+                            Id	name: count	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putint	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    FuncCallNode	funcName: eval	 funcType: int()
+                                                        FuncCallWithNoParams
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 10	type: int
+                                    AssignStmt
+                                        Id	name: count	type: int
+                                        BinaryExpr	op: sub
+                                            Id	name: count	type: int
+                                            IntegerLiteral	value: 1	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

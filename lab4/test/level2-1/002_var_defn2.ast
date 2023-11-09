@@ -1,0 +1,22 @@
+program
+    Sequence
+        Sequence
+            DeclStmt
+                DefNode	isConst:false	isArray:false
+                    Id	name: a	type: int
+                    IntegerLiteral	value: 3	type: int
+            DeclStmt
+                DefNode	isConst:false	isArray:false
+                    Id	name: b	type: int
+                    IntegerLiteral	value: 5	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    DeclStmt
+                        DefNode	isConst:false	isArray:false
+                            Id	name: a	type: int
+                            IntegerLiteral	value: 5	type: int
+                    ReturnStmt
+                        BinaryExpr	op: add
+                            Id	name: a	type: int
+                            Id	name: b	type: int

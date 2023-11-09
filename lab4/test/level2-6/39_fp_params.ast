@@ -1,0 +1,1881 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: k	type: int
+                                null
+                        FunctionDefine function name: params_f40, type: float(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)
+                            CompoundStmt
+                                IfElseStmt
+                                    BinaryExpr	op: not equal
+                                        Id	name: x39	type: float
+                                        IntegerLiteral	value: 0	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:true
+                                                        Id	name: arr	type: float array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 10	type: int
+                                                        ArrayinitNode	isConst:false
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x0	type: float
+                                                                            Id	name: x1	type: float
+                                                                        Id	name: x2	type: float
+                                                                    Id	name: x3	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x4	type: float
+                                                                            Id	name: x5	type: float
+                                                                        Id	name: x6	type: float
+                                                                    Id	name: x7	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x8	type: float
+                                                                            Id	name: x9	type: float
+                                                                        Id	name: x10	type: float
+                                                                    Id	name: x11	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x12	type: float
+                                                                            Id	name: x13	type: float
+                                                                        Id	name: x14	type: float
+                                                                    Id	name: x15	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x16	type: float
+                                                                            Id	name: x17	type: float
+                                                                        Id	name: x18	type: float
+                                                                    Id	name: x19	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x20	type: float
+                                                                            Id	name: x21	type: float
+                                                                        Id	name: x22	type: float
+                                                                    Id	name: x23	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x24	type: float
+                                                                            Id	name: x25	type: float
+                                                                        Id	name: x26	type: float
+                                                                    Id	name: x27	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x28	type: float
+                                                                            Id	name: x29	type: float
+                                                                        Id	name: x30	type: float
+                                                                    Id	name: x31	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x32	type: float
+                                                                            Id	name: x33	type: float
+                                                                        Id	name: x34	type: float
+                                                                    Id	name: x35	type: float
+                                                            ArrayinitNode	isConst:false
+                                                                BinaryExpr	op: add
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: x36	type: float
+                                                                            Id	name: x37	type: float
+                                                                        Id	name: x38	type: float
+                                                                    Id	name: x39	type: float
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putfarray	 funcType: void(int, float array)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 10	type: int
+                                                            Id	name: arr	type: float array
+                                            ReturnStmt
+                                                Id	name: arr	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                    CompoundStmt
+                                        ReturnStmt
+                                            FuncCallNode	funcName: params_f40	 funcType: float(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)
+                                                FuncCallParamsNode
+                                                    Id	name: x1	type: float
+                                                    Id	name: x2	type: float
+                                                    Id	name: x3	type: float
+                                                    Id	name: x4	type: float
+                                                    Id	name: x5	type: float
+                                                    Id	name: x6	type: float
+                                                    Id	name: x7	type: float
+                                                    Id	name: x8	type: float
+                                                    Id	name: x9	type: float
+                                                    Id	name: x10	type: float
+                                                    Id	name: x11	type: float
+                                                    Id	name: x12	type: float
+                                                    Id	name: x13	type: float
+                                                    Id	name: x14	type: float
+                                                    Id	name: x15	type: float
+                                                    Id	name: x16	type: float
+                                                    Id	name: x17	type: float
+                                                    Id	name: x18	type: float
+                                                    Id	name: x19	type: float
+                                                    Id	name: x20	type: float
+                                                    Id	name: x21	type: float
+                                                    Id	name: x22	type: float
+                                                    Id	name: x23	type: float
+                                                    Id	name: x24	type: float
+                                                    Id	name: x25	type: float
+                                                    Id	name: x26	type: float
+                                                    Id	name: x27	type: float
+                                                    Id	name: x28	type: float
+                                                    Id	name: x29	type: float
+                                                    Id	name: x30	type: float
+                                                    Id	name: x31	type: float
+                                                    Id	name: x32	type: float
+                                                    Id	name: x33	type: float
+                                                    Id	name: x34	type: float
+                                                    Id	name: x35	type: float
+                                                    Id	name: x36	type: float
+                                                    Id	name: x37	type: float
+                                                    Id	name: x38	type: float
+                                                    Id	name: x39	type: float
+                                                    BinaryExpr	op: add
+                                                        BinaryExpr	op: add
+                                                            Id	name: x0	type: float
+                                                            Id	name: x1	type: float
+                                                        Id	name: x2	type: float
+                    FunctionDefine function name: params_f40_i24, type: float(int, int, int, float, int, int, int, float, float, float, int, float, float, int, float, int, float, float, float, float, float, float, int, float, int, int, float, float, float, float, float, int, float, int, float, float, float, float, int, int, float, float, float, int, float, int, int, float, float, float, float, int, int, int, float, float, float, float, float, float, int, float, int, float)
+                        CompoundStmt
+                            IfElseStmt
+                                BinaryExpr	op: not equal
+                                    Id	name: i23	type: int
+                                    IntegerLiteral	value: 0	type: int
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:true
+                                                                    Id	name: arr	type: float array
+                                                                        ArrayindiceNode
+                                                                            IntegerLiteral	value: 10	type: int
+                                                                    ArrayinitNode	isConst:false
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x0	type: float
+                                                                                        Id	name: x1	type: float
+                                                                                    Id	name: x2	type: float
+                                                                                Id	name: x3	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x4	type: float
+                                                                                        Id	name: x5	type: float
+                                                                                    Id	name: x6	type: float
+                                                                                Id	name: x7	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x8	type: float
+                                                                                        Id	name: x9	type: float
+                                                                                    Id	name: x10	type: float
+                                                                                Id	name: x11	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x12	type: float
+                                                                                        Id	name: x13	type: float
+                                                                                    Id	name: x14	type: float
+                                                                                Id	name: x15	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x16	type: float
+                                                                                        Id	name: x17	type: float
+                                                                                    Id	name: x18	type: float
+                                                                                Id	name: x19	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x20	type: float
+                                                                                        Id	name: x21	type: float
+                                                                                    Id	name: x22	type: float
+                                                                                Id	name: x23	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x24	type: float
+                                                                                        Id	name: x25	type: float
+                                                                                    Id	name: x26	type: float
+                                                                                Id	name: x27	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x28	type: float
+                                                                                        Id	name: x29	type: float
+                                                                                    Id	name: x30	type: float
+                                                                                Id	name: x31	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x32	type: float
+                                                                                        Id	name: x33	type: float
+                                                                                    Id	name: x34	type: float
+                                                                                Id	name: x35	type: float
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: x36	type: float
+                                                                                        Id	name: x37	type: float
+                                                                                    Id	name: x38	type: float
+                                                                                Id	name: x39	type: float
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:true
+                                                                    Id	name: arr2	type: int array
+                                                                        ArrayindiceNode
+                                                                            IntegerLiteral	value: 8	type: int
+                                                                    ArrayinitNode	isConst:false
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i0	type: int
+                                                                                    Id	name: i1	type: int
+                                                                                Id	name: i2	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i3	type: int
+                                                                                    Id	name: i4	type: int
+                                                                                Id	name: i5	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i6	type: int
+                                                                                    Id	name: i7	type: int
+                                                                                Id	name: i8	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i9	type: int
+                                                                                    Id	name: i10	type: int
+                                                                                Id	name: i11	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i12	type: int
+                                                                                    Id	name: i13	type: int
+                                                                                Id	name: i14	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i15	type: int
+                                                                                    Id	name: i16	type: int
+                                                                                Id	name: i17	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i18	type: int
+                                                                                    Id	name: i19	type: int
+                                                                                Id	name: i20	type: int
+                                                                        ArrayinitNode	isConst:false
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i21	type: int
+                                                                                    Id	name: i22	type: int
+                                                                                Id	name: i23	type: int
+                                                        ExprStmtNode
+                                                            FuncCallNode	funcName: putfarray	 funcType: void(int, float array)
+                                                                FuncCallParamsNode
+                                                                    IntegerLiteral	value: 10	type: int
+                                                                    Id	name: arr	type: float array
+                                                    ExprStmtNode
+                                                        FuncCallNode	funcName: putarray	 funcType: void(int, int array)
+                                                            FuncCallParamsNode
+                                                                IntegerLiteral	value: 8	type: int
+                                                                Id	name: arr2	type: int array
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:false
+                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 0	type: int
+                                            WhileStmt
+                                                BinaryExpr	op: less
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 8	type: int
+                                                CompoundStmt
+                                                    Sequence
+                                                        AssignStmt
+                                                            Id	name: arr2	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: i	type: int
+                                                            BinaryExpr	op: sub
+                                                                Id	name: arr2	type: int array
+                                                                    ArrayindiceNode
+                                                                        Id	name: i	type: int
+                                                                Id	name: arr	type: float array
+                                                                    ArrayindiceNode
+                                                                        Id	name: i	type: int
+                                                        AssignStmt
+                                                            Id	name: i	type: int
+                                                            BinaryExpr	op: add
+                                                                Id	name: i	type: int
+                                                                IntegerLiteral	value: 1	type: int
+                                        ReturnStmt
+                                            Id	name: arr2	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: k	type: int
+                                CompoundStmt
+                                    ReturnStmt
+                                        FuncCallNode	funcName: params_f40_i24	 funcType: float(int, int, int, float, int, int, int, float, float, float, int, float, float, int, float, int, float, float, float, float, float, float, int, float, int, int, float, float, float, float, float, int, float, int, float, float, float, float, int, int, float, float, float, int, float, int, int, float, float, float, float, int, int, int, float, float, float, float, float, float, int, float, int, float)
+                                            FuncCallParamsNode
+                                                Id	name: i1	type: int
+                                                Id	name: i2	type: int
+                                                Id	name: i6	type: int
+                                                Id	name: x4	type: float
+                                                Id	name: i1	type: int
+                                                Id	name: i4	type: int
+                                                Id	name: i5	type: int
+                                                Id	name: x8	type: float
+                                                Id	name: x15	type: float
+                                                Id	name: x7	type: float
+                                                Id	name: i22	type: int
+                                                Id	name: x3	type: float
+                                                Id	name: x28	type: float
+                                                Id	name: i0	type: int
+                                                Id	name: x37	type: float
+                                                Id	name: i19	type: int
+                                                Id	name: x30	type: float
+                                                Id	name: x12	type: float
+                                                Id	name: x1	type: float
+                                                Id	name: x11	type: float
+                                                Id	name: x38	type: float
+                                                Id	name: x6	type: float
+                                                Id	name: i7	type: int
+                                                Id	name: x32	type: float
+                                                Id	name: i10	type: int
+                                                Id	name: i13	type: int
+                                                Id	name: x20	type: float
+                                                Id	name: x33	type: float
+                                                Id	name: x23	type: float
+                                                Id	name: x9	type: float
+                                                Id	name: x25	type: float
+                                                Id	name: i8	type: int
+                                                Id	name: x39	type: float
+                                                Id	name: i17	type: int
+                                                Id	name: x21	type: float
+                                                Id	name: x16	type: float
+                                                Id	name: x5	type: float
+                                                Id	name: x34	type: float
+                                                Id	name: i18	type: int
+                                                Id	name: i9	type: int
+                                                Id	name: x14	type: float
+                                                Id	name: x10	type: float
+                                                Id	name: x0	type: float
+                                                Id	name: i12	type: int
+                                                Id	name: x31	type: float
+                                                Id	name: i11	type: int
+                                                Id	name: i16	type: int
+                                                Id	name: x27	type: float
+                                                Id	name: x24	type: float
+                                                Id	name: x13	type: float
+                                                Id	name: x29	type: float
+                                                Id	name: i3	type: int
+                                                Id	name: i21	type: int
+                                                Id	name: i20	type: int
+                                                Id	name: x18	type: float
+                                                Id	name: x19	type: float
+                                                Id	name: x22	type: float
+                                                Id	name: x26	type: float
+                                                Id	name: x36	type: float
+                                                Id	name: x17	type: float
+                                                Id	name: i15	type: int
+                                                Id	name: x2	type: float
+                                                Id	name: i14	type: int
+                                                Id	name: x35	type: float
+                FunctionDefine function name: params_fa40, type: float(float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array)
+                    CompoundStmt
+                        Sequence
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: arr	type: float array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 10	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x0	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x1	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x2	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x3	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x4	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x5	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x6	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x7	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x8	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x9	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x10	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x11	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x12	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x13	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x14	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x15	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x16	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x17	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x18	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x19	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x20	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x21	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x22	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x23	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x24	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x25	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x26	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x27	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x28	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x29	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x30	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x31	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x32	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x33	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x34	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x35	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x36	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x37	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x38	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x39	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                            IfElseStmt
+                                BinaryExpr	op: not equal
+                                    BinaryExpr	op: not equal
+                                        BinaryExpr	op: not equal
+                                            BinaryExpr	op: not equal
+                                                Id	name: x39	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                                IntegerLiteral	value: 0	type: int
+                                            IntegerLiteral	value: 0	type: int
+                                        IntegerLiteral	value: 0	type: float
+                                    IntegerLiteral	value: 0	type: float
+                                CompoundStmt
+                                    Sequence
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putfarray	 funcType: void(int, float array)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 10	type: int
+                                                    Id	name: arr	type: float array
+                                        ReturnStmt
+                                            Id	name: arr	type: float array
+                                                ArrayindiceNode
+                                                    Id	name: k	type: int
+                                CompoundStmt
+                                    ReturnStmt
+                                        FuncCallNode	funcName: params_fa40	 funcType: float(float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array)
+                                            FuncCallParamsNode
+                                                Id	name: x1	type: float array
+                                                Id	name: x2	type: float array
+                                                Id	name: x3	type: float array
+                                                Id	name: x4	type: float array
+                                                Id	name: x5	type: float array
+                                                Id	name: x6	type: float array
+                                                Id	name: x7	type: float array
+                                                Id	name: x8	type: float array
+                                                Id	name: x9	type: float array
+                                                Id	name: x10	type: float array
+                                                Id	name: x11	type: float array
+                                                Id	name: x12	type: float array
+                                                Id	name: x13	type: float array
+                                                Id	name: x14	type: float array
+                                                Id	name: x15	type: float array
+                                                Id	name: x16	type: float array
+                                                Id	name: x17	type: float array
+                                                Id	name: x18	type: float array
+                                                Id	name: x19	type: float array
+                                                Id	name: x20	type: float array
+                                                Id	name: x21	type: float array
+                                                Id	name: x22	type: float array
+                                                Id	name: x23	type: float array
+                                                Id	name: x24	type: float array
+                                                Id	name: x25	type: float array
+                                                Id	name: x26	type: float array
+                                                Id	name: x27	type: float array
+                                                Id	name: x28	type: float array
+                                                Id	name: x29	type: float array
+                                                Id	name: x30	type: float array
+                                                Id	name: x31	type: float array
+                                                Id	name: x32	type: float array
+                                                Id	name: x33	type: float array
+                                                Id	name: x34	type: float array
+                                                Id	name: x35	type: float array
+                                                Id	name: x36	type: float array
+                                                Id	name: x37	type: float array
+                                                Id	name: x38	type: float array
+                                                Id	name: x39	type: float array
+                                                Id	name: arr	type: float array
+            FunctionDefine function name: params_mix, type: int(float, int array, int, float array, float, int, float, float, float array, int array, int, int, float array, int array, int array, int, float array, float array, float, float, float, float array, int, float, float, float, int array, float array, int array, int array, float array, float, float, int array, int, float array, float array, float, float, int array, int array, int, int, float, float, int array, int, float array, int, int array, int array, float, float, float array, int, int array, float array, float, int, float, float array, float array, float, int)
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: arr	type: float array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 10	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x0	type: float
+                                                        Id	name: x3	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x4	type: float
+                                                Id	name: x6	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x7	type: float
+                                                        Id	name: x8	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x12	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x16	type: float array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x17	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x18	type: float
+                                                    Id	name: x19	type: float
+                                                Id	name: x20	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x21	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x23	type: float
+                                                    Id	name: x24	type: float
+                                                Id	name: x25	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x27	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x30	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x31	type: float
+                                                Id	name: x32	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x35	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                        Id	name: x36	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x37	type: float
+                                                Id	name: x38	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x43	type: float
+                                                        Id	name: x44	type: float
+                                                    Id	name: x47	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x51	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x52	type: float
+                                                        Id	name: x53	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x56	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x57	type: float
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: x59	type: float
+                                                        Id	name: x60	type: float array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: x61	type: float array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: x62	type: float
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: arr2	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 10	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i1	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                    Id	name: i2	type: int
+                                                Id	name: i5	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i9	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                    Id	name: i10	type: int
+                                                Id	name: i11	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i13	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                    Id	name: i14	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i15	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i22	type: int
+                                                    Id	name: i26	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i28	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i29	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                    Id	name: i33	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i34	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i39	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                    Id	name: i40	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i41	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i42	type: int
+                                                    Id	name: i45	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i46	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    Id	name: i48	type: int
+                                                    Id	name: i49	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: k	type: int
+                                                Id	name: i50	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: k	type: int
+                                        ArrayinitNode	isConst:false
+                                            BinaryExpr	op: add
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: add
+                                                        Id	name: i54	type: int
+                                                        Id	name: i55	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: k	type: int
+                                                    Id	name: i58	type: int
+                                                Id	name: i63	type: int
+                        IfElseStmt
+                            BinaryExpr	op: not equal
+                                Id	name: i63	type: int
+                                IntegerLiteral	value: 0	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putfarray	 funcType: void(int, float array)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 10	type: int
+                                                            Id	name: arr	type: float array
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putarray	 funcType: void(int, int array)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 10	type: int
+                                                            Id	name: arr2	type: int array
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 0	type: int
+                                        WhileStmt
+                                            BinaryExpr	op: less
+                                                Id	name: i	type: int
+                                                IntegerLiteral	value: 10	type: int
+                                            CompoundStmt
+                                                Sequence
+                                                    AssignStmt
+                                                        Id	name: arr2	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: i	type: int
+                                                        BinaryExpr	op: sub
+                                                            Id	name: arr2	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: i	type: int
+                                                            Id	name: arr	type: float array
+                                                                ArrayindiceNode
+                                                                    Id	name: i	type: int
+                                                    AssignStmt
+                                                        Id	name: i	type: int
+                                                        BinaryExpr	op: add
+                                                            Id	name: i	type: int
+                                                            IntegerLiteral	value: 1	type: int
+                                    ReturnStmt
+                                        BinaryExpr	op: mul
+                                            Id	name: arr2	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: k	type: int
+                                            Id	name: arr	type: float array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 8	type: int
+                            CompoundStmt
+                                ReturnStmt
+                                    FuncCallNode	funcName: params_mix	 funcType: int(float, int array, int, float array, float, int, float, float, float array, int array, int, int, float array, int array, int array, int, float array, float array, float, float, float, float array, int, float, float, float, int array, float array, int array, int array, float array, float, float, int array, int, float array, float array, float, float, int array, int array, int, int, float, float, int array, int, float array, int, int array, int array, float, float, float array, int, int array, float array, float, int, float, float array, float array, float, int)
+                                        FuncCallParamsNode
+                                            Id	name: x0	type: float
+                                            Id	name: arr2	type: int array
+                                            Id	name: i2	type: int
+                                            Id	name: arr	type: float array
+                                            Id	name: x4	type: float
+                                            Id	name: i5	type: int
+                                            Id	name: x6	type: float
+                                            Id	name: x7	type: float
+                                            Id	name: x8	type: float array
+                                            Id	name: i9	type: int array
+                                            Id	name: i10	type: int
+                                            Id	name: i11	type: int
+                                            Id	name: x12	type: float array
+                                            Id	name: i13	type: int array
+                                            Id	name: i14	type: int array
+                                            Id	name: i15	type: int
+                                            Id	name: x16	type: float array
+                                            Id	name: x17	type: float array
+                                            Id	name: x18	type: float
+                                            Id	name: x19	type: float
+                                            Id	name: x20	type: float
+                                            Id	name: x21	type: float array
+                                            Id	name: i22	type: int
+                                            Id	name: x23	type: float
+                                            Id	name: x24	type: float
+                                            Id	name: x25	type: float
+                                            Id	name: i26	type: int array
+                                            Id	name: x27	type: float array
+                                            Id	name: i28	type: int array
+                                            Id	name: i29	type: int array
+                                            Id	name: x30	type: float array
+                                            Id	name: x31	type: float
+                                            Id	name: x32	type: float
+                                            Id	name: i33	type: int array
+                                            Id	name: i34	type: int
+                                            Id	name: x35	type: float array
+                                            Id	name: x36	type: float array
+                                            Id	name: x37	type: float
+                                            Id	name: x38	type: float
+                                            Id	name: i39	type: int array
+                                            Id	name: i40	type: int array
+                                            Id	name: i41	type: int
+                                            Id	name: i42	type: int
+                                            Id	name: x43	type: float
+                                            Id	name: x44	type: float
+                                            Id	name: i45	type: int array
+                                            Id	name: i46	type: int
+                                            Id	name: x47	type: float array
+                                            Id	name: i48	type: int
+                                            Id	name: i49	type: int array
+                                            Id	name: i50	type: int array
+                                            Id	name: x51	type: float
+                                            Id	name: x52	type: float
+                                            Id	name: x53	type: float array
+                                            Id	name: i54	type: int
+                                            Id	name: i55	type: int array
+                                            Id	name: x56	type: float array
+                                            Id	name: x57	type: float
+                                            Id	name: i58	type: int
+                                            Id	name: x59	type: float
+                                            Id	name: x60	type: float array
+                                            Id	name: x61	type: float array
+                                            Id	name: i63	type: int
+                                            Id	name: x62	type: float
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        Sequence
+                                                                            Sequence
+                                                                                Sequence
+                                                                                    Sequence
+                                                                                        Sequence
+                                                                                            DeclStmt
+                                                                                                DefNode	isConst:false	isArray:true
+                                                                                                    Id	name: arr	type: float array
+                                                                                                        ArrayindiceNode
+                                                                                                            IntegerLiteral	value: 40	type: int
+                                                                                                            IntegerLiteral	value: 3	type: int
+                                                                                                    null
+                                                                                            DeclStmt
+                                                                                                DefNode	isConst:false	isArray:true
+                                                                                                    Id	name: arr2	type: int array
+                                                                                                        ArrayindiceNode
+                                                                                                            IntegerLiteral	value: 24	type: int
+                                                                                                            IntegerLiteral	value: 3	type: int
+                                                                                                    null
+                                                                                                DefNode	isConst:false	isArray:false
+                                                                                                    Id	name: i	type: int
+                                                                                                    null
+                                                                                        AssignStmt
+                                                                                            Id	name: k	type: int
+                                                                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                                                                FuncCallWithNoParams
+                                                                                    AssignStmt
+                                                                                        Id	name: i	type: int
+                                                                                        IntegerLiteral	value: 0	type: int
+                                                                                WhileStmt
+                                                                                    BinaryExpr	op: less
+                                                                                        Id	name: i	type: int
+                                                                                        IntegerLiteral	value: 40	type: int
+                                                                                    CompoundStmt
+                                                                                        Sequence
+                                                                                            ExprStmtNode
+                                                                                                FuncCallNode	funcName: getfarray	 funcType: int(float array)
+                                                                                                    FuncCallParamsNode
+                                                                                                        Id	name: arr	type: float array
+                                                                                                            ArrayindiceNode
+                                                                                                                Id	name: i	type: int
+                                                                                            AssignStmt
+                                                                                                Id	name: i	type: int
+                                                                                                BinaryExpr	op: add
+                                                                                                    Id	name: i	type: int
+                                                                                                    IntegerLiteral	value: 1	type: int
+                                                                            AssignStmt
+                                                                                Id	name: i	type: int
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                        WhileStmt
+                                                                            BinaryExpr	op: less
+                                                                                Id	name: i	type: int
+                                                                                IntegerLiteral	value: 24	type: int
+                                                                            CompoundStmt
+                                                                                Sequence
+                                                                                    ExprStmtNode
+                                                                                        FuncCallNode	funcName: getarray	 funcType: int(int array)
+                                                                                            FuncCallParamsNode
+                                                                                                Id	name: arr2	type: int array
+                                                                                                    ArrayindiceNode
+                                                                                                        Id	name: i	type: int
+                                                                                    AssignStmt
+                                                                                        Id	name: i	type: int
+                                                                                        BinaryExpr	op: add
+                                                                                            Id	name: i	type: int
+                                                                                            IntegerLiteral	value: 1	type: int
+                                                                    DeclStmt
+                                                                        DefNode	isConst:false	isArray:false
+                                                                            Id	name: ret0	type: float
+                                                                            FuncCallNode	funcName: params_f40	 funcType: float(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)
+                                                                                FuncCallParamsNode
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 0	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 1	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 2	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 3	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 4	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 5	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 6	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 7	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 8	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 9	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 10	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 11	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 12	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 13	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 14	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 15	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 16	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 17	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 18	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 19	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 20	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 21	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 22	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 23	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 24	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 25	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 26	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 27	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 28	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 29	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 30	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 31	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 32	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 33	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 34	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 35	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 36	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 37	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 38	type: int
+                                                                                            Id	name: k	type: int
+                                                                                    Id	name: arr	type: float array
+                                                                                        ArrayindiceNode
+                                                                                            IntegerLiteral	value: 39	type: int
+                                                                                            Id	name: k	type: int
+                                                                DeclStmt
+                                                                    DefNode	isConst:false	isArray:false
+                                                                        Id	name: ret1	type: float
+                                                                        FuncCallNode	funcName: params_f40_i24	 funcType: float(int, int, int, float, int, int, int, float, float, float, int, float, float, int, float, int, float, float, float, float, float, float, int, float, int, int, float, float, float, float, float, int, float, int, float, float, float, float, int, int, float, float, float, int, float, int, int, float, float, float, float, int, int, int, float, float, float, float, float, float, int, float, int, float)
+                                                                            FuncCallParamsNode
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 23	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 2	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 6	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 4	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 1	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 4	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 5	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 8	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 15	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 7	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 22	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 3	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 28	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 0	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 37	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 19	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 30	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 12	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 1	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 11	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 38	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 6	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 7	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 32	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 10	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 13	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 20	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 33	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 23	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 9	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 25	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 8	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 39	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 17	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 21	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 16	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 5	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 34	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 18	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 9	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 14	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 10	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 0	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 12	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 31	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 11	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 16	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 27	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 24	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 13	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 29	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 3	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 21	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 20	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 18	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 19	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 22	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 26	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 36	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 17	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 15	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 2	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr2	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 14	type: int
+                                                                                        Id	name: k	type: int
+                                                                                Id	name: arr	type: float array
+                                                                                    ArrayindiceNode
+                                                                                        IntegerLiteral	value: 35	type: int
+                                                                                        Id	name: k	type: int
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: ret2	type: float
+                                                                    FuncCallNode	funcName: params_fa40	 funcType: float(float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array, float array)
+                                                                        FuncCallParamsNode
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 0	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 1	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 2	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 3	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 4	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 5	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 6	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 7	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 8	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 9	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 10	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 11	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 12	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 13	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 14	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 15	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 16	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 17	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 18	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 19	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 20	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 21	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 22	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 23	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 24	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 25	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 26	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 27	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 28	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 29	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 30	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 31	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 32	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 33	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 34	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 35	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 36	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 37	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 38	type: int
+                                                                            Id	name: arr	type: float array
+                                                                                ArrayindiceNode
+                                                                                    IntegerLiteral	value: 39	type: int
+                                                        DeclStmt
+                                                            DefNode	isConst:false	isArray:false
+                                                                Id	name: ret3	type: int
+                                                                FuncCallNode	funcName: params_mix	 funcType: int(float, int array, int, float array, float, int, float, float, float array, int array, int, int, float array, int array, int array, int, float array, float array, float, float, float, float array, int, float, float, float, int array, float array, int array, int array, float array, float, float, int array, int, float array, float array, float, float, int array, int array, int, int, float, float, int array, int, float array, int, int array, int array, float, float, float array, int, int array, float array, float, int, float, float array, float array, float, int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 2	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 2	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 3	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 4	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 5	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 3	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 4	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 5	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 6	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 6	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 7	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 8	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 7	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 8	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 9	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 10	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 11	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 12	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 9	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 13	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 14	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 15	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 10	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 16	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 11	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 12	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 17	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 18	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 19	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 13	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 14	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 20	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 21	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 22	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 23	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 15	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 16	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 17	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 18	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 24	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 25	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 19	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 20	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 26	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 21	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 22	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 23	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 27	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 28	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 29	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 30	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 31	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 2	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 32	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 33	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 34	type: int
+                                                                        Id	name: arr	type: float array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 35	type: int
+                                                                                Id	name: k	type: int
+                                                                        Id	name: arr2	type: int array
+                                                                            ArrayindiceNode
+                                                                                IntegerLiteral	value: 3	type: int
+                                                                                Id	name: k	type: int
+                                                    ExprStmtNode
+                                                        FuncCallNode	funcName: putfloat	 funcType: void(float)
+                                                            FuncCallParamsNode
+                                                                Id	name: ret0	type: float
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 10	type: int
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: putfloat	 funcType: void(float)
+                                                    FuncCallParamsNode
+                                                        Id	name: ret1	type: float
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 10	type: int
+                                    ExprStmtNode
+                                        FuncCallNode	funcName: putfloat	 funcType: void(float)
+                                            FuncCallParamsNode
+                                                Id	name: ret2	type: float
+                                ExprStmtNode
+                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                        FuncCallParamsNode
+                                            IntegerLiteral	value: 10	type: int
+                            ExprStmtNode
+                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                    FuncCallParamsNode
+                                        Id	name: ret3	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                FuncCallParamsNode
+                                    IntegerLiteral	value: 10	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

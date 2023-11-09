@@ -1,0 +1,139 @@
+program
+    FunctionDefine function name: main, type: int()
+        CompoundStmt
+            Sequence
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: a	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 4	type: int
+                                                IntegerLiteral	value: 2	type: int
+                                        ArrayinitNode	isConst:false
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: b	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 4	type: int
+                                                IntegerLiteral	value: 2	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 1	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 2	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 3	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 4	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 5	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 6	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 7	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 8	type: int
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: c	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 4	type: int
+                                            IntegerLiteral	value: 2	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 1	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 2	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 3	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 4	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 5	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 6	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 7	type: int
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 8	type: int
+                        DeclStmt
+                            DefNode	isConst:false	isArray:true
+                                Id	name: d	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 4	type: int
+                                        IntegerLiteral	value: 2	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 1	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 2	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 3	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 5	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 7	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 8	type: int
+                    DeclStmt
+                        DefNode	isConst:false	isArray:true
+                            Id	name: e	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 4	type: int
+                                    IntegerLiteral	value: 2	type: int
+                            ArrayinitNode	isConst:false
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        Id	name: d	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 2	type: int
+                                                IntegerLiteral	value: 1	type: int
+                                    ArrayinitNode	isConst:false
+                                        Id	name: c	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 2	type: int
+                                                IntegerLiteral	value: 1	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 3	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 4	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 5	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 6	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 7	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 8	type: int
+                ReturnStmt
+                    BinaryExpr	op: add
+                        BinaryExpr	op: add
+                            BinaryExpr	op: add
+                                Id	name: e	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 3	type: int
+                                        IntegerLiteral	value: 1	type: int
+                                Id	name: e	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 0	type: int
+                                        IntegerLiteral	value: 0	type: int
+                            Id	name: e	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 0	type: int
+                                    IntegerLiteral	value: 1	type: int
+                        Id	name: a	type: int array
+                            ArrayindiceNode
+                                IntegerLiteral	value: 2	type: int
+                                IntegerLiteral	value: 0	type: int

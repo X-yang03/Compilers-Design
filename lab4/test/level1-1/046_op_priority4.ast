@@ -1,0 +1,97 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: a	type: int
+                                null
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: b	type: int
+                                null
+                    DeclStmt
+                        DefNode	isConst:false	isArray:false
+                            Id	name: c	type: int
+                            null
+                DeclStmt
+                    DefNode	isConst:false	isArray:false
+                        Id	name: d	type: int
+                        null
+            DeclStmt
+                DefNode	isConst:false	isArray:false
+                    Id	name: e	type: int
+                    null
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            AssignStmt
+                                                Id	name: a	type: int
+                                                FuncCallNode	funcName: getint	 funcType: int()
+                                                    FuncCallWithNoParams
+                                            AssignStmt
+                                                Id	name: b	type: int
+                                                FuncCallNode	funcName: getint	 funcType: int()
+                                                    FuncCallWithNoParams
+                                        AssignStmt
+                                            Id	name: c	type: int
+                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                FuncCallWithNoParams
+                                    AssignStmt
+                                        Id	name: d	type: int
+                                        FuncCallNode	funcName: getint	 funcType: int()
+                                            FuncCallWithNoParams
+                                AssignStmt
+                                    Id	name: e	type: int
+                                    FuncCallNode	funcName: getint	 funcType: int()
+                                        FuncCallWithNoParams
+                            DeclStmt
+                                DefNode	isConst:false	isArray:false
+                                    Id	name: flag	type: int
+                                    IntegerLiteral	value: 0	type: int
+                        IfStmt
+                            BinaryExpr	op: or
+                                BinaryExpr	op: or
+                                    BinaryExpr	op: not equal
+                                        BinaryExpr	op: sub
+                                            Id	name: a	type: int
+                                            BinaryExpr	op: mul
+                                                Id	name: b	type: int
+                                                Id	name: c	type: int
+                                        BinaryExpr	op: sub
+                                            Id	name: d	type: int
+                                            BinaryExpr	op: div
+                                                Id	name: a	type: int
+                                                Id	name: c	type: int
+                                    BinaryExpr	op: equal
+                                        BinaryExpr	op: div
+                                            BinaryExpr	op: mul
+                                                Id	name: a	type: int
+                                                Id	name: b	type: int
+                                            Id	name: c	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: e	type: int
+                                            Id	name: d	type: int
+                                BinaryExpr	op: equal
+                                    BinaryExpr	op: add
+                                        BinaryExpr	op: add
+                                            Id	name: a	type: int
+                                            Id	name: b	type: int
+                                        Id	name: c	type: int
+                                    BinaryExpr	op: add
+                                        Id	name: d	type: int
+                                        Id	name: e	type: int
+                            CompoundStmt
+                                AssignStmt
+                                    Id	name: flag	type: int
+                                    IntegerLiteral	value: 1	type: int
+                    ReturnStmt
+                        Id	name: flag	type: int

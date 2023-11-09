@@ -1,0 +1,65 @@
+program
+    Sequence
+        Sequence
+            DeclStmt
+                DefNode	isConst:true	isArray:false
+                    Id	name: N	type: int
+                    UnaryOpExpr	op: sub
+                        IntegerLiteral	value: 1	type: int
+            DeclStmt
+                DefNode	isConst:false	isArray:true
+                    Id	name: arr	type: int array
+                        ArrayindiceNode
+                            BinaryExpr	op: sub
+                                BinaryExpr	op: add
+                                    Id	name: N	type: int
+                                    BinaryExpr	op: mul
+                                        IntegerLiteral	value: 2	type: int
+                                        IntegerLiteral	value: 4	type: int
+                                BinaryExpr	op: div
+                                    IntegerLiteral	value: 99	type: int
+                                    IntegerLiteral	value: 99	type: int
+                    ArrayinitNode	isConst:false
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 1	type: int
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 2	type: int
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 33	type: int
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 4	type: int
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 5	type: int
+                        ArrayinitNode	isConst:false
+                            IntegerLiteral	value: 6	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: i	type: int
+                                IntegerLiteral	value: 0	type: int
+                            DefNode	isConst:false	isArray:false
+                                Id	name: sum	type: int
+                                IntegerLiteral	value: 0	type: int
+                        WhileStmt
+                            BinaryExpr	op: less
+                                Id	name: i	type: int
+                                IntegerLiteral	value: 6	type: int
+                            CompoundStmt
+                                Sequence
+                                    AssignStmt
+                                        Id	name: sum	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: sum	type: int
+                                            Id	name: arr	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: i	type: int
+                                    AssignStmt
+                                        Id	name: i	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 1	type: int
+                    ReturnStmt
+                        Id	name: sum	type: int

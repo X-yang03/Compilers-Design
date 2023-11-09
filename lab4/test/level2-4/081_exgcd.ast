@@ -1,0 +1,122 @@
+program
+    Sequence
+        FunctionDefine function name: exgcd, type: int(int, int, int array, int array)
+            CompoundStmt
+                IfElseStmt
+                    BinaryExpr	op: equal
+                        Id	name: b	type: int
+                        IntegerLiteral	value: 0	type: int
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                AssignStmt
+                                    Id	name: x	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 0	type: int
+                                    IntegerLiteral	value: 1	type: int
+                                AssignStmt
+                                    Id	name: y	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 0	type: int
+                                    IntegerLiteral	value: 0	type: int
+                            ReturnStmt
+                                Id	name: a	type: int
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: r	type: int
+                                                FuncCallNode	funcName: exgcd	 funcType: int(int, int, int array, int array)
+                                                    FuncCallParamsNode
+                                                        Id	name: b	type: int
+                                                        BinaryExpr	op: mod
+                                                            Id	name: a	type: int
+                                                            Id	name: b	type: int
+                                                        Id	name: x	type: int array
+                                                        Id	name: y	type: int array
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: t	type: int
+                                                Id	name: x	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 0	type: int
+                                    AssignStmt
+                                        Id	name: x	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 0	type: int
+                                        Id	name: y	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 0	type: int
+                                AssignStmt
+                                    Id	name: y	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 0	type: int
+                                    BinaryExpr	op: sub
+                                        Id	name: t	type: int
+                                        BinaryExpr	op: mul
+                                            BinaryExpr	op: div
+                                                Id	name: a	type: int
+                                                Id	name: b	type: int
+                                            Id	name: y	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 0	type: int
+                            ReturnStmt
+                                Id	name: r	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: a	type: int
+                                        IntegerLiteral	value: 7	type: int
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: b	type: int
+                                        IntegerLiteral	value: 15	type: int
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: x	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 1	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 1	type: int
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: y	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 1	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                IntegerLiteral	value: 1	type: int
+                                ExprStmtNode
+                                    FuncCallNode	funcName: exgcd	 funcType: int(int, int, int array, int array)
+                                        FuncCallParamsNode
+                                            Id	name: a	type: int
+                                            Id	name: b	type: int
+                                            Id	name: x	type: int array
+                                            Id	name: y	type: int array
+                            AssignStmt
+                                Id	name: x	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 0	type: int
+                                BinaryExpr	op: mod
+                                    BinaryExpr	op: add
+                                        BinaryExpr	op: mod
+                                            Id	name: x	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 0	type: int
+                                            Id	name: b	type: int
+                                        Id	name: b	type: int
+                                    Id	name: b	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putint	 funcType: void(int)
+                                FuncCallParamsNode
+                                    Id	name: x	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 0	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

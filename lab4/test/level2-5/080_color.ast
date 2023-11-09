@@ -1,0 +1,430 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:true	isArray:false
+                                        Id	name: maxn	type: int
+                                        IntegerLiteral	value: 18	type: int
+                                DeclStmt
+                                    DefNode	isConst:true	isArray:false
+                                        Id	name: mod	type: int
+                                        IntegerLiteral	value: 1000000007	type: int
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: dp	type: int array
+                                        ArrayindiceNode
+                                            Id	name: maxn	type: int
+                                            Id	name: maxn	type: int
+                                            Id	name: maxn	type: int
+                                            Id	name: maxn	type: int
+                                            Id	name: maxn	type: int
+                                            IntegerLiteral	value: 7	type: int
+                                    null
+                        DeclStmt
+                            DefNode	isConst:false	isArray:true
+                                Id	name: list	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 200	type: int
+                                null
+                    FunctionDefine function name: equal, type: int(int, int)
+                        CompoundStmt
+                            Sequence
+                                IfStmt
+                                    BinaryExpr	op: equal
+                                        Id	name: a	type: int
+                                        Id	name: b	type: int
+                                    ReturnStmt
+                                        IntegerLiteral	value: 1	type: int
+                                ReturnStmt
+                                    IntegerLiteral	value: 0	type: int
+                FunctionDefine function name: dfs, type: int(int, int, int, int, int, int)
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            IfStmt
+                                                                BinaryExpr	op: not equal
+                                                                    Id	name: dp	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: a	type: int
+                                                                            Id	name: b	type: int
+                                                                            Id	name: c	type: int
+                                                                            Id	name: d	type: int
+                                                                            Id	name: e	type: int
+                                                                            Id	name: last	type: int
+                                                                    UnaryOpExpr	op: sub
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                ReturnStmt
+                                                                    Id	name: dp	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: a	type: int
+                                                                            Id	name: b	type: int
+                                                                            Id	name: c	type: int
+                                                                            Id	name: d	type: int
+                                                                            Id	name: e	type: int
+                                                                            Id	name: last	type: int
+                                                            IfStmt
+                                                                BinaryExpr	op: equal
+                                                                    BinaryExpr	op: add
+                                                                        BinaryExpr	op: add
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: a	type: int
+                                                                                    Id	name: b	type: int
+                                                                                Id	name: c	type: int
+                                                                            Id	name: d	type: int
+                                                                        Id	name: e	type: int
+                                                                    IntegerLiteral	value: 0	type: int
+                                                                ReturnStmt
+                                                                    IntegerLiteral	value: 1	type: int
+                                                        DeclStmt
+                                                            DefNode	isConst:false	isArray:false
+                                                                Id	name: ans	type: int
+                                                                IntegerLiteral	value: 0	type: int
+                                                    IfStmt
+                                                        Id	name: a	type: int
+                                                        AssignStmt
+                                                            Id	name: ans	type: int
+                                                            BinaryExpr	op: mod
+                                                                BinaryExpr	op: add
+                                                                    Id	name: ans	type: int
+                                                                    BinaryExpr	op: mul
+                                                                        BinaryExpr	op: sub
+                                                                            Id	name: a	type: int
+                                                                            FuncCallNode	funcName: equal	 funcType: int(int, int)
+                                                                                FuncCallParamsNode
+                                                                                    Id	name: last	type: int
+                                                                                    IntegerLiteral	value: 2	type: int
+                                                                        FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                                                            FuncCallParamsNode
+                                                                                BinaryExpr	op: sub
+                                                                                    Id	name: a	type: int
+                                                                                    IntegerLiteral	value: 1	type: int
+                                                                                Id	name: b	type: int
+                                                                                Id	name: c	type: int
+                                                                                Id	name: d	type: int
+                                                                                Id	name: e	type: int
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                Id	name: mod	type: int
+                                                IfStmt
+                                                    Id	name: b	type: int
+                                                    AssignStmt
+                                                        Id	name: ans	type: int
+                                                        BinaryExpr	op: mod
+                                                            BinaryExpr	op: add
+                                                                Id	name: ans	type: int
+                                                                BinaryExpr	op: mul
+                                                                    BinaryExpr	op: sub
+                                                                        Id	name: b	type: int
+                                                                        FuncCallNode	funcName: equal	 funcType: int(int, int)
+                                                                            FuncCallParamsNode
+                                                                                Id	name: last	type: int
+                                                                                IntegerLiteral	value: 3	type: int
+                                                                    FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                                                        FuncCallParamsNode
+                                                                            BinaryExpr	op: add
+                                                                                Id	name: a	type: int
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                            BinaryExpr	op: sub
+                                                                                Id	name: b	type: int
+                                                                                IntegerLiteral	value: 1	type: int
+                                                                            Id	name: c	type: int
+                                                                            Id	name: d	type: int
+                                                                            Id	name: e	type: int
+                                                                            IntegerLiteral	value: 2	type: int
+                                                            Id	name: mod	type: int
+                                            IfStmt
+                                                Id	name: c	type: int
+                                                AssignStmt
+                                                    Id	name: ans	type: int
+                                                    BinaryExpr	op: mod
+                                                        BinaryExpr	op: add
+                                                            Id	name: ans	type: int
+                                                            BinaryExpr	op: mul
+                                                                BinaryExpr	op: sub
+                                                                    Id	name: c	type: int
+                                                                    FuncCallNode	funcName: equal	 funcType: int(int, int)
+                                                                        FuncCallParamsNode
+                                                                            Id	name: last	type: int
+                                                                            IntegerLiteral	value: 4	type: int
+                                                                FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: a	type: int
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: b	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                                        BinaryExpr	op: sub
+                                                                            Id	name: c	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                                        Id	name: d	type: int
+                                                                        Id	name: e	type: int
+                                                                        IntegerLiteral	value: 3	type: int
+                                                        Id	name: mod	type: int
+                                        IfStmt
+                                            Id	name: d	type: int
+                                            AssignStmt
+                                                Id	name: ans	type: int
+                                                BinaryExpr	op: mod
+                                                    BinaryExpr	op: add
+                                                        Id	name: ans	type: int
+                                                        BinaryExpr	op: mul
+                                                            BinaryExpr	op: sub
+                                                                Id	name: d	type: int
+                                                                FuncCallNode	funcName: equal	 funcType: int(int, int)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: last	type: int
+                                                                        IntegerLiteral	value: 5	type: int
+                                                            FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                                                FuncCallParamsNode
+                                                                    Id	name: a	type: int
+                                                                    Id	name: b	type: int
+                                                                    BinaryExpr	op: add
+                                                                        Id	name: c	type: int
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                    BinaryExpr	op: sub
+                                                                        Id	name: d	type: int
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                    Id	name: e	type: int
+                                                                    IntegerLiteral	value: 4	type: int
+                                                    Id	name: mod	type: int
+                                    IfStmt
+                                        Id	name: e	type: int
+                                        AssignStmt
+                                            Id	name: ans	type: int
+                                            BinaryExpr	op: mod
+                                                BinaryExpr	op: add
+                                                    Id	name: ans	type: int
+                                                    BinaryExpr	op: mul
+                                                        Id	name: e	type: int
+                                                        FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                                            FuncCallParamsNode
+                                                                Id	name: a	type: int
+                                                                Id	name: b	type: int
+                                                                Id	name: c	type: int
+                                                                BinaryExpr	op: add
+                                                                    Id	name: d	type: int
+                                                                    IntegerLiteral	value: 1	type: int
+                                                                BinaryExpr	op: sub
+                                                                    Id	name: e	type: int
+                                                                    IntegerLiteral	value: 1	type: int
+                                                                IntegerLiteral	value: 5	type: int
+                                                Id	name: mod	type: int
+                                AssignStmt
+                                    Id	name: dp	type: int array
+                                        ArrayindiceNode
+                                            Id	name: a	type: int
+                                            Id	name: b	type: int
+                                            Id	name: c	type: int
+                                            Id	name: d	type: int
+                                            Id	name: e	type: int
+                                            Id	name: last	type: int
+                                    BinaryExpr	op: mod
+                                        Id	name: ans	type: int
+                                        Id	name: mod	type: int
+                            ReturnStmt
+                                Id	name: dp	type: int array
+                                    ArrayindiceNode
+                                        Id	name: a	type: int
+                                        Id	name: b	type: int
+                                        Id	name: c	type: int
+                                        Id	name: d	type: int
+                                        Id	name: e	type: int
+                                        Id	name: last	type: int
+            DeclStmt
+                DefNode	isConst:false	isArray:true
+                    Id	name: cns	type: int array
+                        ArrayindiceNode
+                            IntegerLiteral	value: 20	type: int
+                    null
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: n	type: int
+                                                    FuncCallNode	funcName: getint	 funcType: int()
+                                                        FuncCallWithNoParams
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 0	type: int
+                                        WhileStmt
+                                            BinaryExpr	op: less
+                                                Id	name: i	type: int
+                                                Id	name: maxn	type: int
+                                            CompoundStmt
+                                                Sequence
+                                                    Sequence
+                                                        DeclStmt
+                                                            DefNode	isConst:false	isArray:false
+                                                                Id	name: j	type: int
+                                                                IntegerLiteral	value: 0	type: int
+                                                        WhileStmt
+                                                            BinaryExpr	op: less
+                                                                Id	name: j	type: int
+                                                                Id	name: maxn	type: int
+                                                            CompoundStmt
+                                                                Sequence
+                                                                    Sequence
+                                                                        DeclStmt
+                                                                            DefNode	isConst:false	isArray:false
+                                                                                Id	name: k	type: int
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                        WhileStmt
+                                                                            BinaryExpr	op: less
+                                                                                Id	name: k	type: int
+                                                                                Id	name: maxn	type: int
+                                                                            CompoundStmt
+                                                                                Sequence
+                                                                                    Sequence
+                                                                                        DeclStmt
+                                                                                            DefNode	isConst:false	isArray:false
+                                                                                                Id	name: l	type: int
+                                                                                                IntegerLiteral	value: 0	type: int
+                                                                                        WhileStmt
+                                                                                            BinaryExpr	op: less
+                                                                                                Id	name: l	type: int
+                                                                                                Id	name: maxn	type: int
+                                                                                            CompoundStmt
+                                                                                                Sequence
+                                                                                                    Sequence
+                                                                                                        DeclStmt
+                                                                                                            DefNode	isConst:false	isArray:false
+                                                                                                                Id	name: m	type: int
+                                                                                                                IntegerLiteral	value: 0	type: int
+                                                                                                        WhileStmt
+                                                                                                            BinaryExpr	op: less
+                                                                                                                Id	name: m	type: int
+                                                                                                                Id	name: maxn	type: int
+                                                                                                            CompoundStmt
+                                                                                                                Sequence
+                                                                                                                    Sequence
+                                                                                                                        DeclStmt
+                                                                                                                            DefNode	isConst:false	isArray:false
+                                                                                                                                Id	name: h	type: int
+                                                                                                                                IntegerLiteral	value: 0	type: int
+                                                                                                                        WhileStmt
+                                                                                                                            BinaryExpr	op: less
+                                                                                                                                Id	name: h	type: int
+                                                                                                                                IntegerLiteral	value: 7	type: int
+                                                                                                                            CompoundStmt
+                                                                                                                                Sequence
+                                                                                                                                    AssignStmt
+                                                                                                                                        Id	name: dp	type: int array
+                                                                                                                                            ArrayindiceNode
+                                                                                                                                                Id	name: i	type: int
+                                                                                                                                                Id	name: j	type: int
+                                                                                                                                                Id	name: k	type: int
+                                                                                                                                                Id	name: l	type: int
+                                                                                                                                                Id	name: m	type: int
+                                                                                                                                                Id	name: h	type: int
+                                                                                                                                        UnaryOpExpr	op: sub
+                                                                                                                                            IntegerLiteral	value: 1	type: int
+                                                                                                                                    AssignStmt
+                                                                                                                                        Id	name: h	type: int
+                                                                                                                                        BinaryExpr	op: add
+                                                                                                                                            Id	name: h	type: int
+                                                                                                                                            IntegerLiteral	value: 1	type: int
+                                                                                                                    AssignStmt
+                                                                                                                        Id	name: m	type: int
+                                                                                                                        BinaryExpr	op: add
+                                                                                                                            Id	name: m	type: int
+                                                                                                                            IntegerLiteral	value: 1	type: int
+                                                                                                    AssignStmt
+                                                                                                        Id	name: l	type: int
+                                                                                                        BinaryExpr	op: add
+                                                                                                            Id	name: l	type: int
+                                                                                                            IntegerLiteral	value: 1	type: int
+                                                                                    AssignStmt
+                                                                                        Id	name: k	type: int
+                                                                                        BinaryExpr	op: add
+                                                                                            Id	name: k	type: int
+                                                                                            IntegerLiteral	value: 1	type: int
+                                                                    AssignStmt
+                                                                        Id	name: j	type: int
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: j	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                    AssignStmt
+                                                        Id	name: i	type: int
+                                                        BinaryExpr	op: add
+                                                            Id	name: i	type: int
+                                                            IntegerLiteral	value: 1	type: int
+                                    AssignStmt
+                                        Id	name: i	type: int
+                                        IntegerLiteral	value: 0	type: int
+                                WhileStmt
+                                    BinaryExpr	op: less
+                                        Id	name: i	type: int
+                                        Id	name: n	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                AssignStmt
+                                                    Id	name: list	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: i	type: int
+                                                    FuncCallNode	funcName: getint	 funcType: int()
+                                                        FuncCallWithNoParams
+                                                AssignStmt
+                                                    Id	name: cns	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: list	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: i	type: int
+                                                    BinaryExpr	op: add
+                                                        Id	name: cns	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: list	type: int array
+                                                                    ArrayindiceNode
+                                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 1	type: int
+                                            AssignStmt
+                                                Id	name: i	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                            DeclStmt
+                                DefNode	isConst:false	isArray:false
+                                    Id	name: ans	type: int
+                                    FuncCallNode	funcName: dfs	 funcType: int(int, int, int, int, int, int)
+                                        FuncCallParamsNode
+                                            Id	name: cns	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 1	type: int
+                                            Id	name: cns	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 2	type: int
+                                            Id	name: cns	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 3	type: int
+                                            Id	name: cns	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 4	type: int
+                                            Id	name: cns	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 5	type: int
+                                            IntegerLiteral	value: 0	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putint	 funcType: void(int)
+                                FuncCallParamsNode
+                                    Id	name: ans	type: int
+                    ReturnStmt
+                        Id	name: ans	type: int

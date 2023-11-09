@@ -1,0 +1,23 @@
+program
+    FunctionDefine function name: main, type: int()
+        CompoundStmt
+            Sequence
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: a	type: int
+                                null
+                            DefNode	isConst:false	isArray:false
+                                Id	name: b	type: int
+                                null
+                        AssignStmt
+                            Id	name: a	type: int
+                            IntegerLiteral	value: 10	type: int
+                    AssignStmt
+                        Id	name: b	type: int
+                        IntegerLiteral	value: 2	type: int
+                ReturnStmt
+                    BinaryExpr	op: sub
+                        Id	name: a	type: int
+                        Id	name: b	type: int

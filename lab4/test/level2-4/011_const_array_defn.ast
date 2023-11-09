@@ -1,0 +1,24 @@
+program
+    Sequence
+        DeclStmt
+            DefNode	isConst:true	isArray:true
+                Id	name: a	type: int array
+                    ArrayindiceNode
+                        IntegerLiteral	value: 5	type: int
+                ArrayinitNode	isConst:true
+                    ArrayinitNode	isConst:true
+                        IntegerLiteral	value: 0	type: int
+                    ArrayinitNode	isConst:true
+                        IntegerLiteral	value: 1	type: int
+                    ArrayinitNode	isConst:true
+                        IntegerLiteral	value: 2	type: int
+                    ArrayinitNode	isConst:true
+                        IntegerLiteral	value: 3	type: int
+                    ArrayinitNode	isConst:true
+                        IntegerLiteral	value: 4	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                ReturnStmt
+                    Id	name: a	type: int array
+                        ArrayindiceNode
+                            IntegerLiteral	value: 4	type: int

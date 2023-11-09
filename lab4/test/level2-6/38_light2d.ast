@@ -1,0 +1,573 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        Sequence
+                                                                            Sequence
+                                                                                DeclStmt
+                                                                                    DefNode	isConst:true	isArray:false
+                                                                                        Id	name: W	type: int
+                                                                                        IntegerLiteral	value: 192	type: int
+                                                                                    DefNode	isConst:true	isArray:false
+                                                                                        Id	name: H	type: int
+                                                                                        IntegerLiteral	value: 192	type: int
+                                                                                    DefNode	isConst:true	isArray:false
+                                                                                        Id	name: N	type: int
+                                                                                        IntegerLiteral	value: 24	type: int
+                                                                                DeclStmt
+                                                                                    DefNode	isConst:true	isArray:false
+                                                                                        Id	name: PI	type: float
+                                                                                        IntegerLiteral	value: 3	type: float
+                                                                                    DefNode	isConst:true	isArray:false
+                                                                                        Id	name: TWO_PI	type: float
+                                                                                        IntegerLiteral	value: 6	type: float
+                                                                            DeclStmt
+                                                                                DefNode	isConst:true	isArray:false
+                                                                                    Id	name: MAX_STEP	type: int
+                                                                                    IntegerLiteral	value: 10	type: int
+                                                                        DeclStmt
+                                                                            DefNode	isConst:true	isArray:false
+                                                                                Id	name: MAX_DISTANCE	type: float
+                                                                                IntegerLiteral	value: 2	type: float
+                                                                    DeclStmt
+                                                                        DefNode	isConst:true	isArray:false
+                                                                            Id	name: EPSILON	type: float
+                                                                            IntegerLiteral	value: 0	type: float
+                                                                DeclStmt
+                                                                    DefNode	isConst:true	isArray:false
+                                                                        Id	name: RAND_MAX	type: int
+                                                                        BinaryExpr	op: sub
+                                                                            IntegerLiteral	value: 100000007	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: seed	type: int
+                                                                    IntegerLiteral	value: 0	type: int
+                                                        FunctionDefine function name: rand, type: int()
+                                                            CompoundStmt
+                                                                Sequence
+                                                                    Sequence
+                                                                        AssignStmt
+                                                                            Id	name: seed	type: int
+                                                                            BinaryExpr	op: mod
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: mul
+                                                                                        Id	name: seed	type: int
+                                                                                        IntegerLiteral	value: 19980130	type: int
+                                                                                    IntegerLiteral	value: 23333	type: int
+                                                                                IntegerLiteral	value: 100000007	type: int
+                                                                        IfStmt
+                                                                            BinaryExpr	op: less
+                                                                                Id	name: seed	type: int
+                                                                                IntegerLiteral	value: 0	type: int
+                                                                            AssignStmt
+                                                                                Id	name: seed	type: int
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: seed	type: int
+                                                                                    IntegerLiteral	value: 100000007	type: int
+                                                                    ReturnStmt
+                                                                        Id	name: seed	type: int
+                                                    FunctionDefine function name: my_fabs, type: float(float)
+                                                        CompoundStmt
+                                                            Sequence
+                                                                IfStmt
+                                                                    BinaryExpr	op: greater
+                                                                        Id	name: x	type: float
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                    ReturnStmt
+                                                                        Id	name: x	type: float
+                                                                ReturnStmt
+                                                                    UnaryOpExpr	op: sub
+                                                                        Id	name: x	type: float
+                                                FunctionDefine function name: my_sqrt, type: float(float)
+                                                    CompoundStmt
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    DeclStmt
+                                                                        DefNode	isConst:false	isArray:false
+                                                                            Id	name: t	type: float
+                                                                            BinaryExpr	op: add
+                                                                                BinaryExpr	op: add
+                                                                                    BinaryExpr	op: div
+                                                                                        Id	name: x	type: float
+                                                                                        IntegerLiteral	value: 8	type: int
+                                                                                    IntegerLiteral	value: 0	type: float
+                                                                                BinaryExpr	op: div
+                                                                                    BinaryExpr	op: mul
+                                                                                        IntegerLiteral	value: 2	type: int
+                                                                                        Id	name: x	type: float
+                                                                                    BinaryExpr	op: add
+                                                                                        IntegerLiteral	value: 4	type: int
+                                                                                        Id	name: x	type: float
+                                                                    DeclStmt
+                                                                        DefNode	isConst:false	isArray:false
+                                                                            Id	name: c	type: int
+                                                                            IntegerLiteral	value: 10	type: int
+                                                                WhileStmt
+                                                                    Id	name: c	type: int
+                                                                    CompoundStmt
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: t	type: float
+                                                                                BinaryExpr	op: div
+                                                                                    BinaryExpr	op: add
+                                                                                        Id	name: t	type: float
+                                                                                        BinaryExpr	op: div
+                                                                                            Id	name: x	type: float
+                                                                                            Id	name: t	type: float
+                                                                                    IntegerLiteral	value: 2	type: int
+                                                                            AssignStmt
+                                                                                Id	name: c	type: int
+                                                                                BinaryExpr	op: sub
+                                                                                    Id	name: c	type: int
+                                                                                    IntegerLiteral	value: 1	type: int
+                                                            ReturnStmt
+                                                                Id	name: t	type: float
+                                            FunctionDefine function name: p, type: float(float)
+                                                CompoundStmt
+                                                    ReturnStmt
+                                                        BinaryExpr	op: sub
+                                                            BinaryExpr	op: mul
+                                                                IntegerLiteral	value: 3	type: int
+                                                                Id	name: x	type: float
+                                                            BinaryExpr	op: mul
+                                                                BinaryExpr	op: mul
+                                                                    BinaryExpr	op: mul
+                                                                        IntegerLiteral	value: 4	type: int
+                                                                        Id	name: x	type: float
+                                                                    Id	name: x	type: float
+                                                                Id	name: x	type: float
+                                        FunctionDefine function name: my_sin_impl, type: float(float)
+                                            CompoundStmt
+                                                Sequence
+                                                    IfStmt
+                                                        BinaryExpr	op: LESS OR EQUAL
+                                                            FuncCallNode	funcName: my_fabs	 funcType: float(float)
+                                                                FuncCallParamsNode
+                                                                    Id	name: x	type: float
+                                                            Id	name: EPSILON	type: float
+                                                        ReturnStmt
+                                                            Id	name: x	type: float
+                                                    ReturnStmt
+                                                        FuncCallNode	funcName: p	 funcType: float(float)
+                                                            FuncCallParamsNode
+                                                                FuncCallNode	funcName: my_sin_impl	 funcType: float(float)
+                                                                    FuncCallParamsNode
+                                                                        BinaryExpr	op: div
+                                                                            Id	name: x	type: float
+                                                                            IntegerLiteral	value: 3	type: float
+                                    FunctionDefine function name: my_sin, type: float(float)
+                                        CompoundStmt
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        IfStmt
+                                                            BinaryExpr	op: or
+                                                                BinaryExpr	op: greater
+                                                                    Id	name: x	type: float
+                                                                    Id	name: TWO_PI	type: float
+                                                                BinaryExpr	op: less
+                                                                    Id	name: x	type: float
+                                                                    UnaryOpExpr	op: sub
+                                                                        Id	name: TWO_PI	type: float
+                                                            CompoundStmt
+                                                                Sequence
+                                                                    DeclStmt
+                                                                        DefNode	isConst:false	isArray:false
+                                                                            Id	name: xx	type: int
+                                                                            BinaryExpr	op: div
+                                                                                Id	name: x	type: float
+                                                                                Id	name: TWO_PI	type: float
+                                                                    AssignStmt
+                                                                        Id	name: x	type: float
+                                                                        BinaryExpr	op: sub
+                                                                            Id	name: x	type: float
+                                                                            BinaryExpr	op: mul
+                                                                                Id	name: xx	type: int
+                                                                                Id	name: TWO_PI	type: float
+                                                        IfStmt
+                                                            BinaryExpr	op: greater
+                                                                Id	name: x	type: float
+                                                                Id	name: PI	type: float
+                                                            AssignStmt
+                                                                Id	name: x	type: float
+                                                                BinaryExpr	op: sub
+                                                                    Id	name: x	type: float
+                                                                    Id	name: TWO_PI	type: float
+                                                    IfStmt
+                                                        BinaryExpr	op: less
+                                                            Id	name: x	type: float
+                                                            UnaryOpExpr	op: sub
+                                                                Id	name: PI	type: float
+                                                        AssignStmt
+                                                            Id	name: x	type: float
+                                                            BinaryExpr	op: add
+                                                                Id	name: x	type: float
+                                                                Id	name: TWO_PI	type: float
+                                                ReturnStmt
+                                                    FuncCallNode	funcName: my_sin_impl	 funcType: float(float)
+                                                        FuncCallParamsNode
+                                                            Id	name: x	type: float
+                                FunctionDefine function name: my_cos, type: float(float)
+                                    CompoundStmt
+                                        ReturnStmt
+                                            FuncCallNode	funcName: my_sin	 funcType: float(float)
+                                                FuncCallParamsNode
+                                                    BinaryExpr	op: add
+                                                        Id	name: x	type: float
+                                                        BinaryExpr	op: div
+                                                            Id	name: PI	type: float
+                                                            IntegerLiteral	value: 2	type: int
+                            FunctionDefine function name: circle_sdf, type: float(float, float, float, float, float)
+                                CompoundStmt
+                                    Sequence
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: ux	type: float
+                                                BinaryExpr	op: sub
+                                                    Id	name: x	type: float
+                                                    Id	name: cx	type: float
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: uy	type: float
+                                                BinaryExpr	op: sub
+                                                    Id	name: y	type: float
+                                                    Id	name: cy	type: float
+                                        ReturnStmt
+                                            BinaryExpr	op: sub
+                                                FuncCallNode	funcName: my_sqrt	 funcType: float(float)
+                                                    FuncCallParamsNode
+                                                        BinaryExpr	op: add
+                                                            BinaryExpr	op: mul
+                                                                Id	name: ux	type: float
+                                                                Id	name: ux	type: float
+                                                            BinaryExpr	op: mul
+                                                                Id	name: uy	type: float
+                                                                Id	name: uy	type: float
+                                                Id	name: r	type: float
+                        FunctionDefine function name: scene, type: void(float, float, float array)
+                            CompoundStmt
+                                Sequence
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: sd0	type: float
+                                            FuncCallNode	funcName: circle_sdf	 funcType: float(float, float, float, float, float)
+                                                FuncCallParamsNode
+                                                    Id	name: x	type: float
+                                                    Id	name: y	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: sd1	type: float
+                                            FuncCallNode	funcName: circle_sdf	 funcType: float(float, float, float, float, float)
+                                                FuncCallParamsNode
+                                                    Id	name: x	type: float
+                                                    Id	name: y	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                                    IntegerLiteral	value: 0	type: float
+                                    IfElseStmt
+                                        BinaryExpr	op: less
+                                            Id	name: sd0	type: float
+                                            Id	name: sd1	type: float
+                                        CompoundStmt
+                                            Sequence
+                                                AssignStmt
+                                                    Id	name: ret	type: float array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 0	type: int
+                                                    Id	name: sd0	type: float
+                                                AssignStmt
+                                                    Id	name: ret	type: float array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 1	type: int
+                                                    IntegerLiteral	value: 3	type: float
+                                        CompoundStmt
+                                            Sequence
+                                                AssignStmt
+                                                    Id	name: ret	type: float array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 0	type: int
+                                                    Id	name: sd1	type: float
+                                                AssignStmt
+                                                    Id	name: ret	type: float array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 1	type: int
+                                                    IntegerLiteral	value: 0	type: float
+                    FunctionDefine function name: trace, type: float(float, float, float, float)
+                        CompoundStmt
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: t	type: float
+                                                IntegerLiteral	value: 0	type: float
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: i	type: int
+                                                IntegerLiteral	value: 0	type: int
+                                    WhileStmt
+                                        BinaryExpr	op: and
+                                            BinaryExpr	op: less
+                                                Id	name: i	type: int
+                                                Id	name: MAX_STEP	type: int
+                                            BinaryExpr	op: less
+                                                Id	name: t	type: float
+                                                Id	name: MAX_DISTANCE	type: float
+                                        CompoundStmt
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:true
+                                                                    Id	name: ret	type: float array
+                                                                        ArrayindiceNode
+                                                                            IntegerLiteral	value: 2	type: int
+                                                                    null
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: scene	 funcType: void(float, float, float array)
+                                                                    FuncCallParamsNode
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: ox	type: float
+                                                                            BinaryExpr	op: mul
+                                                                                Id	name: dx	type: float
+                                                                                Id	name: t	type: float
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: oy	type: float
+                                                                            BinaryExpr	op: mul
+                                                                                Id	name: dy	type: float
+                                                                                Id	name: t	type: float
+                                                                        Id	name: ret	type: float array
+                                                        IfStmt
+                                                            BinaryExpr	op: less
+                                                                Id	name: ret	type: float array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                Id	name: EPSILON	type: float
+                                                            ReturnStmt
+                                                                Id	name: ret	type: float array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 1	type: int
+                                                    AssignStmt
+                                                        Id	name: t	type: float
+                                                        BinaryExpr	op: add
+                                                            Id	name: t	type: float
+                                                            Id	name: ret	type: float array
+                                                                ArrayindiceNode
+                                                                    IntegerLiteral	value: 0	type: int
+                                                AssignStmt
+                                                    Id	name: i	type: int
+                                                    BinaryExpr	op: add
+                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 1	type: int
+                                ReturnStmt
+                                    IntegerLiteral	value: 0	type: float
+                FunctionDefine function name: sample, type: float(float, float)
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                Sequence
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: sum	type: float
+                                            IntegerLiteral	value: 0	type: float
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 0	type: int
+                                WhileStmt
+                                    BinaryExpr	op: less
+                                        Id	name: i	type: int
+                                        Id	name: N	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: rnd	type: float
+                                                            FuncCallNode	funcName: rand	 funcType: int()
+                                                                FuncCallWithNoParams
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: a	type: float
+                                                            BinaryExpr	op: div
+                                                                BinaryExpr	op: mul
+                                                                    Id	name: TWO_PI	type: float
+                                                                    BinaryExpr	op: add
+                                                                        Id	name: i	type: int
+                                                                        BinaryExpr	op: div
+                                                                            Id	name: rnd	type: float
+                                                                            Id	name: RAND_MAX	type: int
+                                                                Id	name: N	type: int
+                                                AssignStmt
+                                                    Id	name: sum	type: float
+                                                    BinaryExpr	op: add
+                                                        Id	name: sum	type: float
+                                                        FuncCallNode	funcName: trace	 funcType: float(float, float, float, float)
+                                                            FuncCallParamsNode
+                                                                Id	name: x	type: float
+                                                                Id	name: y	type: float
+                                                                FuncCallNode	funcName: my_cos	 funcType: float(float)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: a	type: float
+                                                                FuncCallNode	funcName: my_sin	 funcType: float(float)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: a	type: float
+                                            AssignStmt
+                                                Id	name: i	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                            ReturnStmt
+                                BinaryExpr	op: div
+                                    Id	name: sum	type: float
+                                    Id	name: N	type: int
+            FunctionDefine function name: write_pgm, type: void()
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                    FuncCallParamsNode
+                                                                        IntegerLiteral	value: 80	type: int
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                    FuncCallParamsNode
+                                                                        IntegerLiteral	value: 50	type: int
+                                                        ExprStmtNode
+                                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                FuncCallParamsNode
+                                                                    IntegerLiteral	value: 10	type: int
+                                                    ExprStmtNode
+                                                        FuncCallNode	funcName: putint	 funcType: void(int)
+                                                            FuncCallParamsNode
+                                                                Id	name: W	type: int
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 32	type: int
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                                    FuncCallParamsNode
+                                                        Id	name: H	type: int
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 32	type: int
+                                    ExprStmtNode
+                                        FuncCallNode	funcName: putint	 funcType: void(int)
+                                            FuncCallParamsNode
+                                                IntegerLiteral	value: 255	type: int
+                                ExprStmtNode
+                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                        FuncCallParamsNode
+                                            IntegerLiteral	value: 10	type: int
+                            DeclStmt
+                                DefNode	isConst:false	isArray:false
+                                    Id	name: y	type: int
+                                    IntegerLiteral	value: 0	type: int
+                        WhileStmt
+                            BinaryExpr	op: less
+                                Id	name: y	type: int
+                                Id	name: H	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: x	type: int
+                                                    IntegerLiteral	value: 0	type: int
+                                            WhileStmt
+                                                BinaryExpr	op: less
+                                                    Id	name: x	type: int
+                                                    Id	name: W	type: int
+                                                CompoundStmt
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        DeclStmt
+                                                                            DefNode	isConst:false	isArray:false
+                                                                                Id	name: xx	type: float
+                                                                                Id	name: x	type: int
+                                                                            DefNode	isConst:false	isArray:false
+                                                                                Id	name: yy	type: float
+                                                                                Id	name: y	type: int
+                                                                        DeclStmt
+                                                                            DefNode	isConst:false	isArray:false
+                                                                                Id	name: p	type: int
+                                                                                BinaryExpr	op: mul
+                                                                                    FuncCallNode	funcName: sample	 funcType: float(float, float)
+                                                                                        FuncCallParamsNode
+                                                                                            BinaryExpr	op: div
+                                                                                                Id	name: xx	type: float
+                                                                                                Id	name: W	type: int
+                                                                                            BinaryExpr	op: div
+                                                                                                Id	name: yy	type: float
+                                                                                                Id	name: H	type: int
+                                                                                    IntegerLiteral	value: 255	type: float
+                                                                    IfStmt
+                                                                        BinaryExpr	op: greater
+                                                                            Id	name: p	type: int
+                                                                            IntegerLiteral	value: 255	type: int
+                                                                        AssignStmt
+                                                                            Id	name: p	type: int
+                                                                            IntegerLiteral	value: 255	type: int
+                                                                ExprStmtNode
+                                                                    FuncCallNode	funcName: putint	 funcType: void(int)
+                                                                        FuncCallParamsNode
+                                                                            Id	name: p	type: int
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                    FuncCallParamsNode
+                                                                        IntegerLiteral	value: 32	type: int
+                                                        AssignStmt
+                                                            Id	name: x	type: int
+                                                            BinaryExpr	op: add
+                                                                Id	name: x	type: int
+                                                                IntegerLiteral	value: 1	type: int
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 10	type: int
+                                    AssignStmt
+                                        Id	name: y	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: y	type: int
+                                            IntegerLiteral	value: 1	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    ExprStmtNode
+                        FuncCallNode	funcName: write_pgm	 funcType: void()
+                            FuncCallWithNoParams
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

@@ -1,0 +1,129 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                DeclStmt
+                    DefNode	isConst:false	isArray:false
+                        Id	name: N	type: int
+                        null
+                DeclStmt
+                    DefNode	isConst:false	isArray:false
+                        Id	name: newline	type: int
+                        null
+            FunctionDefine function name: split, type: int(int, int array)
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: i	type: int
+                                        null
+                                AssignStmt
+                                    Id	name: i	type: int
+                                    BinaryExpr	op: sub
+                                        Id	name: N	type: int
+                                        IntegerLiteral	value: 1	type: int
+                            WhileStmt
+                                BinaryExpr	op: not equal
+                                    Id	name: i	type: int
+                                    UnaryOpExpr	op: sub
+                                        IntegerLiteral	value: 1	type: int
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            AssignStmt
+                                                Id	name: a	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: i	type: int
+                                                BinaryExpr	op: mod
+                                                    Id	name: n	type: int
+                                                    IntegerLiteral	value: 10	type: int
+                                            AssignStmt
+                                                Id	name: n	type: int
+                                                BinaryExpr	op: div
+                                                    Id	name: n	type: int
+                                                    IntegerLiteral	value: 10	type: int
+                                        AssignStmt
+                                            Id	name: i	type: int
+                                            BinaryExpr	op: sub
+                                                Id	name: i	type: int
+                                                IntegerLiteral	value: 1	type: int
+                        ReturnStmt
+                            IntegerLiteral	value: 0	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        AssignStmt
+                                                            Id	name: N	type: int
+                                                            IntegerLiteral	value: 4	type: int
+                                                        AssignStmt
+                                                            Id	name: newline	type: int
+                                                            IntegerLiteral	value: 10	type: int
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: i	type: int
+                                                            null
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:false
+                                                        Id	name: m	type: int
+                                                        null
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:true
+                                                    Id	name: b	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 4	type: int
+                                                    null
+                                        AssignStmt
+                                            Id	name: m	type: int
+                                            IntegerLiteral	value: 1478	type: int
+                                    AssignStmt
+                                        Id	name: m	type: int
+                                        FuncCallNode	funcName: split	 funcType: int(int, int array)
+                                            FuncCallParamsNode
+                                                Id	name: m	type: int
+                                                Id	name: b	type: int array
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: t	type: int
+                                        null
+                            AssignStmt
+                                Id	name: i	type: int
+                                IntegerLiteral	value: 0	type: int
+                        WhileStmt
+                            BinaryExpr	op: less
+                                Id	name: i	type: int
+                                IntegerLiteral	value: 4	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            AssignStmt
+                                                Id	name: t	type: int
+                                                Id	name: b	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: i	type: int
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                                    FuncCallParamsNode
+                                                        Id	name: t	type: int
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    Id	name: newline	type: int
+                                    AssignStmt
+                                        Id	name: i	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 1	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

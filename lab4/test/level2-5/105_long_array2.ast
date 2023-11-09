@@ -1,0 +1,110 @@
+program
+    Sequence
+        Sequence
+            DeclStmt
+                DefNode	isConst:false	isArray:true
+                    Id	name: a	type: int array
+                        ArrayindiceNode
+                            IntegerLiteral	value: 4096	type: int
+                    null
+            FunctionDefine function name: f1, type: int(int array)
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    AssignStmt
+                                        Id	name: a	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 5	type: int
+                                        IntegerLiteral	value: 4000	type: int
+                                    AssignStmt
+                                        Id	name: a	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 4000	type: int
+                                        IntegerLiteral	value: 3	type: int
+                                AssignStmt
+                                    Id	name: a	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 4095	type: int
+                                    IntegerLiteral	value: 7	type: int
+                            AssignStmt
+                                Id	name: b	type: int array
+                                    ArrayindiceNode
+                                        Id	name: a	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 4095	type: int
+                                BinaryExpr	op: add
+                                    Id	name: a	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 2216	type: int
+                                    IntegerLiteral	value: 9	type: int
+                        ReturnStmt
+                            Id	name: a	type: int array
+                                ArrayindiceNode
+                                    Id	name: a	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 5	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: b	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 4	type: int
+                                                IntegerLiteral	value: 1024	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 1	type: int
+                                            ArrayinitNode	isConst:false
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 2	type: int
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 3	type: int
+                                            ArrayinitNode	isConst:false
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 4	type: int
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 5	type: int
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 6	type: int
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: c	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 1024	type: int
+                                                IntegerLiteral	value: 4	type: int
+                                        ArrayinitNode	isConst:false
+                                            ArrayinitNode	isConst:false
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 1	type: int
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 2	type: int
+                                            ArrayinitNode	isConst:false
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 3	type: int
+                                                ArrayinitNode	isConst:false
+                                                    IntegerLiteral	value: 4	type: int
+                            ExprStmtNode
+                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                    FuncCallParamsNode
+                                        FuncCallNode	funcName: f1	 funcType: int(int array)
+                                            FuncCallParamsNode
+                                                Id	name: c	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 0	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                FuncCallParamsNode
+                                    IntegerLiteral	value: 10	type: int
+                    ReturnStmt
+                        Id	name: c	type: int array
+                            ArrayindiceNode
+                                IntegerLiteral	value: 2	type: int
+                                IntegerLiteral	value: 0	type: int

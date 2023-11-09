@@ -1,0 +1,69 @@
+program
+    Sequence
+        FunctionDefine function name: fun, type: int(int, int)
+            CompoundStmt
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: rem	type: int
+                                null
+                        WhileStmt
+                            BinaryExpr	op: greater
+                                Id	name: n	type: int
+                                IntegerLiteral	value: 0	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        AssignStmt
+                                            Id	name: rem	type: int
+                                            BinaryExpr	op: mod
+                                                Id	name: m	type: int
+                                                Id	name: n	type: int
+                                        AssignStmt
+                                            Id	name: m	type: int
+                                            Id	name: n	type: int
+                                    AssignStmt
+                                        Id	name: n	type: int
+                                        Id	name: rem	type: int
+                    ReturnStmt
+                        Id	name: m	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: n	type: int
+                                                null
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: m	type: int
+                                                null
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: num	type: int
+                                                null
+                                    AssignStmt
+                                        Id	name: m	type: int
+                                        FuncCallNode	funcName: getint	 funcType: int()
+                                            FuncCallWithNoParams
+                                AssignStmt
+                                    Id	name: n	type: int
+                                    FuncCallNode	funcName: getint	 funcType: int()
+                                        FuncCallWithNoParams
+                            AssignStmt
+                                Id	name: num	type: int
+                                FuncCallNode	funcName: fun	 funcType: int(int, int)
+                                    FuncCallParamsNode
+                                        Id	name: m	type: int
+                                        Id	name: n	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putint	 funcType: void(int)
+                                FuncCallParamsNode
+                                    Id	name: num	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

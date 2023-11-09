@@ -1,0 +1,357 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:true
+                                Id	name: __HELLO	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 100	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 87	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 101	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 108	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 99	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 111	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 109	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 101	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 32	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 116	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 111	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 32	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 116	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 104	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 101	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 32	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 74	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 97	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 112	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 97	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 114	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 105	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 32	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 80	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 97	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 114	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 107	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 33	type: int
+                                    ArrayinitNode	isConst:false
+                                        IntegerLiteral	value: 10	type: int
+                        DeclStmt
+                            DefNode	isConst:false	isArray:true
+                                Id	name: N4__mE___	type: int array
+                                    ArrayindiceNode
+                                        IntegerLiteral	value: 6	type: int
+                                        IntegerLiteral	value: 50	type: int
+                                ArrayinitNode	isConst:false
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 83	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 98	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 114	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 75	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 98	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 110	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 72	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 115	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 104	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 98	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 114	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 111	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 107	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 111	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 65	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 114	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 103	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 109	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 72	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 110	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 98	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 111	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 114	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 116	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 111	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 32	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 80	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 101	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 110	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 103	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 110	type: int
+                                    ArrayinitNode	isConst:false
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 84	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 114	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 107	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 117	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 32	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 79	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 111	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 107	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 97	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 109	type: int
+                                        ArrayinitNode	isConst:false
+                                            IntegerLiteral	value: 105	type: int
+                    DeclStmt
+                        DefNode	isConst:false	isArray:true
+                            Id	name: saY_HeI10_To	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 40	type: int
+                            ArrayinitNode	isConst:false
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 32	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 115	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 97	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 121	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 115	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 32	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 104	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 101	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 108	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 108	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 111	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 32	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 116	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 111	type: int
+                                ArrayinitNode	isConst:false
+                                    IntegerLiteral	value: 32	type: int
+                DeclStmt
+                    DefNode	isConst:false	isArray:true
+                        Id	name: RET	type: int array
+                            ArrayindiceNode
+                                IntegerLiteral	value: 5	type: int
+                        ArrayinitNode	isConst:false
+                            ArrayinitNode	isConst:false
+                                IntegerLiteral	value: 10	type: int
+            FunctionDefine function name: putstr, type: int(int array)
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: iNd__1X	type: int
+                                        null
+                                AssignStmt
+                                    Id	name: iNd__1X	type: int
+                                    IntegerLiteral	value: 0	type: int
+                            WhileStmt
+                                Id	name: str	type: int array
+                                    ArrayindiceNode
+                                        Id	name: iNd__1X	type: int
+                                CompoundStmt
+                                    Sequence
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    Id	name: str	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: iNd__1X	type: int
+                                        AssignStmt
+                                            Id	name: iNd__1X	type: int
+                                            BinaryExpr	op: add
+                                                Id	name: iNd__1X	type: int
+                                                IntegerLiteral	value: 1	type: int
+                        ReturnStmt
+                            Id	name: iNd__1X	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            ExprStmtNode
+                                FuncCallNode	funcName: putstr	 funcType: int(int array)
+                                    FuncCallParamsNode
+                                        Id	name: __HELLO	type: int array
+                            DeclStmt
+                                DefNode	isConst:false	isArray:false
+                                    Id	name: i	type: int
+                                    IntegerLiteral	value: 0	type: int
+                        WhileStmt
+                            IntegerLiteral	value: 1	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:false
+                                                        Id	name: _	type: int
+                                                        BinaryExpr	op: div
+                                                            Id	name: i	type: int
+                                                            IntegerLiteral	value: 6	type: int
+                                                DeclStmt
+                                                    DefNode	isConst:false	isArray:false
+                                                        Id	name: __	type: int
+                                                        BinaryExpr	op: mod
+                                                            Id	name: i	type: int
+                                                            IntegerLiteral	value: 6	type: int
+                                            IfStmt
+                                                BinaryExpr	op: not equal
+                                                    Id	name: _	type: int
+                                                    Id	name: __	type: int
+                                                CompoundStmt
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                ExprStmtNode
+                                                                    FuncCallNode	funcName: putstr	 funcType: int(int array)
+                                                                        FuncCallParamsNode
+                                                                            Id	name: N4__mE___	type: int array
+                                                                                ArrayindiceNode
+                                                                                    Id	name: _	type: int
+                                                                ExprStmtNode
+                                                                    FuncCallNode	funcName: putstr	 funcType: int(int array)
+                                                                        FuncCallParamsNode
+                                                                            Id	name: saY_HeI10_To	type: int array
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: putstr	 funcType: int(int array)
+                                                                    FuncCallParamsNode
+                                                                        Id	name: N4__mE___	type: int array
+                                                                            ArrayindiceNode
+                                                                                Id	name: __	type: int
+                                                        ExprStmtNode
+                                                            FuncCallNode	funcName: putstr	 funcType: int(int array)
+                                                                FuncCallParamsNode
+                                                                    Id	name: RET	type: int array
+                                        AssignStmt
+                                            Id	name: i	type: int
+                                            BinaryExpr	op: mod
+                                                BinaryExpr	op: add
+                                                    BinaryExpr	op: mul
+                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 17	type: int
+                                                    IntegerLiteral	value: 23	type: int
+                                                IntegerLiteral	value: 32	type: int
+                                    IfStmt
+                                        BinaryExpr	op: equal
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 0	type: int
+                                        CompoundStmt
+                                            BreakStmt
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

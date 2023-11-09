@@ -1,0 +1,417 @@
+program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:true	isArray:false
+                                                    Id	name: INF	type: int
+                                                    IntegerLiteral	value: 1879048192	type: int
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:true
+                                                    Id	name: size	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 10	type: int
+                                                    null
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:true
+                                                Id	name: to	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 10	type: int
+                                                        IntegerLiteral	value: 10	type: int
+                                                null
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:true
+                                            Id	name: cap	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 10	type: int
+                                                    IntegerLiteral	value: 10	type: int
+                                            null
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:true
+                                        Id	name: rev	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 10	type: int
+                                                IntegerLiteral	value: 10	type: int
+                                        null
+                            DeclStmt
+                                DefNode	isConst:false	isArray:true
+                                    Id	name: used	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 10	type: int
+                                    null
+                        FunctionDefine function name: my_memset, type: void(int array, int, int)
+                            CompoundStmt
+                                Sequence
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 0	type: int
+                                    WhileStmt
+                                        BinaryExpr	op: less
+                                            Id	name: i	type: int
+                                            Id	name: n	type: int
+                                        CompoundStmt
+                                            Sequence
+                                                AssignStmt
+                                                    Id	name: arr	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: i	type: int
+                                                    Id	name: val	type: int
+                                                AssignStmt
+                                                    Id	name: i	type: int
+                                                    BinaryExpr	op: add
+                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 1	type: int
+                    FunctionDefine function name: add_node, type: void(int, int, int)
+                        CompoundStmt
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        AssignStmt
+                                                            Id	name: to	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: u	type: int
+                                                                    Id	name: size	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: u	type: int
+                                                            Id	name: v	type: int
+                                                        AssignStmt
+                                                            Id	name: cap	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: u	type: int
+                                                                    Id	name: size	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: u	type: int
+                                                            Id	name: c	type: int
+                                                    AssignStmt
+                                                        Id	name: rev	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: u	type: int
+                                                                Id	name: size	type: int array
+                                                                    ArrayindiceNode
+                                                                        Id	name: u	type: int
+                                                        Id	name: size	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: v	type: int
+                                                AssignStmt
+                                                    Id	name: to	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: v	type: int
+                                                            Id	name: size	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: v	type: int
+                                                    Id	name: u	type: int
+                                            AssignStmt
+                                                Id	name: cap	type: int array
+                                                    ArrayindiceNode
+                                                        Id	name: v	type: int
+                                                        Id	name: size	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: v	type: int
+                                                IntegerLiteral	value: 0	type: int
+                                        AssignStmt
+                                            Id	name: rev	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: v	type: int
+                                                    Id	name: size	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: v	type: int
+                                            Id	name: size	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: u	type: int
+                                    AssignStmt
+                                        Id	name: size	type: int array
+                                            ArrayindiceNode
+                                                Id	name: u	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: size	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: u	type: int
+                                            IntegerLiteral	value: 1	type: int
+                                AssignStmt
+                                    Id	name: size	type: int array
+                                        ArrayindiceNode
+                                            Id	name: v	type: int
+                                    BinaryExpr	op: add
+                                        Id	name: size	type: int array
+                                            ArrayindiceNode
+                                                Id	name: v	type: int
+                                        IntegerLiteral	value: 1	type: int
+                FunctionDefine function name: dfs, type: int(int, int, int)
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        IfStmt
+                                            BinaryExpr	op: equal
+                                                Id	name: s	type: int
+                                                Id	name: t	type: int
+                                            ReturnStmt
+                                                Id	name: f	type: int
+                                        AssignStmt
+                                            Id	name: used	type: int array
+                                                ArrayindiceNode
+                                                    Id	name: s	type: int
+                                            IntegerLiteral	value: 1	type: int
+                                    DeclStmt
+                                        DefNode	isConst:false	isArray:false
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 0	type: int
+                                WhileStmt
+                                    BinaryExpr	op: less
+                                        Id	name: i	type: int
+                                        Id	name: size	type: int array
+                                            ArrayindiceNode
+                                                Id	name: s	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                IfStmt
+                                                                    Id	name: used	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: to	type: int array
+                                                                                ArrayindiceNode
+                                                                                    Id	name: s	type: int
+                                                                                    Id	name: i	type: int
+                                                                    CompoundStmt
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: i	type: int
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i	type: int
+                                                                                    IntegerLiteral	value: 1	type: int
+                                                                            ContinueStmt
+                                                                IfStmt
+                                                                    BinaryExpr	op: LESS OR EQUAL
+                                                                        Id	name: cap	type: int array
+                                                                            ArrayindiceNode
+                                                                                Id	name: s	type: int
+                                                                                Id	name: i	type: int
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                    CompoundStmt
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: i	type: int
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: i	type: int
+                                                                                    IntegerLiteral	value: 1	type: int
+                                                                            ContinueStmt
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: min_f	type: int
+                                                                    null
+                                                        IfElseStmt
+                                                            BinaryExpr	op: less
+                                                                Id	name: f	type: int
+                                                                Id	name: cap	type: int array
+                                                                    ArrayindiceNode
+                                                                        Id	name: s	type: int
+                                                                        Id	name: i	type: int
+                                                            AssignStmt
+                                                                Id	name: min_f	type: int
+                                                                Id	name: f	type: int
+                                                            AssignStmt
+                                                                Id	name: min_f	type: int
+                                                                Id	name: cap	type: int array
+                                                                    ArrayindiceNode
+                                                                        Id	name: s	type: int
+                                                                        Id	name: i	type: int
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: d	type: int
+                                                            FuncCallNode	funcName: dfs	 funcType: int(int, int, int)
+                                                                FuncCallParamsNode
+                                                                    Id	name: to	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: s	type: int
+                                                                            Id	name: i	type: int
+                                                                    Id	name: t	type: int
+                                                                    Id	name: min_f	type: int
+                                                IfStmt
+                                                    BinaryExpr	op: greater
+                                                        Id	name: d	type: int
+                                                        IntegerLiteral	value: 0	type: int
+                                                    CompoundStmt
+                                                        Sequence
+                                                            Sequence
+                                                                AssignStmt
+                                                                    Id	name: cap	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: s	type: int
+                                                                            Id	name: i	type: int
+                                                                    BinaryExpr	op: sub
+                                                                        Id	name: cap	type: int array
+                                                                            ArrayindiceNode
+                                                                                Id	name: s	type: int
+                                                                                Id	name: i	type: int
+                                                                        Id	name: d	type: int
+                                                                AssignStmt
+                                                                    Id	name: cap	type: int array
+                                                                        ArrayindiceNode
+                                                                            Id	name: to	type: int array
+                                                                                ArrayindiceNode
+                                                                                    Id	name: s	type: int
+                                                                                    Id	name: i	type: int
+                                                                            Id	name: rev	type: int array
+                                                                                ArrayindiceNode
+                                                                                    Id	name: s	type: int
+                                                                                    Id	name: i	type: int
+                                                                    BinaryExpr	op: add
+                                                                        Id	name: cap	type: int array
+                                                                            ArrayindiceNode
+                                                                                Id	name: to	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        Id	name: s	type: int
+                                                                                        Id	name: i	type: int
+                                                                                Id	name: rev	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        Id	name: s	type: int
+                                                                                        Id	name: i	type: int
+                                                                        Id	name: d	type: int
+                                                            ReturnStmt
+                                                                Id	name: d	type: int
+                                            AssignStmt
+                                                Id	name: i	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: i	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                            ReturnStmt
+                                IntegerLiteral	value: 0	type: int
+            FunctionDefine function name: max_flow, type: int(int, int)
+                CompoundStmt
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: flow	type: int
+                                IntegerLiteral	value: 0	type: int
+                        WhileStmt
+                            IntegerLiteral	value: 1	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: my_memset	 funcType: void(int array, int, int)
+                                                    FuncCallParamsNode
+                                                        Id	name: used	type: int array
+                                                        IntegerLiteral	value: 0	type: int
+                                                        IntegerLiteral	value: 10	type: int
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: f	type: int
+                                                    FuncCallNode	funcName: dfs	 funcType: int(int, int, int)
+                                                        FuncCallParamsNode
+                                                            Id	name: s	type: int
+                                                            Id	name: t	type: int
+                                                            Id	name: INF	type: int
+                                        IfStmt
+                                            BinaryExpr	op: equal
+                                                Id	name: f	type: int
+                                                IntegerLiteral	value: 0	type: int
+                                            ReturnStmt
+                                                Id	name: flow	type: int
+                                    AssignStmt
+                                        Id	name: flow	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: flow	type: int
+                                            Id	name: f	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            DeclStmt
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: V	type: int
+                                                    null
+                                                DefNode	isConst:false	isArray:false
+                                                    Id	name: E	type: int
+                                                    null
+                                            AssignStmt
+                                                Id	name: V	type: int
+                                                FuncCallNode	funcName: getint	 funcType: int()
+                                                    FuncCallWithNoParams
+                                        AssignStmt
+                                            Id	name: E	type: int
+                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                FuncCallWithNoParams
+                                    ExprStmtNode
+                                        FuncCallNode	funcName: my_memset	 funcType: void(int array, int, int)
+                                            FuncCallParamsNode
+                                                Id	name: size	type: int array
+                                                IntegerLiteral	value: 0	type: int
+                                                IntegerLiteral	value: 10	type: int
+                                WhileStmt
+                                    BinaryExpr	op: greater
+                                        Id	name: E	type: int
+                                        IntegerLiteral	value: 0	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            DeclStmt
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: u	type: int
+                                                                    null
+                                                                DefNode	isConst:false	isArray:false
+                                                                    Id	name: v	type: int
+                                                                    null
+                                                            AssignStmt
+                                                                Id	name: u	type: int
+                                                                FuncCallNode	funcName: getint	 funcType: int()
+                                                                    FuncCallWithNoParams
+                                                        AssignStmt
+                                                            Id	name: v	type: int
+                                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                                FuncCallWithNoParams
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: c	type: int
+                                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                                FuncCallWithNoParams
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: add_node	 funcType: void(int, int, int)
+                                                        FuncCallParamsNode
+                                                            Id	name: u	type: int
+                                                            Id	name: v	type: int
+                                                            Id	name: c	type: int
+                                            AssignStmt
+                                                Id	name: E	type: int
+                                                BinaryExpr	op: sub
+                                                    Id	name: E	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                            ExprStmtNode
+                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                    FuncCallParamsNode
+                                        FuncCallNode	funcName: max_flow	 funcType: int(int, int)
+                                            FuncCallParamsNode
+                                                IntegerLiteral	value: 1	type: int
+                                                Id	name: V	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                FuncCallParamsNode
+                                    IntegerLiteral	value: 10	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int

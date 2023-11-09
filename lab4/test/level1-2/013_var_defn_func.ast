@@ -1,0 +1,16 @@
+program
+    Sequence
+        FunctionDefine function name: defn, type: int()
+            CompoundStmt
+                ReturnStmt
+                    IntegerLiteral	value: 4	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    DeclStmt
+                        DefNode	isConst:false	isArray:false
+                            Id	name: a	type: int
+                            FuncCallNode	funcName: defn	 funcType: int()
+                                FuncCallWithNoParams
+                    ReturnStmt
+                        Id	name: a	type: int
