@@ -596,7 +596,7 @@ VarDef
 FuncDef
     :
     Type ID {
-        // 返回值类型是ID的type，函数定义中需要创建新的符号表
+        // 函数定义中需要创建新的符号表
         Type *funcType;
         funcType = new FunctionType($1,{});
         SymbolEntry *se = new IdentifierSymbolEntry(funcType, $2, identifiers->getLevel());
@@ -645,7 +645,7 @@ FuncParams
 FuncParam
     :   Type ID {
             SymbolEntry *se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
-            identifiers->install($2, se);
+            // identifiers->install($2, se);
             $$ = new DefNode(new Id(se), nullptr, false, false);
         }
     | Type ID LBRACKET RBRACKET ArrIndices{
@@ -658,7 +658,7 @@ FuncParam
             }
 
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
-            identifiers->install($2, se);
+            // identifiers->install($2, se);
             Id* id = new Id(se);
             id->addIndices((ArrayindiceNode*)$5);
             $$ = new DefNode(id, nullptr, false, true);
@@ -673,7 +673,7 @@ FuncParam
             }
 
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
-            identifiers->install($2, se);
+            // identifiers->install($2, se);
             Id* id = new Id(se);
             $$ = new DefNode(id, nullptr, false, true);
         }
