@@ -13,4 +13,6 @@ int main(){
     while(i<10){
         a[i] = 2;
     }
+    putf();
+    putch();
 }

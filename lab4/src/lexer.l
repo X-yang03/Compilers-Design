@@ -249,9 +249,8 @@ WHITE           [\t ]
 }
 
 "getint" {
-    #ifdef ONLY_FOR_LEX
+
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -261,12 +260,11 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
+
 }
 "getch" {
-    #ifdef ONLY_FOR_LEX
+
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -276,12 +274,10 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
+
 }
 "getfloat" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -291,13 +287,11 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
+
 }
 "getarray" {
-    #ifdef ONLY_FOR_LEX
 
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -311,12 +305,10 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
+
 }
 "getfarray" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -330,12 +322,9 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
 "putint" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -347,12 +336,9 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
 "putch" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -364,12 +350,9 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
 "putfloat" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -381,12 +364,9 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
 "putarray" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -401,12 +381,9 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
 "putfarray" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
@@ -421,14 +398,21 @@ WHITE           [\t ]
         SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
         globalTable->install(yytext, entry);
         return ID;
-    #endif
+
 }
 "putf" {
-    #ifdef ONLY_FOR_LEX
         columnNo+=yyleng;
-    #else
-        /*todo: implement putf*/
-    #endif
+        char *lexeme = new char[yyleng + 1];
+        strcpy(lexeme, yytext);
+        yylval.strtype = lexeme;
+        std::vector<Type*> vec; //形参类型表
+        vec.push_back(TypeSystem::floatType);
+        Type* funcType = new FunctionType(TypeSystem::voidType, vec);//返回类型void，参数表[int]
+        SymbolTable* globalTable;    //全域符号表
+        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
+        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
+        globalTable->install(yytext, entry);
+        return ID;
 }
 
 {DECIMIAL} {
