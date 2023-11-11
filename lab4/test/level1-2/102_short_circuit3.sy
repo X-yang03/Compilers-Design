@@ -7,7 +7,6 @@ int set_d(int val) { d = val; return d; }
 int main()
 {
     a = 2; b = 3;
-    if (set_a(0) && set_b(1)) {}
     putint(a); putch(32);
     putint(b); putch(32);
 
@@ -20,7 +19,6 @@ int main()
     d = 2;
     if (c >= 1 && set_d(3)) ;
     putint(d); putch(32);
-    if (c <= 1 || set_d(4)) {}
     putint(d); putch(10);
 
     if (16 >= (3 - (2 + 1))) { putch(65); }

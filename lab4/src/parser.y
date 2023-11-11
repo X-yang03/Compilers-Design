@@ -83,8 +83,8 @@ LVal
         }
         $$ = new Id(se);
         
-        // std::cout<<$$->getType()->toStr();
-        // std::cout<<"test"<<std::endl;
+         // std::cout<<$$->getType()->toStr();
+         // std::cout<<"test"<<std::endl;
         delete []$1;
     }
     |
@@ -121,6 +121,9 @@ BlockStmt
             identifiers = identifiers->getPrev();
             delete top;
         }
+        |   LBRACE RBRACE {
+            $$ = new CompoundStmt(nullptr);
+        }
     ;
 IfStmt
     : IF LPAREN Cond RPAREN Stmt %prec THEN {
@@ -149,6 +152,9 @@ ReturnStmt
     :
     RETURN Exp SEMICOLON{
         $$ = new ReturnStmt($2);
+    }
+    |   RETURN SEMICOLON {
+         $$ = new ReturnStmt(nullptr);
     }
     ;
 
@@ -336,7 +342,7 @@ RelExp
     |
     RelExp GREATER AddExp
     {
-        printf("greater!\n");
+        
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::GREATER, $1, $3);
     }
@@ -454,6 +460,7 @@ ConstDef
             identifiers->install($1, se);
             $$ = new DefNode(new Id(se), (Node*)$3, true, false);
         }
+    // todo 数组变量的定义
         |   ID ArrIndices ASSIGN ConstArrayInitVal{
             Type* type;
             if(currentType->isInt()){
@@ -596,7 +603,7 @@ VarDef
 FuncDef
     :
     Type ID {
-        // 函数定义中需要创建新的符号表
+        // 返回值类型是ID的type，函数定义中需要创建新的符号表
         Type *funcType;
         funcType = new FunctionType($1,{});
         SymbolEntry *se = new IdentifierSymbolEntry(funcType, $2, identifiers->getLevel());
@@ -645,20 +652,22 @@ FuncParams
 FuncParam
     :   Type ID {
             SymbolEntry *se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
-            // identifiers->install($2, se);
+            identifiers->install($2, se);
             $$ = new DefNode(new Id(se), nullptr, false, false);
         }
     | Type ID LBRACKET RBRACKET ArrIndices{
             Type* arrayType = nullptr; 
             if($1==TypeSystem::intType){
                 arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
             }
             else if($1==TypeSystem::floatType){
                 arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
             }
-
+            //最高维未指定，记为默认值-1
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
-            // identifiers->install($2, se);
+            identifiers->install($2, se);
             Id* id = new Id(se);
             id->addIndices((ArrayindiceNode*)$5);
             $$ = new DefNode(id, nullptr, false, true);
@@ -667,13 +676,15 @@ FuncParam
             Type* arrayType = nullptr; 
             if($1==TypeSystem::intType){
                 arrayType = new IntArrayType();
+                ((IntArrayType*)arrayType)->pushBackDimension(-1);
             }
             else if($1==TypeSystem::floatType){
                 arrayType = new FloatArrayType();
+                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
             }
-
+            //最高维未指定，记为默认值-1
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
-            // identifiers->install($2, se);
+            identifiers->install($2, se);
             Id* id = new Id(se);
             $$ = new DefNode(id, nullptr, false, true);
         }

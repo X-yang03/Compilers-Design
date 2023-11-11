@@ -1,1 +1,220 @@
 program
+    Sequence
+        Sequence
+            Sequence
+                Sequence
+                    DeclStmt
+                        DefNode	isConst:false	isArray:true
+                            Id	name: ans	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 50	type: int
+                            null
+                        DefNode	isConst:false	isArray:false
+                            Id	name: sum	type: int
+                            IntegerLiteral	value: 0	type: int
+                        DefNode	isConst:false	isArray:false
+                            Id	name: n	type: int
+                            null
+                    DeclStmt
+                        DefNode	isConst:false	isArray:true
+                            Id	name: row	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 50	type: int
+                            null
+                        DefNode	isConst:false	isArray:true
+                            Id	name: line1	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 50	type: int
+                            null
+                        DefNode	isConst:false	isArray:true
+                            Id	name: line2	type: int array
+                                ArrayindiceNode
+                                    IntegerLiteral	value: 100	type: int
+                            null
+                FunctionDefine function name: printans, type: void()
+                    CompoundStmt
+                        Sequence
+                            Sequence
+                                AssignStmt
+                                    Id	name: sum	type: int
+                                    BinaryExpr	op: add
+                                        Id	name: sum	type: int
+                                        IntegerLiteral	value: 1	type: int
+                                DeclStmt
+                                    DefNode	isConst:false	isArray:false
+                                        Id	name: i	type: int
+                                        IntegerLiteral	value: 1	type: int
+                            WhileStmt
+                                BinaryExpr	op: LESS OR EQUAL
+                                    Id	name: i	type: int
+                                    Id	name: n	type: int
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: putint	 funcType: void(int)
+                                                    FuncCallParamsNode
+                                                        Id	name: ans	type: int array
+                                                            ArrayindiceNode
+                                                                Id	name: i	type: int
+                                            IfElseStmt
+                                                BinaryExpr	op: equal
+                                                    Id	name: i	type: int
+                                                    Id	name: n	type: int
+                                                CompoundStmt
+                                                    Sequence
+                                                        ExprStmtNode
+                                                            FuncCallNode	funcName: putch	 funcType: void(int)
+                                                                FuncCallParamsNode
+                                                                    IntegerLiteral	value: 10	type: int
+                                                        ReturnStmt
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: putch	 funcType: void(int)
+                                                        FuncCallParamsNode
+                                                            IntegerLiteral	value: 32	type: int
+                                        AssignStmt
+                                            Id	name: i	type: int
+                                            BinaryExpr	op: add
+                                                Id	name: i	type: int
+                                                IntegerLiteral	value: 1	type: int
+            FunctionDefine function name: f, type: void(int)
+                CompoundStmt
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: i	type: int
+                                IntegerLiteral	value: 1	type: int
+                        WhileStmt
+                            BinaryExpr	op: LESS OR EQUAL
+                                Id	name: i	type: int
+                                Id	name: n	type: int
+                            CompoundStmt
+                                Sequence
+                                    IfStmt
+                                        BinaryExpr	op: and
+                                            BinaryExpr	op: and
+                                                BinaryExpr	op: not equal
+                                                    Id	name: row	type: int array
+                                                        ArrayindiceNode
+                                                            Id	name: i	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                                                BinaryExpr	op: equal
+                                                    Id	name: line1	type: int array
+                                                        ArrayindiceNode
+                                                            BinaryExpr	op: add
+                                                                Id	name: step	type: int
+                                                                Id	name: i	type: int
+                                                    IntegerLiteral	value: 0	type: int
+                                            UnaryOpExpr	op: not
+                                                Id	name: line2	type: int array
+                                                    ArrayindiceNode
+                                                        BinaryExpr	op: sub
+                                                            BinaryExpr	op: add
+                                                                Id	name: n	type: int
+                                                                Id	name: step	type: int
+                                                            Id	name: i	type: int
+                                        CompoundStmt
+                                            Sequence
+                                                Sequence
+                                                    Sequence
+                                                        Sequence
+                                                            Sequence
+                                                                Sequence
+                                                                    Sequence
+                                                                        Sequence
+                                                                            AssignStmt
+                                                                                Id	name: ans	type: int array
+                                                                                    ArrayindiceNode
+                                                                                        Id	name: step	type: int
+                                                                                Id	name: i	type: int
+                                                                            IfStmt
+                                                                                BinaryExpr	op: equal
+                                                                                    Id	name: step	type: int
+                                                                                    Id	name: n	type: int
+                                                                                ExprStmtNode
+                                                                                    FuncCallNode	funcName: printans	 funcType: void()
+                                                                                        FuncCallWithNoParams
+                                                                        AssignStmt
+                                                                            Id	name: row	type: int array
+                                                                                ArrayindiceNode
+                                                                                    Id	name: i	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                                    AssignStmt
+                                                                        Id	name: line1	type: int array
+                                                                            ArrayindiceNode
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: step	type: int
+                                                                                    Id	name: i	type: int
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                AssignStmt
+                                                                    Id	name: line2	type: int array
+                                                                        ArrayindiceNode
+                                                                            BinaryExpr	op: sub
+                                                                                BinaryExpr	op: add
+                                                                                    Id	name: n	type: int
+                                                                                    Id	name: step	type: int
+                                                                                Id	name: i	type: int
+                                                                    IntegerLiteral	value: 1	type: int
+                                                            ExprStmtNode
+                                                                FuncCallNode	funcName: f	 funcType: void(int)
+                                                                    FuncCallParamsNode
+                                                                        BinaryExpr	op: add
+                                                                            Id	name: step	type: int
+                                                                            IntegerLiteral	value: 1	type: int
+                                                        AssignStmt
+                                                            Id	name: row	type: int array
+                                                                ArrayindiceNode
+                                                                    Id	name: i	type: int
+                                                            IntegerLiteral	value: 0	type: int
+                                                    AssignStmt
+                                                        Id	name: line1	type: int array
+                                                            ArrayindiceNode
+                                                                BinaryExpr	op: add
+                                                                    Id	name: step	type: int
+                                                                    Id	name: i	type: int
+                                                        IntegerLiteral	value: 0	type: int
+                                                AssignStmt
+                                                    Id	name: line2	type: int array
+                                                        ArrayindiceNode
+                                                            BinaryExpr	op: sub
+                                                                BinaryExpr	op: add
+                                                                    Id	name: n	type: int
+                                                                    Id	name: step	type: int
+                                                                Id	name: i	type: int
+                                                    IntegerLiteral	value: 0	type: int
+                                    AssignStmt
+                                        Id	name: i	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: i	type: int
+                                            IntegerLiteral	value: 1	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        DeclStmt
+                            DefNode	isConst:false	isArray:false
+                                Id	name: N	type: int
+                                FuncCallNode	funcName: getint	 funcType: int()
+                                    FuncCallWithNoParams
+                        WhileStmt
+                            BinaryExpr	op: greater
+                                Id	name: N	type: int
+                                IntegerLiteral	value: 0	type: int
+                            CompoundStmt
+                                Sequence
+                                    Sequence
+                                        AssignStmt
+                                            Id	name: n	type: int
+                                            FuncCallNode	funcName: getint	 funcType: int()
+                                                FuncCallWithNoParams
+                                        ExprStmtNode
+                                            FuncCallNode	funcName: f	 funcType: void(int)
+                                                FuncCallParamsNode
+                                                    IntegerLiteral	value: 1	type: int
+                                    AssignStmt
+                                        Id	name: N	type: int
+                                        BinaryExpr	op: sub
+                                            Id	name: N	type: int
+                                            IntegerLiteral	value: 1	type: int
+                    ReturnStmt
+                        Id	name: sum	type: int

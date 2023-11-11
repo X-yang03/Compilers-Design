@@ -113,12 +113,10 @@ bool Id::isArray()
 void Id::output(int level)
 {
     std::string name, type;
-    int scope;
     name = symbolEntry->toStr();
     type = symbolEntry->getType()->toStr();
-    scope = dynamic_cast<IdentifierSymbolEntry*>(symbolEntry)->getScope();
-    fprintf(yyout, "%*cId\tname: %s\tscope: %d\ttype: %s\n", level, ' ',
-            name.c_str(),scope, type.c_str());
+    fprintf(yyout, "%*cId\tname: %s\ttype: %s\n", level, ' ',
+            name.c_str(), type.c_str());
     if(isArray() && indices!=nullptr){
         indices->output(level+4);
     }
@@ -152,7 +150,9 @@ void ArrayindiceNode::output(int level)
 void CompoundStmt::output(int level)
 {
     fprintf(yyout, "%*cCompoundStmt\n", level, ' ');
+    if(stmt!=nullptr){
     stmt->output(level + 4);
+    }
 }
 
 void SeqNode::output(int level)
@@ -238,7 +238,9 @@ void BreakStmt::output(int level){
 void ReturnStmt::output(int level)
 {
     fprintf(yyout, "%*cReturnStmt\n", level, ' ');
-    retValue->output(level + 4);
+    if(retValue!=nullptr){
+        retValue->output(level + 4);
+    }
 }
 
 void AssignStmt::output(int level)
@@ -286,13 +288,10 @@ void FunctionDef::output(int level)
 void FuncCallNode::output(int level)
 {
     std::string name, type;
-    int scope;
-    SymbolEntry* FuncEntry = funcId->getSymbolEntry();
     name = funcId->getName();
     type = funcId->getType()->toStr();
-    scope = dynamic_cast<IdentifierSymbolEntry*>(FuncEntry)->getScope();
-    fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\tscope: %d\t funcType: %s\n", 
-            level, ' ', name.c_str(), scope,type.c_str());
+    fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\n", 
+            level, ' ', name.c_str(), type.c_str());
     if(params!=nullptr){
         params->output(level+4);
     }

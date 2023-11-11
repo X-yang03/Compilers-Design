@@ -1,1 +1,211 @@
 program
+    Sequence
+        Sequence
+            DeclStmt
+                DefNode	isConst:false	isArray:true
+                    Id	name: buf	type: int array
+                        ArrayindiceNode
+                            IntegerLiteral	value: 2	type: int
+                            IntegerLiteral	value: 100	type: int
+                    null
+            FunctionDefine function name: merge_sort, type: void(int, int)
+                CompoundStmt
+                    Sequence
+                        Sequence
+                            Sequence
+                                Sequence
+                                    Sequence
+                                        Sequence
+                                            Sequence
+                                                Sequence
+                                                    IfStmt
+                                                        BinaryExpr	op: greater or equal
+                                                            BinaryExpr	op: add
+                                                                Id	name: l	type: int
+                                                                IntegerLiteral	value: 1	type: int
+                                                            Id	name: r	type: int
+                                                        ReturnStmt
+                                                    DeclStmt
+                                                        DefNode	isConst:false	isArray:false
+                                                            Id	name: mid	type: int
+                                                            BinaryExpr	op: div
+                                                                BinaryExpr	op: add
+                                                                    Id	name: l	type: int
+                                                                    Id	name: r	type: int
+                                                                IntegerLiteral	value: 2	type: int
+                                                ExprStmtNode
+                                                    FuncCallNode	funcName: merge_sort	 funcType: void(int, int)
+                                                        FuncCallParamsNode
+                                                            Id	name: l	type: int
+                                                            Id	name: mid	type: int
+                                            ExprStmtNode
+                                                FuncCallNode	funcName: merge_sort	 funcType: void(int, int)
+                                                    FuncCallParamsNode
+                                                        Id	name: mid	type: int
+                                                        Id	name: r	type: int
+                                        DeclStmt
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: i	type: int
+                                                Id	name: l	type: int
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: j	type: int
+                                                Id	name: mid	type: int
+                                            DefNode	isConst:false	isArray:false
+                                                Id	name: k	type: int
+                                                Id	name: l	type: int
+                                    WhileStmt
+                                        BinaryExpr	op: and
+                                            BinaryExpr	op: less
+                                                Id	name: i	type: int
+                                                Id	name: mid	type: int
+                                            BinaryExpr	op: less
+                                                Id	name: j	type: int
+                                                Id	name: r	type: int
+                                        CompoundStmt
+                                            Sequence
+                                                IfElseStmt
+                                                    BinaryExpr	op: less
+                                                        Id	name: buf	type: int array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 0	type: int
+                                                                Id	name: i	type: int
+                                                        Id	name: buf	type: int array
+                                                            ArrayindiceNode
+                                                                IntegerLiteral	value: 0	type: int
+                                                                Id	name: j	type: int
+                                                    CompoundStmt
+                                                        Sequence
+                                                            AssignStmt
+                                                                Id	name: buf	type: int array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                        Id	name: k	type: int
+                                                                Id	name: buf	type: int array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                        Id	name: i	type: int
+                                                            AssignStmt
+                                                                Id	name: i	type: int
+                                                                BinaryExpr	op: add
+                                                                    Id	name: i	type: int
+                                                                    IntegerLiteral	value: 1	type: int
+                                                    CompoundStmt
+                                                        Sequence
+                                                            AssignStmt
+                                                                Id	name: buf	type: int array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 1	type: int
+                                                                        Id	name: k	type: int
+                                                                Id	name: buf	type: int array
+                                                                    ArrayindiceNode
+                                                                        IntegerLiteral	value: 0	type: int
+                                                                        Id	name: j	type: int
+                                                            AssignStmt
+                                                                Id	name: j	type: int
+                                                                BinaryExpr	op: add
+                                                                    Id	name: j	type: int
+                                                                    IntegerLiteral	value: 1	type: int
+                                                AssignStmt
+                                                    Id	name: k	type: int
+                                                    BinaryExpr	op: add
+                                                        Id	name: k	type: int
+                                                        IntegerLiteral	value: 1	type: int
+                                WhileStmt
+                                    BinaryExpr	op: less
+                                        Id	name: i	type: int
+                                        Id	name: mid	type: int
+                                    CompoundStmt
+                                        Sequence
+                                            Sequence
+                                                AssignStmt
+                                                    Id	name: buf	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 1	type: int
+                                                            Id	name: k	type: int
+                                                    Id	name: buf	type: int array
+                                                        ArrayindiceNode
+                                                            IntegerLiteral	value: 0	type: int
+                                                            Id	name: i	type: int
+                                                AssignStmt
+                                                    Id	name: i	type: int
+                                                    BinaryExpr	op: add
+                                                        Id	name: i	type: int
+                                                        IntegerLiteral	value: 1	type: int
+                                            AssignStmt
+                                                Id	name: k	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: k	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                            WhileStmt
+                                BinaryExpr	op: less
+                                    Id	name: j	type: int
+                                    Id	name: r	type: int
+                                CompoundStmt
+                                    Sequence
+                                        Sequence
+                                            AssignStmt
+                                                Id	name: buf	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 1	type: int
+                                                        Id	name: k	type: int
+                                                Id	name: buf	type: int array
+                                                    ArrayindiceNode
+                                                        IntegerLiteral	value: 0	type: int
+                                                        Id	name: j	type: int
+                                            AssignStmt
+                                                Id	name: j	type: int
+                                                BinaryExpr	op: add
+                                                    Id	name: j	type: int
+                                                    IntegerLiteral	value: 1	type: int
+                                        AssignStmt
+                                            Id	name: k	type: int
+                                            BinaryExpr	op: add
+                                                Id	name: k	type: int
+                                                IntegerLiteral	value: 1	type: int
+                        WhileStmt
+                            BinaryExpr	op: less
+                                Id	name: l	type: int
+                                Id	name: r	type: int
+                            CompoundStmt
+                                Sequence
+                                    AssignStmt
+                                        Id	name: buf	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 0	type: int
+                                                Id	name: l	type: int
+                                        Id	name: buf	type: int array
+                                            ArrayindiceNode
+                                                IntegerLiteral	value: 1	type: int
+                                                Id	name: l	type: int
+                                    AssignStmt
+                                        Id	name: l	type: int
+                                        BinaryExpr	op: add
+                                            Id	name: l	type: int
+                                            IntegerLiteral	value: 1	type: int
+        FunctionDefine function name: main, type: int()
+            CompoundStmt
+                Sequence
+                    Sequence
+                        Sequence
+                            DeclStmt
+                                DefNode	isConst:false	isArray:false
+                                    Id	name: n	type: int
+                                    FuncCallNode	funcName: getarray	 funcType: int(int array)
+                                        FuncCallParamsNode
+                                            Id	name: buf	type: int array
+                                                ArrayindiceNode
+                                                    IntegerLiteral	value: 0	type: int
+                            ExprStmtNode
+                                FuncCallNode	funcName: merge_sort	 funcType: void(int, int)
+                                    FuncCallParamsNode
+                                        IntegerLiteral	value: 0	type: int
+                                        Id	name: n	type: int
+                        ExprStmtNode
+                            FuncCallNode	funcName: putarray	 funcType: void(int, int array)
+                                FuncCallParamsNode
+                                    Id	name: n	type: int
+                                    Id	name: buf	type: int array
+                                        ArrayindiceNode
+                                            IntegerLiteral	value: 0	type: int
+                    ReturnStmt
+                        IntegerLiteral	value: 0	type: int
