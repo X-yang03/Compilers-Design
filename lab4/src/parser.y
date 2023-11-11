@@ -83,8 +83,8 @@ LVal
         }
         $$ = new Id(se);
         
-        std::cout<<$$->getType()->toStr();
-        std::cout<<"test"<<std::endl;
+        // std::cout<<$$->getType()->toStr();
+        // std::cout<<"test"<<std::endl;
         delete []$1;
     }
     |
