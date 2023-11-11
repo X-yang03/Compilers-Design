@@ -113,10 +113,12 @@ bool Id::isArray()
 void Id::output(int level)
 {
     std::string name, type;
+    int scope;
     name = symbolEntry->toStr();
     type = symbolEntry->getType()->toStr();
-    fprintf(yyout, "%*cId\tname: %s\ttype: %s\n", level, ' ',
-            name.c_str(), type.c_str());
+    scope = dynamic_cast<IdentifierSymbolEntry*>(symbolEntry)->getScope();
+    fprintf(yyout, "%*cId\tname: %s\tscope: %d\ttype: %s\n", level, ' ',
+            name.c_str(),scope, type.c_str());
     if(isArray() && indices!=nullptr){
         indices->output(level+4);
     }
@@ -284,10 +286,13 @@ void FunctionDef::output(int level)
 void FuncCallNode::output(int level)
 {
     std::string name, type;
+    int scope;
+    SymbolEntry* FuncEntry = funcId->getSymbolEntry();
     name = funcId->getName();
     type = funcId->getType()->toStr();
-    fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\t funcType: %s\n", 
-            level, ' ', name.c_str(), type.c_str());
+    scope = dynamic_cast<IdentifierSymbolEntry*>(FuncEntry)->getScope();
+    fprintf(yyout, "%*cFuncCallNode\tfuncName: %s\tscope: %d\t funcType: %s\n", 
+            level, ' ', name.c_str(), scope,type.c_str());
     if(params!=nullptr){
         params->output(level+4);
     }
