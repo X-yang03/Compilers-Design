@@ -191,66 +191,74 @@ void AssignStmt::genCode()
      */
     new StoreInstruction(addr, src, bb);
 }
+void EmptyStmtNode::genCode()
+{
+    // Todo
+}
 
-void Ast::typeCheck()
+
+void Ast::typeCheck(Node** parentToChild)
 {
     if(root != nullptr)
-        root->typeCheck();
+        root->typeCheck(parentToChild);
 }
 
-void FunctionDef::typeCheck()
+void FunctionDef::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void BinaryExpr::typeCheck()
+void BinaryExpr::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void Constant::typeCheck()
+void Constant::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void Id::typeCheck()
+void Id::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void IfStmt::typeCheck()
+void IfStmt::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void IfElseStmt::typeCheck()
+void IfElseStmt::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void CompoundStmt::typeCheck()
+void CompoundStmt::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void SeqNode::typeCheck()
+void SeqNode::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void DeclStmt::typeCheck()
+void DeclStmt::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void ReturnStmt::typeCheck()
+void ReturnStmt::typeCheck(Node** parentToChild)
 {
     // Todo
 }
 
-void AssignStmt::typeCheck()
+void AssignStmt::typeCheck(Node** parentToChild)
 {
     // Todo
+}
+void EmptyStmtNode::typeCheck(Node** parentToChild){
+
 }
 
 Node::Node()

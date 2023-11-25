@@ -68,7 +68,7 @@ Stmt
     | FuncDef {$$=$1;}
     | BreakStmt{$$=$1;}
     | ContinueStmt{$$=$1;}
-    | SEMICOLON{$$ = new EmptyStmtNode() ;}
+    | SEMICOLON{$$ = new EmptyStmtNode();}
     | ExpStmt{$$ = $1;}
     ;
 LVal
