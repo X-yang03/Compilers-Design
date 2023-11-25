@@ -7,7 +7,7 @@ int whileIf() {
   // 考察while/if语句和关系运算
   while (a < 100) { 
     if (a == 5) {
-      b = 25;
+      
     }
     else if (a == 10) {
       b = 42;  
