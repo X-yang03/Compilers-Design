@@ -68,10 +68,25 @@ SymbolTable::SymbolTable(SymbolTable *prev)
     4. If you find the entry, return it.
     5. If you can't find it in all symbol tables, return nullptr.
 */
+// SymbolEntry* SymbolTable::lookup(std::string name)
+// {
+//     // Todo
+//     return nullptr;
+// }
 SymbolEntry* SymbolTable::lookup(std::string name)
 {
     // Todo
-    return nullptr;
+    if(symbolTable.find(name)!=symbolTable.end()){
+        return symbolTable[name];
+    }
+    else{
+        if(this->getPrev()!=nullptr){
+            return this->getPrev()->lookup(name);
+        }else{
+            return nullptr;
+        }
+    }
+    
 }
 
 // install the entry into current symbol table.
