@@ -10,6 +10,7 @@ class Function;
 class BasicBlock;
 class Instruction;
 class IRBuilder;
+class Type;
 
 class Node
 {
@@ -43,6 +44,7 @@ public:
     ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
     Operand* getOperand() {return dst;};
     SymbolEntry* getSymPtr() {return symbolEntry;};
+    Type* getType();
 };
 
 class BinaryExpr : public ExprNode
@@ -51,13 +53,21 @@ private:
     int op;
     ExprNode *expr1, *expr2;
 public:
-    enum {ADD, SUB, AND, OR, LESS, GREATER};
-    BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){dst = new Operand(se);};
+     enum {ADD, SUB, AND, OR, LESS,MUL,DIV,MOD,LE,GREATER,GE,EQ,NEQ};
+    BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){};
     void output(int level);
     void typeCheck();
     void genCode();
 };
-
+class UnaryOpExpr : public ExprNode{
+private:
+    int op;
+    ExprNode *expr;
+public:
+    enum {ADD,SUB,NOT};
+    UnaryOpExpr(SymbolEntry *se,int op,ExprNode *expr) : ExprNode(se),op(op),expr(expr){};
+    void output(int level);
+};
 class Constant : public ExprNode
 {
 public:
@@ -66,12 +76,27 @@ public:
     void typeCheck();
     void genCode();
 };
-
+class ArrayindiceNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> arrindexList;
+public:
+    ArrayindiceNode(){};
+    void append(ExprNode* next);
+    void output(int level);
+};
 class Id : public ExprNode
 {
+private:
+    ArrayindiceNode* indices;
 public:
     Id(SymbolEntry *se) : ExprNode(se){SymbolEntry *temp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel()); dst = new Operand(temp);};
+     SymbolEntry* getSymbolEntry() {return symbolEntry;}
+    bool isArray();     //必须配合indices!=nullptr使用（a[]的情况）
+    void addIndices(ArrayindiceNode* idx) {indices = idx;}
     void output(int level);
+    std::string getName();
+    Type* getType();
     void typeCheck();
     void genCode();
 };
@@ -99,6 +124,33 @@ public:
     void output(int level);
     void typeCheck();
     void genCode();
+};
+class ArrayinitNode : public StmtNode
+{
+private:
+    bool isConst;
+    ExprNode* leafNode;//用于output
+    std::vector<ArrayinitNode*> innerList;//容器为空则是叶节点
+public:
+    ArrayinitNode(bool isConst) : 
+        isConst(isConst), leafNode(nullptr){};
+    void setLeafNode(ExprNode* leaf){leafNode = leaf;};
+    void append(ArrayinitNode* next){innerList.push_back(next);};
+    bool isLeaf(){return innerList.empty();};
+    void output(int level);
+};
+class DefNode : public StmtNode
+{
+private:
+    bool isConst;
+    bool isArray;
+    Id* id;
+    Node* initVal;//对于非数组，是ExprNode；对于数组，是InitValueNode
+public:
+    DefNode(Id* id, Node* initVal, bool isConst, bool isArray) : 
+        isConst(isConst), isArray(isArray), id(id), initVal(initVal){};
+    Id* getId() {return id;}
+    void output(int level);
 };
 
 class DeclStmt : public StmtNode
@@ -136,7 +188,15 @@ public:
     void typeCheck();
     void genCode();
 };
-
+class WhileStmt : public StmtNode
+{
+private:
+    ExprNode *cond;
+    StmtNode *Stmt;
+public:
+    WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt){};
+    void output(int level);
+};
 class ReturnStmt : public StmtNode
 {
 private:
@@ -147,7 +207,18 @@ public:
     void typeCheck();
     void genCode();
 };
-
+class ContinueStmt : public StmtNode //continue
+{
+private:
+public:
+    void output(int level);
+    
+};
+class BreakStmt: public StmtNode
+{
+public:
+    void output(int level);
+};
 class AssignStmt : public StmtNode
 {
 private:
@@ -171,7 +242,55 @@ public:
     void typeCheck();
     void genCode();
 };
+class EmptyStmtNode : public StmtNode
+{
+public:
+    EmptyStmtNode(){};
+    void output(int level);
+};
 
+//WE ADD
+class FuncDefParamsNode : public StmtNode
+{
+private:
+    std::vector<Id*> paramsList;
+public:
+    FuncDefParamsNode() {};
+    void addNext(Id* next);
+    std::vector<Type*> getParamsType();
+    void output(int level);
+};
+
+class FunctionDef : public StmtNode
+{
+private:
+    SymbolEntry *se;
+    StmtNode *stmt;
+public:
+    FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
+    void output(int level);
+};
+
+// 函数调用
+class FuncCallParamsNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> paramsList; //参数列表
+public:
+    FuncCallParamsNode(){};
+    void append(ExprNode* next);
+    void output(int level);
+};
+
+class FuncCallNode : public ExprNode  
+{
+private:
+    Id* funcId;  //函数名
+    FuncCallParamsNode* params; //参数
+public:
+    FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
+    void output(int level);
+};
 class Ast
 {
 private:
@@ -183,5 +302,13 @@ public:
     void typeCheck();
     void genCode(Unit *unit);
 };
-
+class ExprStmtNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> exprList;
+public:
+    ExprStmtNode(){};
+    void append(ExprNode* next);
+    void output(int level);
+};
 #endif
