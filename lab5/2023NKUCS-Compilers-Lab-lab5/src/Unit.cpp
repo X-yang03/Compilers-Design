@@ -10,15 +10,30 @@ void Unit::removeFunc(Function *func)
     func_list.erase(std::find(func_list.begin(), func_list.end(), func));
 }
 
+void Unit::insertDecl(IdentifierSymbolEntry* se)
+{
+    declare_func.insert(se);
+}
+
 void Unit::output() const
 {
-    for (auto &func : func_list)
+    // 先定义全局变量
+    for (auto decl : declare_func){
+        if(!decl->isLibFunc())
+            decl->outputFuncDecl();
+    }
+    // 再定义库函数
+    for (auto decl : declare_func){
+        if(decl->isLibFunc())
+            decl->outputFuncDecl();
+    }
+    for (auto &func : func_list){
         func->output();
+    }
 }
 
 Unit::~Unit()
 {
-    auto delete_list = func_list;
-    for(auto &func:delete_list)
+    for(auto &func:func_list)
         delete func;
 }
