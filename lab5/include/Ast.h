@@ -3,6 +3,8 @@
 
 #include <fstream>
 #include "Operand.h"
+#include <vector>
+#include <stack>
 
 class SymbolEntry;
 class Unit;
@@ -18,12 +20,16 @@ private:
     static int counter;
     int seq;
 protected:
-    std::vector<BasicBlock**> true_list;
-    std::vector<BasicBlock**> false_list;
+    //std::vector<BasicBlock**> true_list;
+    //std::vector<BasicBlock**> false_list;
+    std::vector<Instruction*> true_list;
+    std::vector<Instruction*> false_list;
     static IRBuilder *builder;
-    void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
-    std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
-
+    //void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
+    void backPatch(std::vector<Instruction*> &list, BasicBlock*bb);
+    //std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
+    std::vector<Instruction*> merge(std::vector<Instruction*> &list1, std::vector<Instruction*> &list2);
+    Operand* typeCast(Type* targetType, Operand* operand);
 public:
     Node();
     int getSeq() const {return seq;};
@@ -31,8 +37,10 @@ public:
     virtual void output(int level) = 0;
     virtual void typeCheck(Node** parentToChild) = 0;
     virtual void genCode() = 0;
-    std::vector<BasicBlock**>& trueList() {return true_list;}
-    std::vector<BasicBlock**>& falseList() {return false_list;}
+    // std::vector<BasicBlock**>& trueList() {return true_list;}
+    // std::vector<BasicBlock**>& falseList() {return false_list;}
+    std::vector<Instruction*>& trueList() {return true_list;}
+    std::vector<Instruction*>& falseList() {return false_list;}
 };
 
 class ExprNode : public Node
@@ -41,10 +49,11 @@ protected:
     SymbolEntry *symbolEntry;
     Operand *dst;   // The result of the subtree is stored into dst.
 public:
-    ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
+    ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){dst = new Operand(symbolEntry); };
     Operand* getOperand() {return dst;};
     SymbolEntry* getSymPtr() {return symbolEntry;};
     Type* getType();
+    void setType(Type* type);
 };
 
 class BinaryExpr : public ExprNode
@@ -88,6 +97,10 @@ public:
     ArrayindiceNode(){};
     void append(ExprNode* next);
     void output(int level);
+
+    void typeCheck(Node** parentToChild);
+    void genCode();
+    void initDimInSymTable(IdentifierSymbolEntry* se);
 };
 
 class Id : public ExprNode
@@ -142,6 +155,9 @@ public:
     void append(ArrayinitNode* next){innerList.push_back(next);};
     bool isLeaf(){return innerList.empty();};
     void output(int level);
+
+    void typeCheck(Node** parentToChild);
+    void genCode();
 };
 class DefNode : public StmtNode
 {
@@ -155,14 +171,19 @@ public:
         isConst(isConst), isArray(isArray), id(id), initVal(initVal){};
     Id* getId() {return id;}
     void output(int level);
+    
+    void typeCheck(Node** parentToChild);
+    void genCode();
 };
 
 class DeclStmt : public StmtNode
 {
 private:
-    Id *id;
+    bool isConst;
+    std::vector<DefNode*> defList;
 public:
-    DeclStmt(Id *id) : id(id){};
+    DeclStmt(bool isConst) : isConst(isConst){};
+    void addNext(DefNode* next);
     void output(int level);
     void typeCheck(Node** parentToChild);
     void genCode();
@@ -249,9 +270,11 @@ class FunctionDef : public StmtNode
 {
 private:
     SymbolEntry *se;
+    FuncDefParamsNode *params;
     StmtNode *stmt;
+    StmtNode* voidAddRet = nullptr;
 public:
-    FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
+    FunctionDef(SymbolEntry *se, FuncDefParamsNode *params, StmtNode *stmt) : se(se), params(params), stmt(stmt){};
     void output(int level);
     void typeCheck(Node** parentToChild);
     void genCode();
@@ -276,6 +299,9 @@ public:
     void addNext(Id* next);
     std::vector<Type*> getParamsType();
     void output(int level);
+
+    void typeCheck(Node** parentToChild);
+    void genCode();
 };
 
 

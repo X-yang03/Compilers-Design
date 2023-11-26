@@ -1,29 +1,70 @@
+#include <iostream>
+#include <string>
+#include <assert.h>
 #include "Ast.h"
 #include "SymbolTable.h"
+#include "Type.h"
 #include "Unit.h"
 #include "Instruction.h"
 #include "IRBuilder.h"
-#include <string>
-#include "Type.h"
 
 extern FILE *yyout;
 int Node::counter = 0;
 IRBuilder* Node::builder = nullptr;
+
+//we add
+Type* returnType = nullptr;
+bool funcReturned = false;
+int inIteration = 0;//在迭代中
+int genBr = 0;
 
 Node::Node()
 {
     seq = counter++;
 }
 
-void Node::backPatch(std::vector<BasicBlock**> &list, BasicBlock*target)
-{
-    for(auto &bb:list)
-        *bb = target;
+Operand* Node::typeCast(Type* targetType, Operand* operand) {
+    // 首先判断是否真的需要类型转化
+    if(!TypeSystem::needCast(operand->getType(), targetType)) {
+        return operand;
+    }
+    BasicBlock *bb = builder->getInsertBB();
+    Function *func = bb->getParent();
+    Operand* retOperand = new Operand(new TemporarySymbolEntry(targetType, SymbolTable::getLabel()));
+    // 先实现bool扩展为int
+    if(operand->getType()->isBool() && targetType->isInt()) {
+        // 插入一条符号扩展指令
+        new ZextInstruction(operand, retOperand, bb);
+    }
+    // 实现 int 到 float 的转换
+    else if(operand->getType()->isInt() && targetType->isFloat()) {
+        // 插入一条类型转化指令
+        new IntFloatCastInstructionn(IntFloatCastInstructionn::I2F, operand, retOperand, bb);
+    }
+    // 实现 float 到 int 的转换
+    else if(operand->getType()->isFloat() && targetType->isInt()) {
+        // 插入一条类型转化指令
+        new IntFloatCastInstructionn(IntFloatCastInstructionn::F2I, operand, retOperand, bb);
+    }
+    return retOperand;
 }
 
-std::vector<BasicBlock**> Node::merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2)
+
+void Node::backPatch(std::vector<Instruction*> &list, BasicBlock*bb)
 {
-    std::vector<BasicBlock**> res(list1);
+    for(auto &inst:list)
+    {
+        if(inst->isCond())
+            dynamic_cast<CondBrInstruction*>(inst)->setTrueBranch(bb);
+        else if(inst->isUncond()){
+            dynamic_cast<UncondBrInstruction*>(inst)->setBranch(bb);
+        }
+    }
+}
+
+std::vector<Instruction*> Node::merge(std::vector<Instruction*> &list1, std::vector<Instruction*> &list2)
+{
+    std::vector<Instruction*> res(list1);
     res.insert(res.end(), list2.begin(), list2.end());
     return res;
 }
@@ -144,35 +185,42 @@ void SeqNode::genCode()
 {
     // Todo
 }
-
 void DeclStmt::genCode()
 {
-    IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
-    if(se->isGlobal())
-    {
-        Operand *addr;
-        SymbolEntry *addr_se;
-        addr_se = new IdentifierSymbolEntry(*se);
-        addr_se->setType(new PointerType(se->getType()));
-        addr = new Operand(addr_se);
-        se->setAddr(addr);
-    }
-    else if(se->isLocal())
-    {
-        Function *func = builder->getInsertBB()->getParent();
-        BasicBlock *entry = func->getEntry();
-        Instruction *alloca;
-        Operand *addr;
-        SymbolEntry *addr_se;
-        Type *type;
-        type = new PointerType(se->getType());
-        addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
-        addr = new Operand(addr_se);
-        alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
-        entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
-        se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
+    for(auto stmt : defList){
+        stmt->genCode();
     }
 }
+
+
+// void DeclStmt::genCode()
+// {
+//     IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
+//     if(se->isGlobal())
+//     {
+//         Operand *addr;
+//         SymbolEntry *addr_se;
+//         addr_se = new IdentifierSymbolEntry(*se);
+//         addr_se->setType(new PointerType(se->getType()));
+//         addr = new Operand(addr_se);
+//         se->setAddr(addr);
+//     }
+//     else if(se->isLocal())
+//     {
+//         Function *func = builder->getInsertBB()->getParent();
+//         BasicBlock *entry = func->getEntry();
+//         Instruction *alloca;
+//         Operand *addr;
+//         SymbolEntry *addr_se;
+//         Type *type;
+//         type = new PointerType(se->getType());
+//         addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+//         addr = new Operand(addr_se);
+//         alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
+//         entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
+//         se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
+//     }
+// }
 
 void ReturnStmt::genCode()
 {
@@ -195,7 +243,76 @@ void EmptyStmtNode::genCode()
 {
     // Todo
 }
+void ArrayindiceNode::genCode()
+{
+    for(auto expr : arrindexList){
+        expr->genCode();
+    }
+}
+void ArrayinitNode::genCode(){
 
+}
+void DefNode::genCode()
+{
+    Operand *addr;
+    IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
+    if(se->isGlobal())
+    {
+        SymbolEntry *addr_se;
+        addr_se = new IdentifierSymbolEntry(*se);
+        addr_se->setType(new PointerType(se->getType()));
+        addr = new Operand(addr_se);
+        se->setAddr(addr);
+        this->builder->getUnit()->insertDecl(se);
+    }
+    else if(se->isLocal())
+    {
+        Function *func = builder->getInsertBB()->getParent();
+        BasicBlock *entry = func->getEntry();
+        Instruction *alloca;
+        SymbolEntry *addr_se;
+        Type *type;
+        type = new PointerType(se->getType());
+        addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+        addr = new Operand(addr_se);
+        alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
+        entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
+        se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
+    }
+    //add array instructions here
+    if(initVal!=nullptr){
+        BasicBlock *bb = builder->getInsertBB();
+        initVal->genCode();
+        Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
+        /***
+         * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
+         * If you want to implement array, you have to caculate the address first and then store the result into it.
+         */
+        new StoreInstruction(addr, src, bb);
+    }
+}
+//函数参数可以看作局部变量声明，而且还带赋值
+void FuncDefParamsNode::genCode()
+{
+    Function *func = builder->getInsertBB()->getParent();
+    BasicBlock *entry = func->getEntry();
+    for(auto id : paramsList){
+        func->insertParam(id->getOperand());
+        IdentifierSymbolEntry* se = dynamic_cast<IdentifierSymbolEntry*>(id->getSymbolEntry());
+        Type *type = new PointerType(id->getType());
+        SymbolEntry *addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+        Operand* addr = new Operand(addr_se);
+        Instruction *alloca = new AllocaInstruction(addr, se);// allocate space for local id in function stack.
+        entry->insertFront(alloca);                           // allocate instructions should be inserted into the begin of the entry block.
+        se->setAddr(addr);
+        Operand *src = id->getOperand();
+        /***
+         * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
+         * If you want to implement array, you have to caculate the address first and then store the result into it.
+         */
+        new StoreInstruction(addr, src, entry);
+    }
+}
 
 void Ast::typeCheck(Node** parentToChild)
 {
@@ -246,6 +363,9 @@ void SeqNode::typeCheck(Node** parentToChild)
 void DeclStmt::typeCheck(Node** parentToChild)
 {
     // Todo
+    for(int i = 0;i<(int)defList.size();++i){
+        defList[i]->typeCheck(nullptr);
+    }
 }
 
 void ReturnStmt::typeCheck(Node** parentToChild)
@@ -260,6 +380,72 @@ void AssignStmt::typeCheck(Node** parentToChild)
 void EmptyStmtNode::typeCheck(Node** parentToChild){
 
 }
+void ArrayindiceNode::typeCheck(Node** parentToChild)
+{
+    for(int i = 0;i<(int)arrindexList.size();++i){
+        arrindexList[i]->typeCheck((Node**)&(arrindexList[i]));
+    }
+}
+void ArrayinitNode::typeCheck(Node** parentTochild){
+
+}
+// TODO: 这段代码逻辑太乱了，需要重构
+void DefNode::typeCheck(Node** parentToChild)
+{
+    id->typeCheck(nullptr);
+    // 不赋初值，直接返回
+    if(initVal==nullptr){
+        return;
+    }
+    initVal->typeCheck((Node**)&(initVal));
+
+    if(!id->getType()->isArray()){//不是数组时，右边可能出现函数：int a = f();
+        if(((ExprNode*)initVal)->getType()->isFunc() && 
+            (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
+            fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
+            exit(EXIT_FAILURE);
+        }
+    }
+    if(id->getType()->isConst()){
+        // 判断是否用变量给常量赋值
+        if(!isArray) {
+            if(!((ExprNode*)initVal)->getType()->isConst()) {
+                fprintf(stderr, "attempt to initialize variable value to const\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else{
+            if(!((InitValNode*)initVal)->isConst()) {
+                fprintf(stderr, "attempt to initialize variable value to const\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+        // 接下来就是常量计算的工作了
+        // 数组初始化值 暂时不打算做了
+        if(id->getType()->isArray()){
+            //TODO: initialize elements in symbol table
+        }
+        // 常量初始化值
+        else{
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+        }   
+    }
+    // 如果是全局变量，也要根据需要赋值
+    if(dynamic_cast<IdentifierSymbolEntry*>(id->getSymPtr())->isGlobal()) {
+        // 对于初始化值不为空的，要进行初始化赋值
+        if(initVal != nullptr) {
+            // 只允许使用常量对全局变量进行赋值
+            if(!((ExprNode*)initVal)->getType()->isConst()) {
+                fprintf(stderr, "not allow to initialize global variable with not const value\n");
+                exit(EXIT_FAILURE);
+            }
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+        }
+    }
+}
+void FuncDefParamsNode::typeCheck(Node** parentToChild){}
 
 Node::Node()
 {
@@ -276,6 +462,11 @@ void Ast::output()
 Type* ExprNode::getType()
 {
     return symbolEntry->getType();
+}
+
+void ExprNode::setType(Type* type)
+{
+    symbolEntry->setType(type);
 }
 
 void BinaryExpr::output(int level)
@@ -401,7 +592,25 @@ void ArrayindiceNode::output(int level)
         expr->output(level+4);
     }
 }
-
+void ArrayindiceNode::initDimInSymTable(IdentifierSymbolEntry* se)
+{
+    for(auto expr :arrindexList){
+        // 既不是字面值常量，也不是常量表达式
+        if(!(expr->getSymPtr()->isConstant() || expr->getType()->isConst())){
+            fprintf(stderr, "array dimensions must be constant! %d %d\n", expr->getSymPtr()->isConstant(), expr->getType()->isConst());
+            fprintf(stderr, "%d %d\n", (int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue(), (int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+            exit(EXIT_FAILURE);
+        }
+        // 字面值常量，值存在ConstantSymbolEntry中
+        if(expr->getSymPtr()->isConstant()){
+            se->arrayDimension.push_back((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+        }
+        // 常量表达式，值存在IdentifierSymbolEntry中
+        else if(expr->getType()->isConst()){
+            se->arrayDimension.push_back((int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+        }
+    }
+}
 
 void CompoundStmt::output(int level)
 {
