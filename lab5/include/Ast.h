@@ -279,6 +279,7 @@ private:
     StmtNode* voidAddRet = nullptr;
 public:
     FunctionDef(SymbolEntry *se, FuncDefParamsNode *params, StmtNode *stmt) : se(se), params(params), stmt(stmt){};
+    FunctionDef(SymbolEntry *se, StmtNode *stmt):se(se),stmt(stmt){};
     void output(int level);
     void typeCheck(Node** parentToChild);
     void genCode();

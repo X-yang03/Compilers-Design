@@ -414,7 +414,7 @@ void DefNode::typeCheck(Node** parentToChild)
             }
         }
         else{
-            if(!((InitValNode*)initVal)->isConst()) {
+            if(!this->isConst) {
                 fprintf(stderr, "attempt to initialize variable value to const\n");
                 exit(EXIT_FAILURE);
             }
@@ -445,11 +445,6 @@ void DefNode::typeCheck(Node** parentToChild)
     }
 }
 void FuncDefParamsNode::typeCheck(Node** parentToChild){}
-
-Node::Node()
-{
-    seq = counter++;
-}
 
 void Ast::output()
 {
