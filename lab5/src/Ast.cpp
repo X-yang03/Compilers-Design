@@ -29,7 +29,6 @@ Operand* Node::typeCast(Type* targetType, Operand* operand) {
         return operand;
     }
     BasicBlock *bb = builder->getInsertBB();
-    Function *func = bb->getParent();
     Operand* retOperand = new Operand(new TemporarySymbolEntry(targetType, SymbolTable::getLabel()));
     // 先实现bool扩展为int
     if(operand->getType()->isBool() && targetType->isInt()) {

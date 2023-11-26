@@ -255,17 +255,21 @@ public:
     void typeCheck(Node** parentToChild);
     void genCode();
 };
+class FuncDefParamsNode : public StmtNode
+{
+private:
+    std::vector<Id*> paramsList;
+public:
+    FuncDefParamsNode() {};
+    void addNext(Id* next);
+    std::vector<Type*> getParamsType();
+    void output(int level);
 
-//WE MOVE LAB5
-// class FunctionDef : public StmtNode
-// {
-// private:
-//     SymbolEntry *se;
-//     StmtNode *stmt;
-// public:
-//     FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
-//     void output(int level);
-// };
+    void typeCheck(Node** parentToChild);
+    void genCode();
+};
+
+
 class FunctionDef : public StmtNode
 {
 private:
@@ -289,32 +293,6 @@ public:
 
 };
 
-//WE ADD
-class FuncDefParamsNode : public StmtNode
-{
-private:
-    std::vector<Id*> paramsList;
-public:
-    FuncDefParamsNode() {};
-    void addNext(Id* next);
-    std::vector<Type*> getParamsType();
-    void output(int level);
-
-    void typeCheck(Node** parentToChild);
-    void genCode();
-};
-
-
-//WE MOVE LAB5
-// class FunctionDef : public StmtNode
-// {
-// private:
-//     SymbolEntry *se;
-//     StmtNode *stmt;
-// public:
-//     FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
-//     void output(int level);
-// };
 
 // 函数调用
 class FuncCallParamsNode : public StmtNode
