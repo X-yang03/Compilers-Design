@@ -26,6 +26,11 @@ public:
     bool isConstFloatArray() const {return kind == CONST_FLOAT_ARRAY;}
     bool isArray() const {return kind == INT_ARRAY || kind == FLOAT_ARRAY || 
                             kind == CONST_FLOAT_ARRAY || kind == CONST_INT_ARRAY;}
+    bool isAnyInt() const {return kind == INT || kind == INT_ARRAY || kind == CONST_INT_ARRAY || kind == CONST_INT;}
+    bool isAnyFloat() const {return kind == FLOAT || kind == FLOAT_ARRAY || kind == CONST_FLOAT_ARRAY || kind == CONST_FLOAT;}
+    //只要不是void
+    bool calculatable() const{ return isAnyInt()||isAnyFloat()||isBool() ;};
+    bool isAnyConst() const {return kind == CONST_FLOAT || kind == CONST_FLOAT || kind == CONST_INT_ARRAY || kind == CONST_FLOAT_ARRAY ;};
 };
 
 class IntType : public Type
@@ -82,6 +87,7 @@ public:
     FunctionType(Type* returnType, std::vector<Type*> paramsType) : 
     Type(Type::FUNC), returnType(returnType), paramsType(paramsType){};
     void setparamsType(std::vector<Type*>);
+    std::vector<Type*> getParamsType() {return this->paramsType;}
     Type* getRetType() {return returnType;};
     std::string toStr();
 };
@@ -154,6 +160,7 @@ public:
     static Type *constFloatType;
     static Type *boolType;
     static Type *voidType;
+    static Type *constBoolType;
 };
 
 #endif

@@ -10,6 +10,10 @@ extern FILE *yyout;
 int Node::counter = 0;
 IRBuilder* Node::builder = nullptr;
 
+// func
+Type* returnType = nullptr;
+bool funcReturned = false;
+
 Node::Node()
 {
     seq = counter++;
@@ -251,35 +255,301 @@ void Ast::typeCheck()
         root->typeCheck();
 }
 
+//check wheater return or return type is right
+//add return for void
+//like 
+//void funcname(){} is acc
 void FunctionDef::typeCheck()
 {
     // Todo
+    // 获取函数的返回值类型
+    returnType = ((FunctionType*)se->getType())->getRetType();
+    // 判断函数是否返回
+    funcReturned = false;
+    stmt->typeCheck();
+    // 非void类型的函数需要有返回值
+    if(!funcReturned && !returnType->isVoid()){
+        fprintf(stderr, "expected a %s type to return, but no returned value found\n", returnType->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    // 如果void类型没写return需要补上
+    if(!funcReturned && returnType->isVoid()) {
+        this->voidAddRet = new ReturnStmt(nullptr);
+    }
+    returnType = nullptr;
 }
 
 void UnaryOpExpr::typeCheck(){
-
+    //Todo
 }
 
 void BinaryExpr::typeCheck()
 {
     // Todo
+    //父结点需要检查孩子结点的类型
+    this->expr1->typeCheck();
+    this->expr2->typeCheck();
+
+    //并根据孩子结点类型确定自身类型
+    //检查是否void函数返回值参与运算
+    Type* realTypeLeft = expr1->getType()->isFunc() ? 
+        ((FunctionType*)expr1->getType())->getRetType() : 
+        expr1->getType();
+    if(!realTypeLeft->calculatable()){
+        fprintf(stderr, "type %s is not calculatable!\n", expr1->getType()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    Type* realTypeRight = expr2->getType()->isFunc() ? 
+        ((FunctionType*)expr2->getType())->getRetType() : 
+        expr2->getType();
+    if(!realTypeRight->calculatable()){
+        fprintf(stderr, "type %s is not calculatable!\n", expr2->getType()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    // 在语法解析阶段就对父节点和孩子节点的类型进行了相应的转换设置
+    // 在类型检查阶段就没有必要再对这部分进行检查了
+    // 可以对mod取模运算检查一下是否有浮点参与
+    if(op == MOD) {
+        if(!(realTypeLeft->isAnyInt() && realTypeRight->isAnyInt())) {
+            fprintf(stderr, "mod is not supported with float or bool operands!\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    // 推断父节点类型
+    // bool型一律按float处理
+    // TODO：增加bool类型处理?
+    // if(realTypeLeft->isBool() && realTypeRight->isBool()){
+    //     //别忘了两边一边是bool一边是int/float的情况
+    // }
+    // if(realTypeLeft->isAnyInt() && realTypeRight->isAnyInt()) {
+    //     this->setType(TypeSystem::intType);
+    // }
+    // else{
+    //     if(op==MOD){//浮点值参与取模运算
+    //         fprintf(stderr, "mod is not supported with float or bool operands!\n");
+    //         exit(EXIT_FAILURE);
+    //     }
+    //     this->setType(TypeSystem::floatType);
+    // }
+    // we comment
+    // 如果父节点不需要这个值，直接返回
+    // if(parentToChild==nullptr){
+    //     return;
+    // }
+    if(this->getSymPtr() == nullptr){
+        return ;
+    }
+    //左右子树均为常数，计算常量值，替换节点
+    if(realTypeLeft->isAnyConst() && realTypeRight->isAnyConst()){
+        SymbolEntry *se;
+        // 如果该节点结果的目标类型为bool
+        if(this->getType()->isBool()) {
+            bool val = 0;
+            float leftValue = expr1->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr1->getSymPtr()))->getValue() : 
+                ((IdentifierSymbolEntry*)(expr1->getSymPtr()))->value;
+            float rightValue = expr2->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr2->getSymPtr()))->getValue() : 
+                ((IdentifierSymbolEntry*)(expr2->getSymPtr()))->value;
+            switch(op)
+            {
+            case AND:
+                val = leftValue && rightValue;
+            break;
+            case OR:
+                val = leftValue || rightValue;
+            break;
+            case LESS:
+                val = leftValue < rightValue;
+            break;
+            case LE:
+                val = leftValue <= rightValue;
+            break;
+            case GREATER:
+                val = leftValue > rightValue;
+            break;
+            case GE:
+                val = leftValue >= rightValue;
+            break;
+            case EQ:
+                val = leftValue == rightValue;
+            break;
+            case NEQ:
+                val = leftValue != rightValue;
+            break;
+            }
+            //se = new ConstantSymbolEntry(TypeSystem::constBoolType, val);
+            se = new ConstantSymbolEntry(TypeSystem::boolType, val);
+        }
+        // 如果该节点结果的目标类型为int
+        else if(this->getType()->isInt()){
+            int val = 0;
+            int leftValue = expr1->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr1->getSymPtr()))->getValue() : //字面值常量
+                ((IdentifierSymbolEntry*)(expr1->getSymPtr()))->value;  //符号常量
+            int rightValue = expr2->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr2->getSymPtr()))->getValue() : 
+                ((IdentifierSymbolEntry*)(expr2->getSymPtr()))->value;
+            switch (op) 
+            {
+            case ADD:
+                val = leftValue + rightValue;
+            break;
+            case SUB:
+                val = leftValue - rightValue;
+            break;
+            case MUL:
+                val = leftValue * rightValue;
+            break;
+            case DIV:
+                val = leftValue / rightValue;
+            break;
+            case MOD:
+                val = leftValue % rightValue;
+            break;
+            // case AND:
+            //     val = leftValue && rightValue;
+            // break;
+            // case OR:
+            //     val = leftValue || rightValue;
+            // break;
+            // case LESS:
+            //     val = leftValue < rightValue;
+            // break;
+            // case LESSEQ:
+            //     val = leftValue <= rightValue;
+            // break;
+            // case GREAT:
+            //     val = leftValue > rightValue;
+            // break;
+            // case GREATEQ:
+            //     val = leftValue >= rightValue;
+            // break;
+            // case EQ:
+            //     val = leftValue == rightValue;
+            // break;
+            // case NEQ:
+            //     val = leftValue != rightValue;
+            // break;
+            }
+            se = new ConstantSymbolEntry(TypeSystem::constIntType, val);
+        }
+        // 如果该节点结果的目标类型为float
+        else{
+            float val = 0;
+            float leftValue = expr1->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr1->getSymPtr()))->getValue() : 
+                ((IdentifierSymbolEntry*)(expr1->getSymPtr()))->value;
+            float rightValue = expr2->getSymPtr()->isConstant() ? 
+                ((ConstantSymbolEntry*)(expr2->getSymPtr()))->getValue() : 
+                ((IdentifierSymbolEntry*)(expr2->getSymPtr()))->value;
+            switch (op) 
+            {
+            case ADD:
+                val = leftValue + rightValue;
+            break;
+            case SUB:
+                val = leftValue - rightValue;
+            break;
+            case MUL:
+                val = leftValue * rightValue;
+            break;
+            case DIV:
+                val = leftValue / rightValue;
+            break;
+            // case MOD:
+            //     fprintf(stderr, "mod is not supported with float or bool operands!");
+            //     exit(EXIT_FAILURE);
+            // break;
+            // case LESS:
+            //     val = leftValue < rightValue;
+            // break;
+            // case LESSEQ:
+            //     val = leftValue <= rightValue;
+            // break;
+            // case GREAT:
+            //     val = leftValue > rightValue;
+            // break;
+            // case GREATEQ:
+            //     val = leftValue >= rightValue;
+            // break;
+            // case EQ:
+            //     val = leftValue == rightValue;
+            // break;
+            // case NEQ:
+            //     val = leftValue != rightValue;
+            // break;
+            }
+            se = new ConstantSymbolEntry(TypeSystem::constFloatType, val);
+        }
+        //we comment
+        // Constant* newNode = new Constant(se);
+        // *parentToChild = newNode;
+        this->setSymPtr(se);
+    }
+    // 调整 && 和 || 运算符的两个操作数
+    // 操作数类型不为 bool，或者se是一个常量bool
+    // 则说明此时的情况为 a || 1 或者 a && a + b
+    // 增加一个和1的EQ判断
+    if(op == AND || op == OR) {
+        if(!expr1->getSymPtr()->getType()->isBool() || expr1->getSymPtr()->isConstant()) {
+            Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+            TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+            BinaryExpr* newCond = new BinaryExpr(tmpSe, BinaryExpr::NEQ, zeroNode, expr1);
+            expr1 = newCond;
+        }
+        if(!expr2->getSymPtr()->getType()->isBool() || expr2->getSymPtr()->isConstant()) {
+            Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+            TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+            BinaryExpr* newCond = new BinaryExpr(tmpSe, BinaryExpr::NEQ, zeroNode, expr2);
+            expr2 = newCond;
+        }
+    }
 }
 
 void Constant::typeCheck()
 {
     // Todo
+    if(!this->dst->getType()->isAnyConst()){
+        fprintf(stderr, "type %s is not const!\n", dst->getType()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
 }
 
 void ArrayIndiceNode::typeCheck(){
-
+    //Todo
+    for(int i = 0;i<(int)this->arrindexList.size();++i){
+        arrindexList[i]->typeCheck();
+    }
 }
 
-void ArrayinitNode::typeCheck(){
+void ArrayinitNode::typeCheck() {
+    //Todo
+    if (isLeaf()) {
+        // 处理叶节点的类型检查逻辑
+        // 检查 leafNode 的类型是否与数组类型匹配
+        if (leafNode == nullptr) {
+            // 叶节点为空，抛出错误或进行相应处理
+            fprintf(stderr, "type is a panic as nullptr(ArrayinitNode::typecheck)!\n");
+            exit(EXIT_FAILURE);
+        } else {
+            // 执行叶节点的类型检查
+            leafNode->typeCheck();
 
+            // 根据实际需求，需要进一步检查 leafNode 的类型与数组类型是否匹配
+        }
+    } else {
+        // 处理内部节点的类型检查逻辑
+        // 遍历 innerList，对每个子节点执行类型检查
+        for (ArrayinitNode* child : innerList) {
+            child->typeCheck();
+            // 根据实际需求，需要进一步检查子节点的类型与数组类型是否匹配
+        }
+    }
 }
 
 void DefNode::typeCheck(){
-
+    //todo
 }
 
 void Id::typeCheck()
@@ -339,7 +609,7 @@ void EmptyStmtNode::typeCheck(){
 }
 
 void FuncDefParamsNode::typeCheck(){
-
+    //we need not do anything here right???
 }
 
 void FuncCallParamsNode::typeCheck(){
@@ -351,7 +621,7 @@ void FuncCallNode::typeCheck(){
 }
 
 void ExprStmtNode::typeCheck(){
-    
+    //do we need it???
 }
 
 void Ast::output()

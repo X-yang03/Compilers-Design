@@ -45,6 +45,8 @@ public:
     Type* getType();
     Operand* getOperand() {return dst;};
     SymbolEntry* getSymPtr() {return symbolEntry;};
+    //we add 
+    void setSymPtr(SymbolEntry* se) {symbolEntry = se;};
 };
 
 
@@ -295,8 +297,9 @@ class FunctionDef : public StmtNode
 private:
     SymbolEntry *se;
     StmtNode *stmt;
+    ReturnStmt* voidAddRet;
 public:
-    FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
+    FunctionDef(SymbolEntry *se, StmtNode *stmt, ReturnStmt* voidAddRet) : se(se), stmt(stmt), voidAddRet(voidAddRet){};
     void output(int level);
     void typeCheck();
     void genCode();
