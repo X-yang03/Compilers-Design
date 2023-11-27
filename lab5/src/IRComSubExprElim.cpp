@@ -100,14 +100,14 @@ void IRComSubExprElim::calGenKill(Function *func)
     {
         for (auto inst = (*block)->begin(); inst != (*block)->end(); inst = inst->getNext())
         {
-            // if (inst->getDef() != nullptr)
-            // {
-            //     for (auto useInst : inst->getDef()->getUse())
-            //     {
-            //         if (!skip(useInst))
-            //             killBB[*block].insert(ins2Expr[useInst]);
-            //     }
-            // }
+            if (inst->getDef() != nullptr)
+            {
+                for (auto useInst : inst->getDef()->getUse())
+                {
+                    if (!skip(useInst))
+                        killBB[*block].insert(ins2Expr[useInst]);
+                }
+            }
         }
     }
 }

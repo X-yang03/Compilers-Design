@@ -14,3 +14,4 @@ void Operand::removeUse(Instruction *inst)
     if(i != uses.end())
         uses.erase(i);
 }
+
