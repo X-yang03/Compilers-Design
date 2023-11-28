@@ -437,6 +437,30 @@ WHITE           [\t ]
         globalTable->install(yytext, entry);
         return ID;
 }
+"starttime" {
+        columnNo += yyleng;
+        char *lexeme = new char[strlen(yytext) + 1];
+        strcpy(lexeme, yytext);
+        yylval.strtype = lexeme;
+        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
+        SymbolTable* globalTable;    //全域符号表
+        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); 
+        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
+        globalTable->install(yytext, entry);
+        return ID;
+}
+"stoptime" {
+        columnNo += yyleng;
+        char *lexeme = new char[strlen(yytext) + 1];
+        strcpy(lexeme, yytext);
+        yylval.strtype = lexeme;
+        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
+        SymbolTable* globalTable;    //全域符号表
+        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
+        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
+        globalTable->install(yytext, entry);
+        return ID;
+}
 
 {DECIMIAL} {
     int decimal;
@@ -445,21 +469,7 @@ WHITE           [\t ]
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
     return INTEGER;
 }
-{OCTAL} {
-    int oct = 0;
-    sscanf(yytext, "%o", &oct);
-    yylval.itype = oct;
-    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
 
-    return INTEGER;
-}
-{HEXDECIMAL} {
-    int hex = 0;
-    sscanf(yytext,"%016x",&hex);
-    yylval.itype = hex;
-    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
-    return INTEGER;
-}
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
@@ -484,6 +494,23 @@ WHITE           [\t ]
     dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
     return ID;
 }
+
+{OCTAL} {
+    int oct = 0;
+    sscanf(yytext, "%o", &oct);
+    yylval.itype = oct;
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
+
+    return INTEGER;
+}
+{HEXDECIMAL} {
+    int hex = 0;
+    sscanf(yytext,"%016x",&hex);
+    yylval.itype = hex;
+    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
+    return INTEGER;
+}
+
 
 {EOL} {
     columnNo = 0; //换行时列数置0
