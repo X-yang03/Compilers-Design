@@ -13,6 +13,7 @@ IRBuilder* Node::builder = nullptr;
 // func
 Type* returnType = nullptr;
 bool funcReturned = false;
+static int inIteration = 0;
 
 Node::Node()
 {
@@ -281,6 +282,60 @@ void FunctionDef::typeCheck()
 
 void UnaryOpExpr::typeCheck(){
     //Todo
+    expr->typeCheck();
+    //检查是否void函数返回值参与运算
+    Type* realType = expr->getType()->isFunc() ? 
+        ((FunctionType*)expr->getType())->getRetType() : 
+        expr->getType();
+    if(!realType->calculatable()){
+        fprintf(stderr, "type %s is not calculatable!\n", expr->getType()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    //推断父节点类型
+    if(realType->isAnyFloat()) {
+        this->setType(TypeSystem::floatType);
+    }
+    else{
+        this->setType(TypeSystem::intType);
+    }
+    // 如果是not运算
+    if(op == NOT) {
+        this->setType(TypeSystem::boolType);
+    }
+    //如果父节点不需要这个值，直接返回
+    // if(parentToChild==nullptr){
+    //     return;
+    // }
+    if(this->getSymPtr() == nullptr){
+        return ;
+    }
+    //孩子节点为常数，计算常量值，替换节点
+    if(realType->isAnyConst()){
+        SymbolEntry *se;
+        double val = 0;
+        int initValue = expr->getSymPtr()->isConstant() ? 
+            ((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue() : 
+            ((IdentifierSymbolEntry*)(expr->getSymPtr()))->value;
+        switch (op) 
+        {
+        case SUB:
+            val = -initValue;
+        break;
+        case NOT:
+            val = !initValue;
+        break;
+        }
+        if(this->getType()->isInt()){
+            se = new ConstantSymbolEntry(TypeSystem::constIntType, val);
+        }
+        else{//float or bool
+            se = new ConstantSymbolEntry(TypeSystem::constFloatType, val);
+        }
+        // Constant* newNode = new Constant(se);
+        // *parentToChild = newNode;
+        setSymPtr(se);
+        //delete this;
+    }
 }
 
 void BinaryExpr::typeCheck()
@@ -629,23 +684,84 @@ void Id::typeCheck()
 void IfStmt::typeCheck()
 {
     // Todo
+    cond->typeCheck();
+    // 如果cond中的se的类型不为 bool，或者se是一个常量bool
+    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
+    // 增加一个和1的EQ判断
+    if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
+        Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+        TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        BinaryExpr* newCond = new BinaryExpr(tmpSe, BinaryExpr::NEQ, zeroNode, cond);
+        cond = newCond;
+    }
+    if(thenStmt!=nullptr) {
+        thenStmt->typeCheck();
+    }
+    else {
+        thenStmt = new EmptyStmtNode();
+    }
 }
 
 void IfElseStmt::typeCheck()
 {
     // Todo
+    cond->typeCheck();
+    // 如果cond中的se的类型不为 bool，或者se是一个常量bool
+    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
+    // 增加一个和1的EQ判断
+    if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
+        Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+        TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        BinaryExpr* newCond = new BinaryExpr(tmpSe, BinaryExpr::NEQ, zeroNode, cond);
+        cond = newCond;
+    }
+    if(thenStmt!=nullptr) {
+        thenStmt->typeCheck();
+    }
+    else {
+        thenStmt = new EmptyStmtNode();
+    }
+    if(elseStmt!=nullptr){
+        elseStmt->typeCheck();
+    }
+    else {
+        elseStmt = new EmptyStmtNode();
+    }
 }
 
 void WhileStmt::typeCheck(){
-
+    cond->typeCheck();
+    // 如果cond中的se的类型不为 bool，或者se是一个常量bool
+    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
+    // 增加一个和1的EQ判断
+    if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
+        Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+        TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
+        BinaryExpr* newCond = new BinaryExpr(tmpSe, BinaryExpr::NEQ, zeroNode, cond);
+        cond = newCond;
+    }
+    if(Stmt!=nullptr) {
+        inIteration++;
+        Stmt->typeCheck();
+        inIteration--;
+    }
+    else {
+        Stmt = new EmptyStmtNode();
+    }
 }
 
 void ContinueStmt::typeCheck(){
-
+    if(!inIteration){
+        fprintf(stderr, "continue statement outside iterations\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void BreakStmt::typeCheck(){
-
+    if(!inIteration){
+        fprintf(stderr, "break statement outside iterations\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void CompoundStmt::typeCheck()
@@ -701,10 +817,20 @@ void ReturnStmt::typeCheck()
 void AssignStmt::typeCheck()
 {
     // Todo
+    lval->typeCheck();
+    expr->typeCheck();
+    if(lval->getType()->isAnyConst()) {
+        fprintf(stderr, "Unable to assign value to const variable %s\n", lval->getSymPtr()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    if(expr->getType()->isFunc() && ((FunctionType*)(expr->getType()))->getRetType()->isVoid()){//返回值为void的函数做运算数
+        fprintf(stderr, "expected a return value, but functionType %s returns nothing\n", expr->getType()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
 }
 
 void EmptyStmtNode::typeCheck(){
-
+    //we need not do anything here right???
 }
 
 void FuncDefParamsNode::typeCheck(){
@@ -712,11 +838,52 @@ void FuncDefParamsNode::typeCheck(){
 }
 
 void FuncCallParamsNode::typeCheck(){
-
+    for(ExprNode* param : paramsList) {
+        param->typeCheck();
+    }
 }
 
 void FuncCallNode::typeCheck(){
+ std::vector<Type*> funcParamsType = (dynamic_cast<FunctionType*>(this->funcId->getSymPtr()->getType()))->getParamsType();
+    // 首先对于无参的进行检查
+    if(this->params==nullptr && funcParamsType.size() != 0){
+        fprintf(stderr, "function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    else if(this->params==nullptr) {
+        return;
+    }
+    // 先对FuncCallParamsNode进行类型检查，主要是完成常量计算
+    this->params->typeCheck(); 
+    std::vector<ExprNode*> funcCallParams = this->params->getParamsList();
+    // 如果数量不一致直接报错
+    if(funcCallParams.size() != funcParamsType.size()) {
+        fprintf(stderr, "function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    // 然后进行类型匹配
+    // 依次匹配类型
+    for(int i = 0; i < funcParamsType.size(); i++){
+        Type* needType = funcParamsType[i];
+        Type* giveType = funcCallParams[i]->getSymPtr()->getType();
+        // 暂时不考虑类型转化的问题 所有的类型转化均到IR生成再做
+        // 除了void类型都可以进行转化
+        if(!needType->calculatable() && giveType->calculatable()
+         ||needType->calculatable() && !giveType->calculatable()){
+            fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+            exit(EXIT_FAILURE);
+        }
+        // 检查数组是否匹配
+        if(!needType->isArray() && giveType->isArray()
+         ||needType->isArray() && !giveType->isArray()){
+            fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+            exit(EXIT_FAILURE);
+        }
+        //TODO: 检查数组维度是否匹配
+        if(needType->isArray() && giveType->isArray()){
 
+        }
+    }
 }
 
 void ExprStmtNode::typeCheck(){

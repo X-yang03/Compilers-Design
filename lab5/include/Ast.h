@@ -47,6 +47,7 @@ public:
     SymbolEntry* getSymPtr() {return symbolEntry;};
     //we add 
     void setSymPtr(SymbolEntry* se) {symbolEntry = se;};
+    void setType(Type* type){this->symbolEntry->setType(type);};
 };
 
 
@@ -317,6 +318,7 @@ public:
     void output(int level);
     void typeCheck();
     void genCode();
+    std::vector<ExprNode*>  getParamsList(){return this->paramsList;};
 };
 
 class FuncCallNode : public ExprNode  
