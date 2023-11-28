@@ -269,7 +269,7 @@ void FunctionDef::typeCheck()
     stmt->typeCheck();
     // 非void类型的函数需要有返回值
     if(!funcReturned && !returnType->isVoid()){
-        fprintf(stderr, "expected a %s type to return, but no returned value found\n", returnType->toStr().c_str());
+        fprintf(stderr, "expected a %s type to return, but nWo returned value found\n", returnType->toStr().c_str());
         exit(EXIT_FAILURE);
     }
     // 如果void类型没写return需要补上
@@ -510,10 +510,10 @@ void BinaryExpr::typeCheck()
 void Constant::typeCheck()
 {
     // Todo
-    if(!this->dst->getType()->isAnyConst()){
-        fprintf(stderr, "type %s is not const!\n", dst->getType()->toStr().c_str());
-        exit(EXIT_FAILURE);
-    }
+    // if(!this->dst->getType()->isAnyConst()){
+    //     fprintf(stderr, "type %s is not const!\n", dst->getType()->toStr().c_str());
+    //     exit(EXIT_FAILURE);
+    // }
 }
 
 void ArrayIndiceNode::typeCheck(){
@@ -550,11 +550,80 @@ void ArrayinitNode::typeCheck() {
 
 void DefNode::typeCheck(){
     //todo
+    id->typeCheck();
+    // 不赋初值，直接返回
+    if(initVal==nullptr){
+        return;
+    }
+    initVal->typeCheck();
+    if(!id->getType()->isArray()){//不是数组时，右边可能出现函数：int a = f();
+        if(((ExprNode*)initVal)->getType()->isFunc() && 
+            (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
+            fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
+            exit(EXIT_FAILURE);
+        }
+    }
+    if(id->getType()->isAnyConst()){
+        // 判断是否用变量给常量赋值
+        if(!isArray) {
+            if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
+                fprintf(stderr, "attempt to initialize variable value to const\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else{
+            //Todo Array init
+            // if(!((InitValNode*)initVal)->isConst()) {
+            //     fprintf(stderr, "attempt to initialize variable value to const\n");
+            //     exit(EXIT_FAILURE);
+            // }
+        }
+        // 接下来就是常量计算的工作了
+        // 数组初始化值 暂时不打算做了
+        if(id->getType()->isArray()){
+            //TODO: initialize elements in symbol table
+        }
+        // 常量初始化值
+        else{
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+        }   
+    }
+    // 如果是全局变量，也要根据需要赋值
+    if(dynamic_cast<IdentifierSymbolEntry*>(id->getSymPtr())->isGlobal()) {
+        // 对于初始化值不为空的，要进行初始化赋值
+        if(initVal != nullptr) {
+            // 只允许使用常量对全局变量进行赋值
+            if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
+                fprintf(stderr, "not allow to initialize global variable with not const value\n");
+                exit(EXIT_FAILURE);
+            }
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+        }
+    }
 }
 
 void Id::typeCheck()
 {
     // Todo
+    // 如果是一个普通变量就什么也不做
+    // 如果是数组 要看看维度信息有没有初始化
+    // 由于在语法解析阶段已经判断了标识符先定义再使用
+    // 所以如果维度信息还未初始化则说明当前是数组定义阶段
+    if(isArray() && indices!=nullptr){
+        indices->typeCheck();
+        // 检查indices下的exprList(私有域)中的每个exprNode的类型，若不为自然数则报错
+        if(((IdentifierSymbolEntry*)getSymPtr())->arrayDimension.empty()){
+            //indices->initDimInSymTable((IdentifierSymbolEntry*)getSymPtr());
+        }
+        // 读取常量数组 这个不打算做了
+        else if(getType()->isAnyConst()){
+            //TODO: 将常量数组+全常量下标的数组元素访问替换为字面值常量节点Constant
+            //STEP：1.遍历indices下的exprList(私有域)，查看是否有非常量节点。若有，直接返回
+            //STEP: 2.若全部为常量下标，替换
+        }
+    }
 }
 
 void IfStmt::typeCheck()
@@ -582,21 +651,51 @@ void BreakStmt::typeCheck(){
 void CompoundStmt::typeCheck()
 {
     // Todo
+    if(stmt!=nullptr){
+        stmt->typeCheck();
+    }
+    else {
+        stmt = new EmptyStmtNode();
+    }
 }
+
 
 void SeqNode::typeCheck()
 {
     // Todo
+    stmt1->typeCheck();
+    stmt2->typeCheck();
 }
 
 void DeclStmt::typeCheck()
 {
     // Todo
+    for(int i = 0;i<(int)defList.size();++i){
+        defList[i]->typeCheck();
+    }
 }
 
 void ReturnStmt::typeCheck()
 {
     // Todo
+    //fprintf(stderr, "%s %s\n", returnType->toStr().c_str(), retValue->getType()->toStr().c_str());
+    if(returnType == nullptr){//not in a fuction
+        fprintf(stderr, "return statement outside functions\n");
+        exit(EXIT_FAILURE);
+    }
+    else if(returnType->isVoid() && retValue!=nullptr){//returned a value in void()
+        fprintf(stderr, "value returned in a void() function\n");
+        exit(EXIT_FAILURE);
+    }
+    else if((!returnType->isVoid()) && (retValue==nullptr)){//expected returned value, but returned nothing
+        fprintf(stderr, "expected a %s type to return, but returned nothing\n", returnType->toStr().c_str());
+        exit(EXIT_FAILURE);
+    }
+    if(!returnType->isVoid()){
+        retValue->typeCheck();
+    }
+    this->retType = returnType;
+    funcReturned = true;
 }
 
 void AssignStmt::typeCheck()

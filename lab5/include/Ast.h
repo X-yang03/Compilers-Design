@@ -232,6 +232,7 @@ class ReturnStmt : public StmtNode
 {
 private:
     ExprNode *retValue;
+    Type* retType;
 public:
     ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
     void output(int level);
