@@ -52,6 +52,9 @@ app:$(LEXER) $(PARSER) $(BINARY)
 run:app
 	@$(BINARY) -o example.ll -i example.sy
 
+tree:app
+	@$(BINARY) -o example.ast -a example.sy
+
 gdb:app
 	@gdb $(BINARY)
 

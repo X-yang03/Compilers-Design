@@ -60,8 +60,7 @@ Operand* Node::typeCast(Type* targetType, Operand* operand) {
     if(!TypeSystem::needCast(operand->getType(), targetType)) {
         return operand;
     }
-    BasicBlock *bb = builder->getInsertBB();
-    Function *func = bb->getParent();
+    //BasicBlock *bb = builder->getInsertBB();
     Operand* retOperand = new Operand(new TemporarySymbolEntry(targetType, SymbolTable::getLabel()));
     // 先实现bool扩展为int
     if(operand->getType()->isBool() && targetType->isInt()) {
@@ -90,57 +89,57 @@ void Ast::genCode(Unit *unit)
 
 void FunctionDef::genCode()
 {
-    Unit *unit = builder->getUnit();
-    Function *func = new Function(unit, se);
-    BasicBlock *entry = func->getEntry();
-    // set the insert point to the entry basicblock of this function.
-    builder->setInsertBB(entry);
+    // Unit *unit = builder->getUnit();
+    // Function *func = new Function(unit, se);
+    // BasicBlock *entry = func->getEntry();
+    // // set the insert point to the entry basicblock of this function.
+    // builder->setInsertBB(entry);
 
-    if(params!=nullptr){
-        params->genCode();
-    }
+    // if(params!=nullptr){
+    //     params->genCode();
+    // }
 
-    stmt->genCode();
-    if(this->voidAddRet != nullptr) {
-        voidAddRet->genCode();
-    }
+    // if(stmt)stmt->genCode();
+    // if(this->voidAddRet != nullptr) {
+    //     voidAddRet->genCode();
+    // }
 
-    /**
-     * Construct control flow graph. You need do set successors and predecessors for each basic block.
-     * Todo
-    */
+    // /**
+    //  * Construct control flow graph. You need do set successors and predecessors for each basic block.
+    //  * Todo
+    // */
 
-    for (auto block = func->begin(); block != func->end(); block++) {
-        // 清除ret之后的全部指令
-        Instruction* index = (*block)->begin();
-        while(index != (*block)->end()) {
-            if(index->isRet()) {
-                while(index != (*block)->rbegin()) {
-                    (*block)->remove(index->getNext());
-                }
-                break;
-            }
-            index = index->getNext();
-        }
-        // 获取该块的最后一条指令
-        Instruction* last = (*block)->rbegin();
-        // (*block)->output();
-        // 对于有条件的跳转指令，需要对其true分支和false分支都设置控制流关系
-        if (last->isCond()) {
-            BasicBlock *trueBlock = dynamic_cast<CondBrInstruction*>(last)->getTrueBranch();
-            BasicBlock *falseBlock = dynamic_cast<CondBrInstruction*>(last)->getFalseBranch();
-            (*block)->addSucc(trueBlock);
-            (*block)->addSucc(falseBlock);
-            trueBlock->addPred(*block);
-            falseBlock->addPred(*block);
-        } 
-        // 对于无条件的跳转指令，只需要对其目标基本块设置控制流关系即可
-        if (last->isUncond()) {
-            BasicBlock* dstBlock = dynamic_cast<UncondBrInstruction*>(last)->getBranch();
-            (*block)->addSucc(dstBlock);
-            dstBlock->addPred(*block);
-        }
-    }
+    // for (auto block = func->begin(); block != func->end(); block++) {
+    //     // 清除ret之后的全部指令
+    //     Instruction* index = (*block)->begin();
+    //     while(index != (*block)->end()) {
+    //         if(index->isRet()) {
+    //             while(index != (*block)->rbegin()) {
+    //                 (*block)->remove(index->getNext());
+    //             }
+    //             break;
+    //         }
+    //         index = index->getNext();
+    //     }
+    //     // 获取该块的最后一条指令
+    //     Instruction* last = (*block)->rbegin();
+    //     // (*block)->output();
+    //     // 对于有条件的跳转指令，需要对其true分支和false分支都设置控制流关系
+    //     if (last->isCond()) {
+    //         BasicBlock *trueBlock = dynamic_cast<CondBrInstruction*>(last)->getTrueBranch();
+    //         BasicBlock *falseBlock = dynamic_cast<CondBrInstruction*>(last)->getFalseBranch();
+    //         (*block)->addSucc(trueBlock);
+    //         (*block)->addSucc(falseBlock);
+    //         trueBlock->addPred(*block);
+    //         falseBlock->addPred(*block);
+    //     } 
+    //     // 对于无条件的跳转指令，只需要对其目标基本块设置控制流关系即可
+    //     if (last->isUncond()) {
+    //         BasicBlock* dstBlock = dynamic_cast<UncondBrInstruction*>(last)->getBranch();
+    //         (*block)->addSucc(dstBlock);
+    //         dstBlock->addPred(*block);
+    //     }
+    // }
    
 }
 
@@ -344,42 +343,42 @@ void ArrayinitNode::genCode(){
 }
 
 void DefNode::genCode(){
-    Operand *addr;
-    IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
-    if(se->isGlobal())
-    {
-        SymbolEntry *addr_se;
-        addr_se = new IdentifierSymbolEntry(*se);
-        addr_se->setType(new PointerType(se->getType()));
-        addr = new Operand(addr_se);
-        se->setAddr(addr);
-        this->builder->getUnit()->insertDecl(se);
-    }
-    else if(se->isLocal())
-    {
-        Function *func = builder->getInsertBB()->getParent();
-        BasicBlock *entry = func->getEntry();
-        Instruction *alloca;
-        SymbolEntry *addr_se;
-        Type *type;
-        type = new PointerType(se->getType());
-        addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
-        addr = new Operand(addr_se);
-        alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
-        entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
-        se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
-    }
-    //add array instructions here
-    if(initVal!=nullptr){
-        BasicBlock *bb = builder->getInsertBB();
-        initVal->genCode();
-        Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
-        /***
-         * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
-         * If you want to implement array, you have to caculate the address first and then store the result into it.
-         */
-        new StoreInstruction(addr, src, bb);
-    }
+    // Operand *addr;
+    // IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
+    // if(se->isGlobal())
+    // {
+    //     SymbolEntry *addr_se;
+    //     addr_se = new IdentifierSymbolEntry(*se);
+    //     addr_se->setType(new PointerType(se->getType()));
+    //     addr = new Operand(addr_se);
+    //     se->setAddr(addr);
+    //     this->builder->getUnit()->insertDecl(se);
+    // }
+    // else if(se->isLocal())
+    // {
+    //     Function *func = builder->getInsertBB()->getParent();
+    //     BasicBlock *entry = func->getEntry();
+    //     Instruction *alloca;
+    //     SymbolEntry *addr_se;
+    //     Type *type;
+    //     type = new PointerType(se->getType());
+    //     addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+    //     addr = new Operand(addr_se);
+    //     alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
+    //     entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
+    //     se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
+    // }
+    // //add array instructions here
+    // if(initVal!=nullptr){
+    //     BasicBlock *bb = builder->getInsertBB();
+    //     initVal->genCode();
+    //     Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
+    //     /***
+    //      * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
+    //      * If you want to implement array, you have to caculate the address first and then store the result into it.
+    //      */
+    //     new StoreInstruction(addr, src, bb);
+    // }
 }
 
 
@@ -409,7 +408,7 @@ void IfStmt::genCode()
 
 void IfElseStmt::genCode()
 {
-    // Todo
+    //Todo
      Function *func;
     BasicBlock *then_bb, *else_bb, *end_bb;
 
@@ -616,20 +615,20 @@ void FunctionDef::typeCheck()
 {
     // Todo
     // 获取函数的返回值类型
-    returnType = ((FunctionType*)se->getType())->getRetType();
-    // 判断函数是否返回
-    funcReturned = false;
-    stmt->typeCheck();
-    // 非void类型的函数需要有返回值
-    if(!funcReturned && !returnType->isVoid()){
-        fprintf(stderr, "expected a %s type to return, but nWo returned value found\n", returnType->toStr().c_str());
-        exit(EXIT_FAILURE);
-    }
-    // 如果void类型没写return需要补上
-    if(!funcReturned && returnType->isVoid()) {
-        this->voidAddRet = new ReturnStmt(nullptr);
-    }
-    returnType = nullptr;
+    // returnType = ((FunctionType*)se->getType())->getRetType();
+    // // 判断函数是否返回
+    // funcReturned = false;
+    // stmt->typeCheck();
+    // // 非void类型的函数需要有返回值
+    // if(!funcReturned && !returnType->isVoid()){
+    //     fprintf(stderr, "expected a %s type to return, but nWo returned value found\n", returnType->toStr().c_str());
+    //     exit(EXIT_FAILURE);
+    // }
+    // // 如果void类型没写return需要补上
+    // if(!funcReturned && returnType->isVoid()) {
+    //     this->voidAddRet = new ReturnStmt(nullptr);
+    // }
+    // returnType = nullptr;
 }
 
 void UnaryOpExpr::typeCheck(){
@@ -925,9 +924,9 @@ void Constant::typeCheck()
 
 void ArrayIndiceNode::typeCheck(){
     //Todo
-    for(int i = 0;i<(int)this->arrindexList.size();++i){
-        arrindexList[i]->typeCheck();
-    }
+    // for(int i = 0;i<(int)this->arrindexList.size();++i){
+    //     arrindexList[i]->typeCheck();
+    // }
 }
 
 void ArrayinitNode::typeCheck() {
@@ -957,58 +956,58 @@ void ArrayinitNode::typeCheck() {
 
 void DefNode::typeCheck(){
     //todo
-    id->typeCheck();
-    // 不赋初值，直接返回
-    if(initVal==nullptr){
-        return;
-    }
-    initVal->typeCheck();
-    if(!id->getType()->isArray()){//不是数组时，右边可能出现函数：int a = f();
-        if(((ExprNode*)initVal)->getType()->isFunc() && 
-            (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
-            fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
-            exit(EXIT_FAILURE);
-        }
-    }
-    if(id->getType()->isAnyConst()){
-        // 判断是否用变量给常量赋值
-        if(!isArray) {
-            if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
-                fprintf(stderr, "attempt to initialize variable value to const\n");
-                exit(EXIT_FAILURE);
-            }
-        }
-        else{
-            //Todo Array init
-            // if(!((InitValNode*)initVal)->isConst()) {
-            //     fprintf(stderr, "attempt to initialize variable value to const\n");
-            //     exit(EXIT_FAILURE);
-            // }
-        }
-        // 接下来就是常量计算的工作了
-        // 数组初始化值 暂时不打算做了
-        if(id->getType()->isArray()){
-            //TODO: initialize elements in symbol table
-        }
-        // 常量初始化值
-        else{
-            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
-            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
-        }   
-    }
-    // 如果是全局变量，也要根据需要赋值
-    if(dynamic_cast<IdentifierSymbolEntry*>(id->getSymPtr())->isGlobal()) {
-        // 对于初始化值不为空的，要进行初始化赋值
-        if(initVal != nullptr) {
-            // 只允许使用常量对全局变量进行赋值
-            if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
-                fprintf(stderr, "not allow to initialize global variable with not const value\n");
-                exit(EXIT_FAILURE);
-            }
-            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
-            se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
-        }
-    }
+    // id->typeCheck();
+    // // 不赋初值，直接返回
+    // if(initVal==nullptr){
+    //     return;
+    // }
+    // initVal->typeCheck();
+    // if(!id->getType()->isArray()){//不是数组时，右边可能出现函数：int a = f();
+    //     if(((ExprNode*)initVal)->getType()->isFunc() && 
+    //         (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
+    //         fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+    // if(id->getType()->isAnyConst()){
+    //     // 判断是否用变量给常量赋值
+    //     if(!isArray) {
+    //         if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
+    //             fprintf(stderr, "attempt to initialize variable value to const\n");
+    //             exit(EXIT_FAILURE);
+    //         }
+    //     }
+    //     else{
+    //         //Todo Array init
+    //         // if(!((InitValNode*)initVal)->isConst()) {
+    //         //     fprintf(stderr, "attempt to initialize variable value to const\n");
+    //         //     exit(EXIT_FAILURE);
+    //         // }
+    //     }
+    //     // 接下来就是常量计算的工作了
+    //     // 数组初始化值 暂时不打算做了
+    //     if(id->getType()->isArray()){
+    //         //TODO: initialize elements in symbol table
+    //     }
+    //     // 常量初始化值
+    //     else{
+    //         IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+    //         se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+    //     }   
+    // }
+    // // 如果是全局变量，也要根据需要赋值
+    // if(dynamic_cast<IdentifierSymbolEntry*>(id->getSymPtr())->isGlobal()) {
+    //     // 对于初始化值不为空的，要进行初始化赋值
+    //     if(initVal != nullptr) {
+    //         // 只允许使用常量对全局变量进行赋值
+    //         if(!((ExprNode*)initVal)->getType()->isAnyConst()) {
+    //             fprintf(stderr, "not allow to initialize global variable with not const value\n");
+    //             exit(EXIT_FAILURE);
+    //         }
+    //         IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+    //         se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
+    //     }
+    // }
 }
 
 void Id::typeCheck()
@@ -1036,10 +1035,10 @@ void Id::typeCheck()
 void IfStmt::typeCheck()
 {
     // Todo
-    cond->typeCheck();
-    // 如果cond中的se的类型不为 bool，或者se是一个常量bool
-    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
-    // 增加一个和1的EQ判断
+    // cond->typeCheck();
+    // // 如果cond中的se的类型不为 bool，或者se是一个常量bool
+    // // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
+    // // 增加一个和1的EQ判断
     if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
         Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
         TemporarySymbolEntry* tmpSe = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
@@ -1131,8 +1130,8 @@ void CompoundStmt::typeCheck()
 void SeqNode::typeCheck()
 {
     // Todo
-    stmt1->typeCheck();
-    stmt2->typeCheck();
+    if(stmt1)stmt1->typeCheck();
+    if(stmt2)stmt2->typeCheck();
 }
 
 void DeclStmt::typeCheck()
@@ -1146,7 +1145,7 @@ void DeclStmt::typeCheck()
 void ReturnStmt::typeCheck()
 {
     // Todo
-    //fprintf(stderr, "%s %s\n", returnType->toStr().c_str(), retValue->getType()->toStr().c_str());
+    fprintf(stderr, "%s %s\n", returnType->toStr().c_str(), retValue->getType()->toStr().c_str());
     if(returnType == nullptr){//not in a fuction
         fprintf(stderr, "return statement outside functions\n");
         exit(EXIT_FAILURE);
