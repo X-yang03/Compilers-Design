@@ -68,19 +68,19 @@ WHITE           [\t ]
 }
 
 
-"int" {     //输出 INT  int    行号    列号
-    dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
-    return INT;
+"int" {     //输出 TYPE_INT  int    行号    列号
+    dump_tokens("TYPE_INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
+    return TYPE_INT;
 }
 
 "float" {
-    dump_tokens("FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    return FLOAT;
+    dump_tokens("TYPE_FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return TYPE_FLOAT;
 }
 
 "void" {
-    dump_tokens("VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    return VOID;
+    dump_tokens("TYPE_VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return TYPE_VOID;
 }
 
 "if" {
@@ -116,9 +116,9 @@ WHITE           [\t ]
 }
 
 "<="    {
-    dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("LESSEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return LE;
+    return LESSEQ;
 }
 
 "<" {
@@ -128,15 +128,15 @@ WHITE           [\t ]
 }
 
 ">="    {
-    dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("GREATEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return GE;
+    return GREATEQ;
 }
 
 ">" {
-    dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("GREATE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return GREATER;
+    return GREAT;
 }
 
 "+" {
@@ -197,9 +197,9 @@ WHITE           [\t ]
     return RBRACE;
 }
 "," {
-    dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("COMMA\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return PARSE;
+    return COMMA;
 }
 "while" {
     dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
@@ -441,14 +441,14 @@ WHITE           [\t ]
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
-    yylval.iType = decimal;
+    yylval.itype = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
     return INTEGER;
 }
 {OCTAL} {
     int oct = 0;
     sscanf(yytext, "%o", &oct);
-    yylval.iType = oct;
+    yylval.itype = oct;
     dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
 
     return INTEGER;
@@ -456,24 +456,24 @@ WHITE           [\t ]
 {HEXDECIMAL} {
     int hex = 0;
     sscanf(yytext,"%016x",&hex);
-    yylval.iType = hex;
+    yylval.itype = hex;
     dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
     return INTEGER;
 }
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.fType = f;
-    dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    return FLOATNUM;
+    yylval.ftype = f;
+    dump_tokens("TYPE_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
+    return FLOATING;
 }
 
 {HEX_FLOAT} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.fType = f;    
+    yylval.ftype = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    return FLOATNUM;
+    return FLOATING;
 }
 
 {ID} {

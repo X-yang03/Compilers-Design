@@ -2,23 +2,24 @@
 #include <sstream>
 
 IntType TypeSystem::commonInt = IntType(4);
-FloatType TypeSystem::commonFloat = FloatType();
-ConstIntType TypeSystem::commonConstInt = ConstIntType();
-ConstFloatType TypeSystem::commonConstFloat = ConstFloatType();
-BoolType TypeSystem::commonBool = BoolType();
+IntType TypeSystem::commonConstInt = IntType(4, true);
+FloatType TypeSystem::commonFloat = FloatType(4);
+FloatType TypeSystem::commonConstFloat = FloatType(4, true);
+BoolType TypeSystem::commonBool = BoolType(1);
+BoolType TypeSystem::commonConstBool = BoolType(1, true);
 VoidType TypeSystem::commonVoid = VoidType();
 
 Type* TypeSystem::intType = &commonInt;
-Type* TypeSystem::floatType = &commonFloat;
 Type* TypeSystem::constIntType = &commonConstInt;
+Type* TypeSystem::floatType = &commonFloat;
 Type* TypeSystem::constFloatType = &commonConstFloat;
 Type* TypeSystem::boolType = &commonBool;
+Type* TypeSystem::constBoolType = &commonConstBool;
 Type* TypeSystem::voidType = &commonVoid;
 
-
-Type* TypeSystem::UpperType(Type* type1,Type* type2){   // float > int > bool
+Type* TypeSystem::getMaxType(Type* type1, Type* type2){
     if(type1->isFloat() || type2->isFloat()) return floatType;
-    else if(type1->isInt() || type2->isInt()) return intType;
+    if(type1->isInt() || type2->isInt()) return intType;
     else return boolType;
 }
 
@@ -37,7 +38,7 @@ bool TypeSystem::needCast(Type* src, Type* target) {
 
 std::string IntType::toStr()
 {
-    return "int";
+    return "i32";
 }
 
 std::string FloatType::toStr()
@@ -45,28 +46,24 @@ std::string FloatType::toStr()
     return "float";
 }
 
-std::string ConstIntType::toStr()
-{
-    return "const int";
-}
+// std::string ConstIntType::toStr()
+// {
+//     return "i32";
+// }
 
-std::string ConstFloatType::toStr()
-{
-    return "const float";
-}
+// std::string ConstFloatType::toStr()
+// {
+//     return "const float";
+// }
 
 std::string BoolType::toStr()
 {
-    return "bool";
+    return "i1";
 }
 
 std::string VoidType::toStr()
 {
     return "void";
-}
-
-std::string PointerType::toStr(){
-    return "Pointer";
 }
 
 void FunctionType::setparamsType(std::vector<Type*> in)
@@ -76,14 +73,15 @@ void FunctionType::setparamsType(std::vector<Type*> in)
 
 std::string FunctionType::toStr()
 {
-    std::ostringstream buffer;
-    buffer << returnType->toStr() << "(";
-    for(int i = 0;i < (int)paramsType.size();i++){
-        if(i!=0) buffer << ", ";
-        buffer << paramsType[i]->toStr();
-    }
-    buffer << ")";
-    return buffer.str();
+    return returnType->toStr();
+    // std::ostringstream buffer;
+    // buffer << returnType->toStr() << "(";
+    // for(int i = 0;i < (int)paramsType.size();i++){
+    //     if(i!=0) buffer << ", ";
+    //     buffer << paramsType[i]->toStr();
+    // }
+    // buffer << ")";
+    // return buffer.str();
 }
 
 void IntArrayType::pushBackDimension(int dim)
@@ -145,3 +143,9 @@ std::string ConstFloatArrayType::toStr()
     return "const float array";
 }
 
+std::string PointerType::toStr()
+{
+    std::ostringstream buffer;
+    buffer << valueType->toStr() << "*";
+    return buffer.str();
+}

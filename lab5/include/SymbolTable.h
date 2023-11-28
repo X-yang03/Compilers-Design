@@ -8,13 +8,17 @@
 class Type;
 class Operand;
 
+/**
+ * SymbolEntry
+ * To describe an identifier in the SynbolTable
+*/
 class SymbolEntry
 {
 private:
-    int kind;
+    int kind;       // Attribute of the identifier
 protected:
-    enum {CONSTANT, VARIABLE, TEMPORARY};
-    Type *type;
+    enum {CONSTANT, VARIABLE, TEMPORARY};   // Identifier attribute values : [CONSTANT->literal value] [VARIABLE->variable] [TEMPORARY->temporary variable]
+    Type *type;     // Type of the identifier
 
 public:
     SymbolEntry(Type *type, int kind);
@@ -23,9 +27,9 @@ public:
     bool isTemporary() const {return kind == TEMPORARY;};
     bool isVariable() const {return kind == VARIABLE;};
     Type* getType() {return type;};
-    void setType(Type *type) {this->type = type;};
     virtual std::string toStr() = 0;
     // You can add any function you need here.
+    void setType(Type *type) {this->type = type;};
 };
 
 
@@ -39,12 +43,12 @@ public:
 class ConstantSymbolEntry : public SymbolEntry
 {
 private:
-    int value;
+    double value;
 
 public:
-    ConstantSymbolEntry(Type *type, int value);
+    ConstantSymbolEntry(Type *type, double value);
     virtual ~ConstantSymbolEntry() {};
-    int getValue() const {return value;};
+    double getValue() const {return value;};
     std::string toStr();
     // You can add any function you need here.
 };
@@ -85,10 +89,11 @@ public:
     IdentifierSymbolEntry(Type *type, std::string name, int scope);
     virtual ~IdentifierSymbolEntry() {};
     std::string toStr();
+    int getScope() const {return scope;};
+    //lab6 added
     bool isGlobal() const {return scope == GLOBAL;};
     bool isParam() const {return scope == PARAM;};
     bool isLocal() const {return scope >= LOCAL;};
-    int getScope() const {return scope;};
     void setAddr(Operand *addr) {this->addr = addr;};
     Operand* getAddr() {return addr;};
     // You can add any function you need here.
@@ -146,6 +151,7 @@ public:
     SymbolTable(SymbolTable *prev);
     void install(std::string name, SymbolEntry* entry);
     SymbolEntry* lookup(std::string name);
+    bool isRedefine(std::string name);
     SymbolTable* getPrev() {return prev;};
     int getLevel() {return level;};
     static int getLabel() {return counter++;};

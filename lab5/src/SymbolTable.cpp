@@ -13,27 +13,55 @@ SymbolEntry::SymbolEntry(Type *type, int kind)
     this->kind = kind;
 }
 
-ConstantSymbolEntry::ConstantSymbolEntry(Type *type, int value) : SymbolEntry(type, SymbolEntry::CONSTANT)
+ConstantSymbolEntry::ConstantSymbolEntry(Type *type, double value) : SymbolEntry(type, SymbolEntry::CONSTANT)
 {
     this->value = value;
 }
 
 std::string ConstantSymbolEntry::toStr()
 {
-    std::ostringstream buffer;
-    buffer << value;
-    return buffer.str();
+    // 如果是浮点数 需要转换成 IEEE754格式
+    if(type->isFloat()) {
+        static_assert(sizeof(double) == 8, "double must be 8 bytes");
+        std::stringstream ss;
+        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+        return ss.str();
+    }
+    // 整数则可以直接转字符串
+    else {
+        std::ostringstream buffer;
+        buffer << (int)value;
+        return buffer.str();
+    }
 }
 
 IdentifierSymbolEntry::IdentifierSymbolEntry(Type *type, std::string name, int scope) : SymbolEntry(type, SymbolEntry::VARIABLE), name(name)
 {
     this->scope = scope;
-    addr = nullptr;
 }
 
 std::string IdentifierSymbolEntry::toStr()
 {
-    return "@" + name;
+    // 如果value有，int型常量
+    if(type==TypeSystem::constIntType){
+        std::ostringstream buffer;
+        buffer << (int)value;
+        return buffer.str();
+    }
+    // float型常量
+    if(type==TypeSystem::constFloatType) {
+        static_assert(sizeof(double) == 8, "double must be 8 bytes");
+        std::stringstream ss;
+        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+        return ss.str();
+    }
+    if(isGlobal()){
+        return "@" + name;
+    }
+    else if(isParam()){
+        return "%" + name;
+    }
+    return name;
 }
 
 void IdentifierSymbolEntry::outputFuncDecl()
@@ -111,24 +139,30 @@ SymbolTable::SymbolTable(SymbolTable *prev)
 */
 SymbolEntry* SymbolTable::lookup(std::string name)
 {
-    // Todo
     if(symbolTable.find(name)!=symbolTable.end()){
         return symbolTable[name];
-    }
-    else{
-        if(this->getPrev()!=nullptr){
-            return this->getPrev()->lookup(name);
+    }else{
+        if(prev != nullptr){
+            return prev->lookup(name);
         }else{
             return nullptr;
         }
     }
-    
+}
+
+bool SymbolTable::isRedefine(std::string name) {
+    if(symbolTable.find(name)!=symbolTable.end()){
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 // install the entry into current symbol table.
 void SymbolTable::install(std::string name, SymbolEntry* entry)
 {
-    symbolTable[name] = entry;    
+    symbolTable[name] = entry;
 }
 
 int SymbolTable::counter = 0;
