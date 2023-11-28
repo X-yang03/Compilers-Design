@@ -18,11 +18,15 @@ private:
     static int counter;
     int seq;
 protected:
-    std::vector<BasicBlock**> true_list;
-    std::vector<BasicBlock**> false_list;
+    // std::vector<BasicBlock**> true_list;
+    // std::vector<BasicBlock**> false_list;
+    std::vector<Instruction*> true_list;
+    std::vector<Instruction*> false_list;
     static IRBuilder *builder;
-    void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
+    //void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
+    void backPatch(std::vector<Instruction*> &list, BasicBlock*bb);
     std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
+    std::vector<Instruction*> merge(std::vector<Instruction*> &list1, std::vector<Instruction*> &list2);
 
 public:
     Node();
@@ -31,8 +35,11 @@ public:
     virtual void output(int level) = 0;
     virtual void typeCheck() = 0;
     virtual void genCode() = 0;
-    std::vector<BasicBlock**>& trueList() {return true_list;}
-    std::vector<BasicBlock**>& falseList() {return false_list;}
+    // std::vector<BasicBlock**>& trueList() {return true_list;}
+    // std::vector<BasicBlock**>& falseList() {return false_list;}
+     std::vector<Instruction*>& trueList() {return true_list;}
+    std::vector<Instruction*>& falseList() {return false_list;}
+    Operand* typeCast(Type* targetType, Operand* operand);
 };
 
 class ExprNode : public Node
@@ -57,7 +64,7 @@ private:
     int op;
     ExprNode *expr1, *expr2;
 public:
-    enum {ADD, SUB, AND, OR, LESS,MUL,DIV,MOD,LE,GREATER,GE,EQ,NEQ};
+    enum {ADD, SUB, MUL,DIV,MOD, AND, OR, LESS,LE,GREATER,GE,EQ,NEQ};
     BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){dst = new Operand(se);};
     void output(int level);
     void typeCheck();
@@ -222,11 +229,15 @@ class WhileStmt : public StmtNode
 private:
     ExprNode *cond;
     StmtNode *Stmt;
+    BasicBlock* condBlock;
+    BasicBlock* endBlock;
 public:
     WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt){};
     void output(int level);
     void typeCheck();
     void genCode();
+    BasicBlock* getCondBlock() {return this->condBlock;}
+    BasicBlock* getEndBlock() {return this->endBlock;}
 };
 
 class ReturnStmt : public StmtNode
@@ -298,9 +309,11 @@ class FunctionDef : public StmtNode
 {
 private:
     SymbolEntry *se;
+    FuncDefParamsNode *params;
     StmtNode *stmt;
     ReturnStmt* voidAddRet;
 public:
+    FunctionDef(SymbolEntry *se, FuncDefParamsNode *params, StmtNode *stmt) : se(se), params(params), stmt(stmt){};
     FunctionDef(SymbolEntry *se, StmtNode *stmt, ReturnStmt* voidAddRet) : se(se), stmt(stmt), voidAddRet(voidAddRet){};
     void output(int level);
     void typeCheck();
