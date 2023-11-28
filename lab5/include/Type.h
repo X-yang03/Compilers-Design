@@ -161,6 +161,8 @@ public:
     static Type *boolType;
     static Type *voidType;
     static Type *constBoolType;
+    static Type* UpperType(Type* type1,Type* type2);
+    static bool needCast(Type* type1,Type* type2);
 };
 
 #endif

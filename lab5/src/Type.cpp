@@ -15,6 +15,26 @@ Type* TypeSystem::constFloatType = &commonConstFloat;
 Type* TypeSystem::boolType = &commonBool;
 Type* TypeSystem::voidType = &commonVoid;
 
+
+Type* TypeSystem::UpperType(Type* type1,Type* type2){   // float > int > bool
+    if(type1->isFloat() || type2->isFloat()) return floatType;
+    else if(type1->isInt() || type2->isInt()) return intType;
+    else return boolType;
+}
+
+bool TypeSystem::needCast(Type* src, Type* target) {
+    if(src->isInt() && target->isInt()) {
+        return false;
+    }
+    if(src->isFloat() && target->isFloat()) {
+        return false;
+    }
+    if(src->isBool() && target->isBool()) {
+        return false;
+    }
+    return true;
+}
+
 std::string IntType::toStr()
 {
     return "int";
@@ -124,3 +144,4 @@ std::string ConstFloatArrayType::toStr()
 {
     return "const float array";
 }
+
