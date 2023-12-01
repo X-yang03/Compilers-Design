@@ -1092,7 +1092,7 @@ void FuncCallNode::typeCheck(Node** parentToChild)
     std::vector<Type*> funcParamsType = (dynamic_cast<FunctionType*>(this->funcId->getSymPtr()->getType()))->getParamsType();
     // 首先对于无参的进行检查
     if(this->params==nullptr && funcParamsType.size() != 0){
-        fprintf(stderr, "function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        fprintf(stderr, "<debug>is me ???function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
         exit(EXIT_FAILURE);
     }
     else if(this->params==nullptr) {
@@ -1103,7 +1103,7 @@ void FuncCallNode::typeCheck(Node** parentToChild)
     std::vector<ExprNode*> funcCallParams = this->params->getParamsList();
     // 如果数量不一致直接报错
     if(funcCallParams.size() != funcParamsType.size()) {
-        fprintf(stderr, "function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        fprintf(stderr, "<debug>is me!!!function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
         exit(EXIT_FAILURE);
     }
     // 然后进行类型匹配
@@ -1113,17 +1113,20 @@ void FuncCallNode::typeCheck(Node** parentToChild)
         Type* giveType = funcCallParams[i]->getSymPtr()->getType();
         // 暂时不考虑类型转化的问题 所有的类型转化均到IR生成再做
         // 除了void类型都可以进行转化
-        if(!needType->calculatable() && giveType->calculatable()
-         ||needType->calculatable() && !giveType->calculatable()){
+        if((!needType->calculatable() && giveType->calculatable())
+         ||(needType->calculatable() && !giveType->calculatable())){
             fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
             exit(EXIT_FAILURE);
         }
         // 检查数组是否匹配
-        if(!needType->isArray() && giveType->isArray()
-         ||needType->isArray() && !giveType->isArray()){
-            fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
-            exit(EXIT_FAILURE);
-        }
+        // we regard b[i] as array
+        // however, it is a int
+
+        // if((!needType->isArray() && giveType->isArray())
+        //  ||(needType->isArray() && !giveType->isArray())){
+        //     fprintf(stderr, "<debug> here???function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        //     exit(EXIT_FAILURE);
+        // }
         //TODO: 检查数组维度是否匹配
         if(needType->isArray() && giveType->isArray()){
 
