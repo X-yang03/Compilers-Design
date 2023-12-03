@@ -2,7 +2,6 @@
 #define __UNIT_H__
 
 #include <vector>
-#include <set>
 #include "Function.h"
 
 class Unit

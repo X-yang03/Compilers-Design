@@ -28,6 +28,7 @@ void Unit::output() const
             decl->outputFuncDecl();
     }
     for (auto &func : func_list){
+        
         func->output();
     }
 }

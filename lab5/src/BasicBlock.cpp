@@ -30,6 +30,7 @@ void BasicBlock::insertBefore(Instruction *dst, Instruction *src)
         i = i->getNext();
     }while(i!=head);
     dst->setParent(this);
+    src->setParent(this);
 }
 
 // remove the instruction from intruction list.

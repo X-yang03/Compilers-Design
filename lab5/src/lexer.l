@@ -68,19 +68,19 @@ WHITE           [\t ]
 }
 
 
-"int" {     //输出 TYPE_INT  int    行号    列号
-    dump_tokens("TYPE_INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
-    return TYPE_INT;
+"int" {     //输出 INT  int    行号    列号
+    dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
+    return INT;
 }
 
 "float" {
-    dump_tokens("TYPE_FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    return TYPE_FLOAT;
+    dump_tokens("FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return FLOAT;
 }
 
 "void" {
-    dump_tokens("TYPE_VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
-    return TYPE_VOID;
+    dump_tokens("VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return VOID;
 }
 
 "if" {
@@ -116,9 +116,9 @@ WHITE           [\t ]
 }
 
 "<="    {
-    dump_tokens("LESSEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return LESSEQ;
+    return LE;
 }
 
 "<" {
@@ -128,15 +128,15 @@ WHITE           [\t ]
 }
 
 ">="    {
-    dump_tokens("GREATEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return GREATEQ;
+    return GE;
 }
 
 ">" {
-    dump_tokens("GREATE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return GREAT;
+    return GREATER;
 }
 
 "+" {
@@ -197,9 +197,9 @@ WHITE           [\t ]
     return RBRACE;
 }
 "," {
-    dump_tokens("COMMA\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
 
-    return COMMA;
+    return PARSE;
 }
 "while" {
     dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
@@ -250,9 +250,10 @@ WHITE           [\t ]
 
 "getint" {
 
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+       yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* funcType = new FunctionType(TypeSystem::intType, {});//返回类型int，无参数
             SymbolTable* globalTable;    //全域符号表
@@ -265,9 +266,10 @@ WHITE           [\t ]
 }
 "getch" {
 
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+       yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* funcType = new FunctionType(TypeSystem::intType, {});//返回类型int，无参数
             SymbolTable* globalTable;    //全域符号表
@@ -279,7 +281,8 @@ WHITE           [\t ]
 
 }
 "getfloat" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -294,7 +297,8 @@ WHITE           [\t ]
 }
 "getarray" {
 
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -312,9 +316,10 @@ WHITE           [\t ]
 
 }
 "getfarray" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+         yylval.strtype = lexeme;
         std::vector<Type*> vec; //形参类型表
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* arrayType = new FloatArrayType();
@@ -329,7 +334,8 @@ WHITE           [\t ]
         return ID;
 }
 "putint" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -344,7 +350,8 @@ WHITE           [\t ]
         return ID;
 }
 "putch" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -359,7 +366,8 @@ WHITE           [\t ]
         return ID;
 }
 "putfloat" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -374,10 +382,11 @@ WHITE           [\t ]
         return ID;
 }
 "putarray" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
-        if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
+         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             std::vector<Type*> vec; //形参类型表
             vec.push_back(TypeSystem::intType);
             Type* arrayType = new IntArrayType();
@@ -392,7 +401,8 @@ WHITE           [\t ]
         return ID;
 }
 "putfarray" {
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -415,13 +425,15 @@ WHITE           [\t ]
         char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
-        std::vector<Type*> vec; //形参类型表
-        vec.push_back(TypeSystem::floatType);
-        Type* funcType = new FunctionType(TypeSystem::voidType, vec);
-        SymbolTable* globalTable;    //全域符号表
-        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
-        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
-        globalTable->install(yytext, entry);
+        if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
+            std::vector<Type*> vec; //形参类型表
+            vec.push_back(TypeSystem::floatType);
+            Type* funcType = new FunctionType(TypeSystem::voidType, vec);//返回类型void，参数表[int]
+            SymbolTable* globalTable;    //全域符号表
+            for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
+            SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
+            globalTable->install(yytext, entry);
+        }
         return ID;
 }
 
@@ -449,53 +461,43 @@ WHITE           [\t ]
         globalTable->install(yytext, entry);
         return ID;
 }
-"starttime" {
-        columnNo += yyleng;
-        char *lexeme = new char[strlen(yytext) + 1];
-        strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
-        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
-        SymbolTable* globalTable;    //全域符号表
-        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); 
-        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
-        globalTable->install(yytext, entry);
-        return ID;
-}
-"stoptime" {
-        columnNo += yyleng;
-        char *lexeme = new char[strlen(yytext) + 1];
-        strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
-        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
-        SymbolTable* globalTable;    //全域符号表
-        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
-        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
-        globalTable->install(yytext, entry);
-        return ID;
-}
 
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
-    yylval.itype = decimal;
+    yylval.iType = decimal;
     dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
     return INTEGER;
 }
+{OCTAL} {
+    int oct = 0;
+    sscanf(yytext, "%o", &oct);
+    yylval.iType = oct;
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
 
+    return INTEGER;
+}
+{HEXDECIMAL} {
+    int hex = 0;
+    sscanf(yytext,"%016x",&hex);
+    yylval.iType = hex;
+    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
+    return INTEGER;
+}
 {FLOAT_NUMBER} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.ftype = f;
-    dump_tokens("TYPE_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    return FLOATING;
+    yylval.fType = f;
+    dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
+    return FLOATNUM;
 }
 
 {HEX_FLOAT} {
     float f ;
     sscanf(yytext, "%f", &f);
-    yylval.ftype = f;    
+    yylval.fType = f;    
     dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
-    return FLOATING;
+    return FLOATNUM;
 }
 
 {ID} {
@@ -506,23 +508,6 @@ WHITE           [\t ]
     dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
     return ID;
 }
-
-{OCTAL} {
-    int oct = 0;
-    sscanf(yytext, "%o", &oct);
-    yylval.itype = oct;
-    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
-
-    return INTEGER;
-}
-{HEXDECIMAL} {
-    int hex = 0;
-    sscanf(yytext,"%016x",&hex);
-    yylval.itype = hex;
-    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
-    return INTEGER;
-}
-
 
 {EOL} {
     columnNo = 0; //换行时列数置0
