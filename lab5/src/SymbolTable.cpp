@@ -86,7 +86,9 @@ void IdentifierSymbolEntry::outputFuncDecl()
             fprintf(yyout, "@%s = dso_local global %s %d\n", this->name.c_str(), this->type->toStr().c_str(), (int)value);
         }
         else if(this->type->isFloat()) {
-            fprintf(yyout, "@%s = dso_local global %s %s\n",this->name.c_str(), this->type->toStr().c_str(), toStr().c_str());
+            std::stringstream ss;
+            ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+            fprintf(yyout, "@%s = dso_local global %s %s\n",this->name.c_str(), this->type->toStr().c_str(), ss.str().c_str());
         }
     }
 }

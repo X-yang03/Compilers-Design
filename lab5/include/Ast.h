@@ -19,6 +19,7 @@ class Node
 private:
     static int counter;
     int seq;
+    float value;
 protected:
     std::vector<BasicBlock**> true_list;   //条件为真的跳转
     std::vector<BasicBlock**> false_list;
@@ -29,6 +30,8 @@ protected:
 public:
     Node();
     int getSeq() const {return seq;};
+    float getVal(){return value;};
+    void setVal(float f){this->value = f;};
     static void setIRBuilder(IRBuilder*ib) {builder = ib;};
     virtual void output(int level) = 0;
     virtual void typeCheck() = 0;
