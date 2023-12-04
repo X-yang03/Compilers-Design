@@ -697,11 +697,8 @@ void UnaryOpExpr::typeCheck(){
     if(op == NOT) {
         this->setType(TypeSystem::boolType);
     }
-    //如果父节点不需要这个值，直接返回
 
-    //孩子节点为常数，计算常量值，替换节点
     if(realType->isConst()){
-        SymbolEntry *se;
         double val = 0;
         int initValue = expr->getSymPtr()->isConstant() ? 
             ((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue() : 
@@ -715,15 +712,7 @@ void UnaryOpExpr::typeCheck(){
             val = !initValue;
         break;
         }
-        if(this->getType()->isInt()){
-            se = new ConstantSymbolEntry(TypeSystem::constIntType, val);
-        }
-        else{//float or bool
-            se = new ConstantSymbolEntry(TypeSystem::constFloatType, val);
-        }
-        Constant* newNode = new Constant(se);
         this->setVal(val);
-        //delete this;
     }
 }
 
@@ -747,19 +736,13 @@ void BinaryExpr::typeCheck()
         fprintf(stderr, "type %s is not calculatable!\n", expr2->getType()->toStr().c_str());
         exit(EXIT_FAILURE);
     }
-    // 在语法解析阶段就对父节点和孩子节点的类型进行了相应的转换设置
-    // 在类型检查阶段就没有必要再对这部分进行检查了
-    // 可以对mod取模运算检查一下是否有浮点参与
     if(op == MOD) {
         if(!(realTypeLeft->isAnyInt() && realTypeRight->isAnyInt())) {
             fprintf(stderr, "mod is not supported with float or bool operands!\n");
             exit(EXIT_FAILURE);
         }
     }
-    //左右子树均为常数，计算常量值，替换节点
     if(realTypeLeft->isConst() && realTypeRight->isConst()){
-        SymbolEntry *se;
-        // 如果该节点结果的目标类型为bool
         if(this->getType()->isBool()) {
             bool val = 0;
             float leftValue = expr1->getSymPtr()->isConstant() ? 
@@ -795,8 +778,7 @@ void BinaryExpr::typeCheck()
                 val = leftValue != rightValue;
             break;
             }
-            se = new ConstantSymbolEntry(TypeSystem::constBoolType, val);
-            //this->setVal(val);
+            this->setVal(val);
         }
         // 如果该节点结果的目标类型为int
         else if(this->getType()->isInt()){
@@ -826,7 +808,6 @@ void BinaryExpr::typeCheck()
             break;
            
             }
-            se = new ConstantSymbolEntry(TypeSystem::constIntType, val);
             this->setVal(val);
         }
         // 如果该节点结果的目标类型为float
@@ -852,12 +833,10 @@ void BinaryExpr::typeCheck()
             case DIV:
                 val = leftValue / rightValue;
             break;
-            
             }
-            se = new ConstantSymbolEntry(TypeSystem::constFloatType, val);
             this->setVal(val);
         }
-        Constant* newNode = new Constant(se);
+        
     }
     // 调整 && 和 || 运算符的两个操作数
     // 操作数类型不为 bool，或者se是一个常量bool
@@ -956,7 +935,7 @@ void Id::typeCheck()
         indices->typeCheck();
         // 检查indices下的exprList(私有域)中的每个exprNode的类型，若不为自然数则报错
         if(((IdentifierSymbolEntry*)getSymPtr())->arrayDimension.empty()){
-            //indices->initDimInSymTable((IdentifierSymbolEntry*)getSymPtr());
+
         }
         // 读取常量数组 这个不打算做了
         else if(getType()->isConst()){
