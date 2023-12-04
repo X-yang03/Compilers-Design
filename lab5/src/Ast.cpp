@@ -870,7 +870,7 @@ void ArrayinitNode::typeCheck(){
 
 void DefNode::typeCheck(){
     //todo
-     id->typeCheck();
+    id->typeCheck();
     // 不赋初值，直接返回
     if(initVal==nullptr){
         return;
@@ -1140,12 +1140,12 @@ void FuncCallNode::typeCheck(){
             fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
             exit(EXIT_FAILURE);
         }
-        // 检查数组是否匹配
-        if((!needType->isArray() && giveType->isArray())
-         ||(needType->isArray() && !giveType->isArray())){
-            fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
-            exit(EXIT_FAILURE);
-        }
+        // // 检查数组是否匹配
+        // if((!needType->isArray() && giveType->isArray())
+        //  ||(needType->isArray() && !giveType->isArray())){
+        //     fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
+        //     exit(EXIT_FAILURE);
+        // }
         //TODO: 检查数组维度是否匹配
         if(needType->isArray() && giveType->isArray()){
 
