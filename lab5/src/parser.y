@@ -464,7 +464,12 @@ ConstDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             $$ = new DefNode(new Id(se), (Node*)$3, true, false);
         }
     // todo 数组变量的定义
@@ -478,7 +483,13 @@ ConstDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            //identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             Id* id = new Id(se);
             id->addIndices((ArrayIndiceNode*)$2);
             $$ = new DefNode(id, (Node*)$4, true, true);
@@ -561,7 +572,13 @@ VarDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            //identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             $$ = new DefNode(new Id(se), nullptr, false, false);
         }
     |   ID ASSIGN Exp {
@@ -574,7 +591,13 @@ VarDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            //identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             $$ = new DefNode(new Id(se), (Node*)$3, false, false);
         }
     |   ID ArrIndices {
@@ -587,7 +610,13 @@ VarDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            //identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             Id* id = new Id(se);
             id->addIndices((ArrayIndiceNode*)$2);
             $$ = new DefNode(id, nullptr, false, true);
@@ -602,7 +631,13 @@ VarDef
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            identifiers->install($1, se);
+            //identifiers->install($1, se);
+            if(identifiers->lookupOneLevel($1) == nullptr){
+                identifiers->install($1, se);
+            }else{
+                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
+                assert(identifiers->lookupOneLevel($1) == nullptr);
+            }
             Id* id = new Id(se);
             id->addIndices((ArrayIndiceNode*)$2);
             $$ = new DefNode(id, (Node*)$4, false, true);

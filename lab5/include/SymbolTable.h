@@ -155,6 +155,14 @@ public:
     SymbolTable* getPrev() {return prev;};
     int getLevel() {return level;};
     static int getLabel() {return counter++;};
+    //we add
+    SymbolEntry* lookupOneLevel(std::string name){
+    if(symbolTable.find(name)!=symbolTable.end()){
+        return symbolTable[name];
+    }else{
+            return nullptr;
+        }
+    };
 };
 
 extern SymbolTable *identifiers;
