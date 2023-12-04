@@ -54,7 +54,6 @@ Operand* Node::typeCast(Type* targetType, Operand* operand) {
         return operand;
     }
     BasicBlock *bb = builder->getInsertBB();
-    Function *func = bb->getParent();
     Operand* retOperand = new Operand(new TemporarySymbolEntry(targetType, SymbolTable::getLabel()));
     // 先实现bool扩展为int
     if(operand->getType()->isBool() && targetType->isInt()) {
@@ -270,8 +269,6 @@ void BinaryExpr::genCode()
 void UnaryOpExpr::genCode()
 {
     BasicBlock *bb = builder->getInsertBB();
-    Function *func = bb->getParent();
-
     if (op == SUB)
     {
         expr->genCode();
@@ -332,7 +329,7 @@ void ArrayinitNode::genCode(){
 }
 
 void DefNode::genCode(){
-    Operand *addr;
+    Operand *addr = nullptr;
     IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(id->getSymPtr());
     if(se->isGlobal())
     {
@@ -600,7 +597,7 @@ void FuncCallNode::genCode(){
         std::vector<Type*> paramsType = dynamic_cast<FunctionType*>(funcSe->getType())->getParamsType();
         std::vector<Operand*> passParams = params->getOperandList();
         std::vector<Operand*> realParams;
-        for(int i = 0; i < passParams.size(); i++) {
+        for(int i = 0; i < (int)passParams.size(); i++) {
             realParams.push_back(typeCast(paramsType[i], passParams[i]));
         }
         new CallInstruction(dst, realParams, dynamic_cast<IdentifierSymbolEntry*>(funcId->getSymPtr()), bb);
@@ -1133,19 +1130,19 @@ void FuncCallNode::typeCheck(){
     }
     // 然后进行类型匹配
     // 依次匹配类型
-    for(int i = 0; i < funcParamsType.size(); i++){
+    for(int i = 0; i < (int)funcParamsType.size(); i++){
         Type* needType = funcParamsType[i];
         Type* giveType = funcCallParams[i]->getSymPtr()->getType();
         // 暂时不考虑类型转化的问题 所有的类型转化均到IR生成再做
         // 除了void类型都可以进行转化
-        if(!needType->calculatable() && giveType->calculatable()
-         ||needType->calculatable() && !giveType->calculatable()){
+        if((!needType->calculatable() && giveType->calculatable())
+         ||(needType->calculatable() && !giveType->calculatable())){
             fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
             exit(EXIT_FAILURE);
         }
         // 检查数组是否匹配
-        if(!needType->isArray() && giveType->isArray()
-         ||needType->isArray() && !giveType->isArray()){
+        if((!needType->isArray() && giveType->isArray())
+         ||(needType->isArray() && !giveType->isArray())){
             fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
             exit(EXIT_FAILURE);
         }

@@ -23,6 +23,7 @@ std::string ConstantSymbolEntry::toStr()
     // 如果是浮点数 需要转换成 IEEE754格式
     if(type->isFloat()) {
         static_assert(sizeof(double) == 8, "double must be 8 bytes");
+        unsigned int* hvalue = reinterpret_cast<unsigned int*>(&value);
         std::stringstream ss;
         ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
         return ss.str();
