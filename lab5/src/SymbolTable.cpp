@@ -23,9 +23,9 @@ std::string ConstantSymbolEntry::toStr()
     // 如果是浮点数 需要转换成 IEEE754格式
     if(type->isFloat()) {
         static_assert(sizeof(double) == 8, "double must be 8 bytes");
-        unsigned int* hvalue = reinterpret_cast<unsigned int*>(&value);
+        uint64_t* hvalue = reinterpret_cast<uint64_t*>(&value);
         std::stringstream ss;
-        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *hvalue;
         return ss.str();
     }
     // 整数则可以直接转字符串
@@ -52,8 +52,9 @@ std::string IdentifierSymbolEntry::toStr()
     // float型常量
     if(type==TypeSystem::constFloatType) {
         static_assert(sizeof(double) == 8, "double must be 8 bytes");
+        uint64_t* hvalue = reinterpret_cast<uint64_t*>(&value);
         std::stringstream ss;
-        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+        ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *hvalue;
         return ss.str();
     }
     if(isGlobal()){
@@ -88,7 +89,8 @@ void IdentifierSymbolEntry::outputFuncDecl()
         }
         else if(this->type->isFloat()) {
             std::stringstream ss;
-            ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *reinterpret_cast<uint64_t*>(&value);
+            uint64_t* hvalue = reinterpret_cast<uint64_t*>(&value);
+            ss << "0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(16) << *hvalue;
             fprintf(yyout, "@%s = dso_local global %s %s\n",this->name.c_str(), this->type->toStr().c_str(), ss.str().c_str());
         }
     }
