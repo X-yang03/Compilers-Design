@@ -45,9 +45,12 @@ class FloatType : public Type
 {
 private:
     int size;
+    bool need_fp;
 public:
     FloatType(int size, bool is_const = false) : Type(Type::FLOAT, is_const), size(size){};
     std::string toStr();
+    void setNeedFP(bool flag){need_fp = flag;}
+    bool isNeedFP() const {return need_fp;}
 };
 
 

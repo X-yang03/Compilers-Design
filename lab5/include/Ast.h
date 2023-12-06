@@ -107,14 +107,17 @@ public:
 
 class ArrayIndiceNode : public StmtNode
 {
-private:
-    std::vector<ExprNode*> arrindexList;
 public:
+    std::vector<ExprNode*> arrindexList;
     ArrayIndiceNode(){};
+    //append is addNext
     void append(ExprNode* next);
+    void addFirst(ExprNode* first);
     void output(int level);
     void typeCheck();
+    //gencode use
     void genCode();
+    void initDimInSymTable(IdentifierSymbolEntry* se);
 };
 
 class Id : public ExprNode

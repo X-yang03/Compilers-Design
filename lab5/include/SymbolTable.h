@@ -130,12 +130,15 @@ class TemporarySymbolEntry : public SymbolEntry
 {
 private:
     int label;
+    bool isGlobalArray;
 public:
     TemporarySymbolEntry(Type *type, int label);
     virtual ~TemporarySymbolEntry() {};
     std::string toStr();
     int getLabel() const {return label;};
     // You can add any function you need here.
+    void setGlobalArray() {isGlobalArray = true;};
+    bool getGlobalArray() {return isGlobalArray;};
 };
 
 // symbol table managing identifier symbol entries

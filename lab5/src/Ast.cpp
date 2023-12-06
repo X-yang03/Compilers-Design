@@ -311,17 +311,133 @@ void Constant::genCode()
 
 void Id::genCode()
 {
-    if(getType()->isConst()){
+    if(getType()->isConst()&&!getType()->isArray()){
         return;
     }
+    //如果是常量那么可以不用生成临时寄存器直接使用其常量数值参与运算
     BasicBlock *bb = builder->getInsertBB();
+    //addr is the address of the se, we will add use of it
     Operand *addr = dynamic_cast<IdentifierSymbolEntry*>(symbolEntry)->getAddr();
+    //dst is which instruction the operand is defined
     dst = new Operand(new TemporarySymbolEntry(dst->getType(), SymbolTable::getLabel()));
-    new LoadInstruction(dst, addr, bb);
+    //new LoadInstruction(dst, addr, bb);
+    if(getType()->isArray()){
+        //offset 是数组操作数
+        Operand* offset = nullptr;
+        if(indices!=nullptr){
+            indices->genCode();
+            offset = indices->arrindexList[0]->getOperand();
+        }
+        //为数组维度信息赋值
+        std::vector<int> dimensions;
+        if(getType()->isIntArray()){
+            dimensions = dynamic_cast<IntArrayType*>(getType())->getDimensions();
+        }
+        else if(getType()->isConstIntArray()) {
+            dimensions = dynamic_cast<ConstIntArrayType*>(getType())->getDimensions();
+        }
+        else if(getType()->isFloatArray()){
+            dimensions = dynamic_cast<FloatArrayType*>(getType())->getDimensions();
+        }
+        else {
+            dimensions = dynamic_cast<ConstFloatArrayType*>(getType())->getDimensions();
+        }
+        //如果是函数参数传入的数组指针，其[0]维度为-1
+        // we did it by addFisrt
+        //此时需要生成新的load指令获取其地址
+        if(dimensions[0]==-1){
+            // printf("%d\n", dimensions[1]);
+            TemporarySymbolEntry* se = new TemporarySymbolEntry(getType(), SymbolTable::getLabel());
+            Operand* new_addr = new Operand(se);
+            //新操作数在这条新指令中defined(new addr)
+            new LoadInstruction(new_addr, addr, bb);
+            addr = new_addr;
+        }
+        //遍历数组维度
+        for(unsigned int i = 1; indices!=nullptr && i < indices->arrindexList.size(); i++) {
+            Operand* dim_i = new Operand(new ConstantSymbolEntry(TypeSystem::constIntType, dimensions[i]));
+            TemporarySymbolEntry* se1 = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+            Operand* offset1 = new Operand(se1);
+            //offset1 = offset * dimensions[i]
+            new BinaryInstruction(BinaryInstruction::MUL, offset1, offset, dim_i, bb);  
+            TemporarySymbolEntry* se2 = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+            offset = new Operand(se2);
+            //offset = offset1 + indices[i]
+            new BinaryInstruction(BinaryInstruction::ADD, offset, offset1, indices->arrindexList[i]->getOperand(), bb); 
+        }
+        //索引维度<总维度，需要再乘一次最后的维度
+        if(indices!=nullptr && indices->arrindexList.size()<dimensions.size()){
+            Operand* dim_i = new Operand(new ConstantSymbolEntry(TypeSystem::constIntType, dimensions[indices->arrindexList.size()]));
+            TemporarySymbolEntry* se1 = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+            Operand* offset1 = new Operand(se1);
+            new BinaryInstruction(BinaryInstruction::MUL, offset1, offset, dim_i, bb);  //offset1 = offset * dimensions[i]
+            offset = offset1;
+        }
+        // need to do
+        Operand* offset1 = nullptr;
+        if(indices!=nullptr){
+            TemporarySymbolEntry* se1 = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+            offset1 = new Operand(se1);
+            Operand* align = new Operand(new ConstantSymbolEntry(TypeSystem::constIntType, 4));
+            new BinaryInstruction(BinaryInstruction::MUL, offset1, offset, align, bb);  //offset1 = offset * 4
+        }
+        else{
+            offset1 = new Operand(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
+        }
+        TemporarySymbolEntry* se2 = new TemporarySymbolEntry(getType(), SymbolTable::getLabel());
+        Operand* offset_final = new Operand(se2);
+        // 全局变量地址标签不能直接参与运算，需要先load
+        if(dynamic_cast<IdentifierSymbolEntry*>(getSymbolEntry())->isGlobal()){
+            TemporarySymbolEntry* se3 = new TemporarySymbolEntry(getType(), SymbolTable::getLabel());
+            Operand* new_addr = new Operand(se3);
+            new LoadInstruction(new_addr, addr, bb);
+            addr = new_addr;
+            se2->setGlobalArray();
+            dynamic_cast<TemporarySymbolEntry*>(dst->getEntry())->setGlobalArray();
+        }
+        if(indices!=nullptr && indices->arrindexList.size()==dimensions.size()){
+            new BinaryInstruction(BinaryInstruction::ADD, offset_final, offset1, addr, bb);  //offset_final = offset1 + addr
+            // printf("%s\n", getSymbolEntry()->toStr().c_str());
+            //进入此分支表明已经寻址完成，可以由array type转为普通type
+            if(dst->getType()->isFloatArray() || dst->getType()->isConstFloatArray()){
+                dst->getEntry()->setType(new FloatType(4));
+                // 如果不是全局变量 那么就设置 need_fp 标志位
+                if(!dynamic_cast<IdentifierSymbolEntry*>(getSymbolEntry())->isGlobal() && dimensions[0] != -1){
+                    dynamic_cast<FloatType*>(dst->getEntry()->getType())->setNeedFP(true);
+                }
+            }
+            new LoadInstruction(dst, offset_final, bb);
+        }
+        else{
+            // //为区分数组指针和数组值，需要置位dst的type中的pointer
+            // if(dst->getType()->isIntArray()){
+            //     dst->getEntry()->setType(new IntArrayType(*(dynamic_cast<IntArrayType*>(dst->getType()))));
+            //     dynamic_cast<IntArrayType*>(dst->getType())->setPointer(true);
+            // }
+            // else if(dst->getType()->isConstIntArray()){
+            //     dst->getEntry()->setType(new ConstIntArrayType(*(dynamic_cast<ConstIntArrayType*>(dst->getType()))));
+            //     dynamic_cast<ConstIntArrayType*>(dst->getType())->setPointer(true);
+            // }
+            // else if(dst->getType()->isFloatArray()){
+            //     dst->getEntry()->setType(new FloatArrayType(*(dynamic_cast<FloatArrayType*>(dst->getType()))));
+            //     dynamic_cast<FloatArrayType*>(dst->getType())->setPointer(true);
+            // }
+            // else if(dst->getType()->isConstFloatArray()){
+            //     dst->getEntry()->setType(new ConstFloatArrayType(*(dynamic_cast<ConstFloatArrayType*>(dst->getType()))));
+            //     dynamic_cast<ConstFloatArrayType*>(dst->getType())->setPointer(true);
+            // }
+            // new BinaryInstruction(BinaryInstruction::ADD, dst, offset1, addr, bb); 
+        }
+    }
+    else{
+        new LoadInstruction(dst, addr, bb);
+    }
 }
 
 void ArrayIndiceNode::genCode(){
-
+    for(auto expr : this->arrindexList){
+        expr->genCode();
+    }
 }
 
 void ArrayinitNode::genCode(){
@@ -733,6 +849,7 @@ void BinaryExpr::typeCheck()
         fprintf(stderr, "type %s is not calculatable!\n", expr2->getType()->toStr().c_str());
         exit(EXIT_FAILURE);
     }
+    //判断操作数是是否符合要求
     if(op == MOD) {
         if(!(realTypeLeft->isAnyInt() && realTypeRight->isAnyInt())) {
             fprintf(stderr, "mod is not supported with float or bool operands!\n");
@@ -861,7 +978,9 @@ void Constant::typeCheck()
 }
 
 void ArrayIndiceNode::typeCheck(){
-
+    for(int i = 0;i<(int)this->arrindexList.size();++i){
+        arrindexList[i]->typeCheck();
+    }
 }
 
 void ArrayinitNode::typeCheck(){
@@ -876,8 +995,8 @@ void DefNode::typeCheck(){
         return;
     }
     initVal->typeCheck();
-
-    if(!id->getType()->isArray()){//不是数组时，右边可能出现函数：int a = f();
+    //不是数组时，右边可能出现函数：int a = f();
+    if(!id->getType()->isArray()){
         if(((ExprNode*)initVal)->getType()->isFunc() && 
             (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
             fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
@@ -1283,6 +1402,9 @@ void ArrayIndiceNode::append(ExprNode* next)
 {
     arrindexList.push_back(next);
 }
+void ArrayIndiceNode::addFirst(ExprNode* first){
+    this->arrindexList.insert(this->arrindexList.begin(), first);
+}
 
 void ArrayIndiceNode::output(int level)
 {
@@ -1293,7 +1415,43 @@ void ArrayIndiceNode::output(int level)
     }
 }
 
-
+void ArrayIndiceNode::initDimInSymTable(IdentifierSymbolEntry* se)
+{
+    for(auto expr :this->arrindexList){
+        // 既不是字面值常量，也不是常量表达式
+        if(!(expr->getSymPtr()->isConstant() || expr->getType()->isConst())){
+            fprintf(stderr, "array dimensions must be constant! %d %d\n", expr->getSymPtr()->isConstant(), expr->getType()->isConst());
+            fprintf(stderr, "%d %d\n", (int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue(), (int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+            exit(EXIT_FAILURE);
+        }
+        // 字面值常量，值存在ConstantSymbolEntry中
+        if(expr->getSymPtr()->isConstant()){
+            // se->arrayDimension.push_back((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+            if(se->getType()->isIntArray()){
+                dynamic_cast<IntArrayType*>(se->getType())->pushBackDimension((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+            }
+            else if(se->getType()->isConstIntArray()) {
+                dynamic_cast<ConstIntArrayType*>(se->getType())->pushBackDimension((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+            }
+            else if(se->getType()->isFloatArray()){
+                dynamic_cast<FloatArrayType*>(se->getType())->pushBackDimension((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+            }
+            else {
+                dynamic_cast<ConstFloatArrayType*>(se->getType())->pushBackDimension((int)((ConstantSymbolEntry*)(expr->getSymPtr()))->getValue());
+            }
+        }
+        // 常量表达式，值存在IdentifierSymbolEntry中
+        else if(expr->getType()->isConst()){
+            // se->arrayDimension.push_back((int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+            if(se->getType()->isIntArray()){
+                dynamic_cast<IntArrayType*>(se->getType())->pushBackDimension((int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+            }
+            else{
+                dynamic_cast<FloatArrayType*>(se->getType())->pushBackDimension((int)((IdentifierSymbolEntry*)(expr->getSymPtr()))->value);
+            }
+        }
+    }
+}
 void CompoundStmt::output(int level)
 {
     fprintf(yyout, "%*cCompoundStmt\n", level, ' ');
