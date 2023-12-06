@@ -180,6 +180,8 @@ public:
     void output(int level);
     void typeCheck();
     void genCode();
+    std::vector<ArrayinitNode*> getinnerList(){return this->innerList;};
+    ExprNode* getLeafNode() {return leafNode;};
 };
 
 class DefNode : public StmtNode

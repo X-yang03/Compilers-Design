@@ -3,6 +3,7 @@
 #include "Unit.h"
 #include "Instruction.h"
 #include "IRBuilder.h"
+#include "ArrayUtil.h"
 #include <string>
 #include "Type.h"
 #include <assert.h>
@@ -995,6 +996,10 @@ void DefNode::typeCheck(){
         return;
     }
     initVal->typeCheck();
+    //如果是数组，需要特殊处理initval
+    if(id->getType()->isArray()){
+
+    }
     //不是数组时，右边可能出现函数：int a = f();
     if(!id->getType()->isArray()){
         if(((ExprNode*)initVal)->getType()->isFunc() && 
@@ -1021,6 +1026,12 @@ void DefNode::typeCheck(){
         // 数组初始化值 暂时不打算做了
         if(id->getType()->isArray()){
             //TODO: initialize elements in symbol table
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
+            for(auto val : dynamic_cast<ArrayinitNode*>(initVal)->getinnerList()) {
+                ExprNode* leafNode = val->getLeafNode();
+                double value= ((ConstantSymbolEntry*)((ExprNode*)leafNode)->getSymPtr())->getValue();
+                se->arrayValues.push_back(value);
+            }
         }
         // 常量初始化值
         else{
