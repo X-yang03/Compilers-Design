@@ -427,7 +427,7 @@ void Id::genCode()
             //     dst->getEntry()->setType(new ConstFloatArrayType(*(dynamic_cast<ConstFloatArrayType*>(dst->getType()))));
             //     dynamic_cast<ConstFloatArrayType*>(dst->getType())->setPointer(true);
             // }
-            // new BinaryInstruction(BinaryInstruction::ADD, dst, offset1, addr, bb); 
+            new BinaryInstruction(BinaryInstruction::ADD, dst, offset1, addr, bb); 
         }
     }
     else{
@@ -442,7 +442,24 @@ void ArrayIndiceNode::genCode(){
 }
 
 void ArrayinitNode::genCode(){
-
+    // 如果是个叶节点
+    if(this->leafNode != nullptr) {
+        this->leafNode->genCode();
+        Operand* src = leafNode->getOperand();
+        int offset = ArrayUtil::getCurrentOffset() * 4;
+        Operand* offset_operand = new Operand(new ConstantSymbolEntry(TypeSystem::constIntType, offset));
+        Operand* final_offset = new Operand(new TemporarySymbolEntry(ArrayUtil::getArrayType(), SymbolTable::getLabel()));
+        Operand* addr = ArrayUtil::getArrayAddr();
+        // 计算最终地址偏移
+        new BinaryInstruction(BinaryInstruction::ADD, final_offset, offset_operand, addr, builder->getInsertBB());
+        // 插入 store 指令
+        new StoreInstruction(final_offset, src, builder->getInsertBB());
+    }
+    // 经过 typecheck 之后 数组初始化值已经被全部展平
+    for(auto child : innerList) {
+        child->genCode();
+        ArrayUtil::incCurrentOffset();
+    }
 }
 
 void DefNode::genCode(){
@@ -478,15 +495,26 @@ void DefNode::genCode(){
     }
     //add array instructions here
     if(initVal!=nullptr){
+        //BasicBlock *bb = builder->getInsertBB();
+        //initVal->genCode();
+        //Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
         BasicBlock *bb = builder->getInsertBB();
-        initVal->genCode();
-        Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
-        
+        if(!se->getType()->isArray()){
+            initVal->genCode();
+            Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
+            new StoreInstruction(addr, src, bb);
+        }
+        else{
+            ArrayUtil::init();
+            ArrayUtil::setArrayType(se->getType());
+            ArrayUtil::setArrayAddr(addr);
+            initVal->genCode();
+        }
         /***
          * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
          * If you want to implement array, you have to caculate the address first and then store the result into it.
          */
-        new StoreInstruction(addr, src, bb);
+        //new StoreInstruction(addr, src, bb);
     }
 }
 
@@ -985,6 +1013,28 @@ void ArrayIndiceNode::typeCheck(){
 }
 
 void ArrayinitNode::typeCheck(){
+    //we are move to next dimension
+    ArrayUtil::incCurrentDim();
+    bool padding = true;
+    if(this->leafNode != nullptr) {
+        this->leafNode->typeCheck();
+        //push init val to init_vector(clear everytime when init)
+        ArrayUtil::insertInitVal(this->leafNode);
+        padding = false;
+    }
+    // 首先对 innerList 进行递归
+    int size = 0;
+    for(auto & child : innerList){
+        child->typeCheck();
+        size++;
+    }
+    // int padding = currentDimSize - (int)innerList.size();
+    // 然后对当前维度进行填充
+    if(padding) {
+        ArrayUtil::paddingInitVal(size);
+    }
+    //递归调用，decrease it
+    ArrayUtil::decCurrentDim();
 
 }
 
@@ -995,13 +1045,28 @@ void DefNode::typeCheck(){
     if(initVal==nullptr){
         return;
     }
-    initVal->typeCheck();
+    //initVal->typeCheck();
     //如果是数组，需要特殊处理initval
     if(id->getType()->isArray()){
+        //init some basic attribute
+        ArrayUtil::init();
+        //set current type  as id's type instead of nullptr
+        ArrayUtil::setArrayType(id->getType());
+        initVal->typeCheck();
+        //重新构造初始化数组值树
+        this->initVal = new ArrayinitNode(dynamic_cast<ArrayinitNode*>(this->initVal)->isConst());
+        std::vector<ExprNode*> initList = ArrayUtil::getInitVals();
+        //每个节点都是叶节点，将树结构整体拉开，没有赋值的地方用0填充
+        for(auto & child : initList){
+            ArrayinitNode* newNode = new ArrayinitNode(dynamic_cast<ArrayinitNode*>(this->initVal)->isConst());
+            newNode->setLeafNode(child);
+            dynamic_cast<ArrayinitNode*>(this->initVal)->append(newNode);
+        }
 
     }
     //不是数组时，右边可能出现函数：int a = f();
     if(!id->getType()->isArray()){
+        initVal->typeCheck();
         if(((ExprNode*)initVal)->getType()->isFunc() && 
             (!((FunctionType*)(((ExprNode*)initVal)->getType()))->getRetType()->calculatable())){//右边是个为返回值空的函数
             fprintf(stderr, "expected a return value, but functionType %s return nothing\n", ((ExprNode*)initVal)->getType()->toStr().c_str());
@@ -1058,11 +1123,15 @@ void DefNode::typeCheck(){
 void Id::typeCheck()
 {
     // Todo
+    // if is const？？？？
    if(isArray() && indices!=nullptr){
         indices->typeCheck();
-        // 检查indices下的exprList(私有域)中的每个exprNode的类型，若不为自然数则报错
-        if(((IdentifierSymbolEntry*)getSymPtr())->arrayDimension.empty()){
-
+        if((getType()->isIntArray() && dynamic_cast<IntArrayType*>(getType())->getDimensions().empty()) ||
+            (getType()->isConstIntArray() && dynamic_cast<ConstIntArrayType*>(getType())->getDimensions().empty()) ||
+            (getType()->isFloatArray() && dynamic_cast<FloatArrayType*>(getType())->getDimensions().empty()) ||
+            (getType()->isConstFloatArray() && dynamic_cast<ConstFloatArrayType*>(getType())->getDimensions().empty())){
+            // (getType()->isIntArray() && dynamic_cast<IntArrayType*>(getType())->getDimensions().back()==-1)){
+            indices->initDimInSymTable((IdentifierSymbolEntry*)getSymPtr());
         }
         // 读取常量数组 这个不打算做了
         else if(getType()->isConst()){

@@ -190,7 +190,7 @@ private:
     bool isConst;
     bool isArray;
     Id* id;
-    Node* initVal;//对于非数组，是ExprNode；对于数组，是InitValueNode
+    Node* initVal;//对于非数组，是ExprNode；对于数组，是ArrayinitNode
 public:
     DefNode(Id* id, Node* initVal, bool isConst, bool isArray) : 
         isConst(isConst), isArray(isArray), id(id), initVal(initVal){};
