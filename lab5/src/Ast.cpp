@@ -56,19 +56,16 @@ Operand* Node::typeCast(Type* targetType, Operand* operand) {
     }
     BasicBlock *bb = builder->getInsertBB();
     Operand* retOperand = new Operand(new TemporarySymbolEntry(targetType, SymbolTable::getLabel()));
-    // 先实现bool扩展为int
+    // bool 2 int
     if(operand->getType()->isBool() && targetType->isInt()) {
-        // 插入一条符号扩展指令
         new ZextInstruction(operand, retOperand, bb);
     }
-    // 实现 int 到 float 的转换
+    //int 2 float
     else if(operand->getType()->isInt() && targetType->isFloat()) {
-        // 插入一条类型转化指令
         new IntFloatCastInstructionn(IntFloatCastInstructionn::I2F, operand, retOperand, bb);
     }
-    // 实现 float 到 int 的转换
+    // float 2 int
     else if(operand->getType()->isFloat() && targetType->isInt()) {
-        // 插入一条类型转化指令
         new IntFloatCastInstructionn(IntFloatCastInstructionn::F2I, operand, retOperand, bb);
     }
     return retOperand;
@@ -307,7 +304,6 @@ void Id::genCode()
     if(getType()->isConst()&&!getType()->isArray()){
         return;
     }
-    //如果是常量那么可以不用生成临时寄存器直接使用其常量数值参与运算
     BasicBlock *bb = builder->getInsertBB();
     //addr is the address of the se, we will add use of it
     Operand *addr = dynamic_cast<IdentifierSymbolEntry*>(symbolEntry)->getAddr();
@@ -488,8 +484,6 @@ void DefNode::genCode(){
     //add array instructions here
     if(initVal!=nullptr){
         BasicBlock *bb = builder->getInsertBB();
-        //initVal->genCode();
-        //Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
   
         if(!se->getType()->isArray()){
             initVal->genCode();
@@ -517,7 +511,7 @@ void IfStmt::genCode()
     then_bb = new BasicBlock(func);
     end_bb = new BasicBlock(func);
 
-    trueBrStack.push(then_bb);
+    trueBrStack.push(then_bb);   //加入栈中
     falseBrStack.push(end_bb);
     inIf = true;
     cond->genCode();
@@ -531,7 +525,8 @@ void IfStmt::genCode()
     falseBrStack.pop();
 
     backPatch(cond->trueList(), then_bb); //ture ---> then_block
-    backPatch(cond->falseList(), end_bb); //false --> end_block,实际上backPatch没有作用，此处仅保留lab框架
+    backPatch(cond->falseList(), end_bb); //false --> end_block
+    //实际上backPatch没有作用，此处仅保留lab框架
 
     builder->setInsertBB(then_bb);
     thenStmt->genCode();
@@ -713,8 +708,6 @@ void FuncCallNode::genCode(){
     if(actualSE->isLibFunc()){//若为库函数，则输出declare语句
         builder->getUnit()->insertDecl(actualSE);
     }
-    //输出call语句
-    //TODO: 内联函数
     BasicBlock *bb = builder->getInsertBB();
     //void 型函数不能返回
     if(params==nullptr){
@@ -773,10 +766,6 @@ void AssignStmt::genCode()
     expr->genCode();
     Operand *addr = dynamic_cast<IdentifierSymbolEntry*>(lval->getSymPtr())->getAddr();
     Operand *src = typeCast(dynamic_cast<PointerType*>(addr->getType())->getValueType(), expr->getOperand());
-    /***
-     * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
-     * If you want to implement array, you have to caculate the address first and then store the result into it.
-     */
     new StoreInstruction(addr, src, bb);
 }
 
@@ -790,10 +779,8 @@ void FunctionDef::typeCheck()
 {
     // Todo
     returnType = ((FunctionType*)se->getType())->getRetType();
-    // 判断函数是否返回
     funcReturned = false;
     stmt->typeCheck();
-    // 非void类型的函数需要有返回值
     if(!funcReturned && !returnType->isVoid()){
         fprintf(stderr, "expected a %s type to return, but no returned value found\n", returnType->toStr().c_str());
         exit(EXIT_FAILURE);
@@ -968,9 +955,6 @@ void BinaryExpr::typeCheck()
         }
         
     }
-    // 调整 && 和 || 运算符的两个操作数
-    // 操作数类型不为 bool，或者se是一个常量bool
-    // 则说明此时的情况为 a || 1 或者 a && a + b
     // 增加一个和1的EQ判断
     if(op == AND || op == OR) {
         if(!expr1->getSymPtr()->getType()->isBool() || expr1->getSymPtr()->isConstant()) {
@@ -1040,10 +1024,8 @@ void DefNode::typeCheck(){
         //set current type  as id's type instead of nullptr
         ArrayUtil::setArrayType(id->getType());
         initVal->typeCheck();
-        //重新构造初始化数组值树
         this->initVal = new ArrayinitNode(dynamic_cast<ArrayinitNode*>(this->initVal)->isConst());
         std::vector<ExprNode*> initList = ArrayUtil::getInitVals();
-        //每个节点都是叶节点，将树结构整体拉开，没有赋值的地方用0填充
         for(auto & child : initList){
             ArrayinitNode* newNode = new ArrayinitNode(dynamic_cast<ArrayinitNode*>(this->initVal)->isConst());
             newNode->setLeafNode(child);
@@ -1051,7 +1033,6 @@ void DefNode::typeCheck(){
         }
 
     }
-    //不是数组时，右边可能出现函数：int a = f();
     if(!id->getType()->isArray()){
         initVal->typeCheck();
         if(((ExprNode*)initVal)->getType()->isFunc() && 
@@ -1061,7 +1042,6 @@ void DefNode::typeCheck(){
         }
     }
     if(id->getType()->isConst()){
-        // 判断是否用变量给常量赋值
         if(!isArray) {
             if(!((ExprNode*)initVal)->getType()->isConst()) {
                 fprintf(stderr, "attempt to initialize variable value to const\n");
@@ -1074,8 +1054,6 @@ void DefNode::typeCheck(){
                 exit(EXIT_FAILURE);
             }
         }
-        // 接下来就是常量计算的工作了
-        // 数组初始化值 暂时不打算做了
         if(id->getType()->isArray()){
             //TODO: initialize elements in symbol table
             IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
@@ -1095,11 +1073,6 @@ void DefNode::typeCheck(){
     if(dynamic_cast<IdentifierSymbolEntry*>(id->getSymPtr())->isGlobal()) {
         // 对于初始化值不为空的，要进行初始化赋值
         if(initVal != nullptr) {
-            // 只允许使用常量对全局变量进行赋值
-            // if(!((ExprNode*)initVal)->getType()->isConst()) {
-            //     fprintf(stderr, "not allow to initialize global variable with not const value\n");
-            //     exit(EXIT_FAILURE);
-            // }
             IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)id->getSymPtr();
             se->value = ((ConstantSymbolEntry*)((ExprNode*)initVal)->getSymPtr())->getValue();
         }
@@ -1120,12 +1093,6 @@ void Id::typeCheck()
             // (getType()->isIntArray() && dynamic_cast<IntArrayType*>(getType())->getDimensions().back()==-1)){
             indices->initDimInSymTable((IdentifierSymbolEntry*)getSymPtr());
         }
-        // 读取常量数组 这个不打算做了
-        else if(getType()->isConst()){
-            //TODO: 将常量数组+全常量下标的数组元素访问替换为字面值常量节点Constant
-            //STEP：1.遍历indices下的exprList(私有域)，查看是否有非常量节点。若有，直接返回
-            //STEP: 2.若全部为常量下标，替换
-        }
     }
 }
 
@@ -1134,7 +1101,6 @@ void IfStmt::typeCheck()
     // Todo
     cond->typeCheck();
     // 如果cond中的se的类型不为 bool，或者se是一个常量bool
-    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
     // 增加一个和1的EQ判断
     if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
         Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
@@ -1155,7 +1121,6 @@ void IfElseStmt::typeCheck()
     // Todo
     cond->typeCheck();
     // 如果cond中的se的类型不为 bool，或者se是一个常量bool
-    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
     // 增加一个和1的EQ判断
     if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
         Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
@@ -1180,7 +1145,6 @@ void IfElseStmt::typeCheck()
 void WhileStmt::typeCheck(){
     cond->typeCheck();
     // 如果cond中的se的类型不为 bool，或者se是一个常量bool
-    // 则说明此时的情况为 if(a) 或者 if(1) 或者 if(a+1)
     // 增加一个和1的EQ判断
     if(!cond->getSymPtr()->getType()->isBool() || cond->getSymPtr()->isConstant()) {
         Constant* zeroNode = new Constant(new ConstantSymbolEntry(TypeSystem::constIntType, 0));
@@ -1306,7 +1270,6 @@ void FuncCallNode::typeCheck(){
     else if(this->params==nullptr) {
         return;
     }
-    // 先对FuncCallParamsNode进行类型检查，主要是完成常量计算
     this->params->typeCheck(); 
     std::vector<ExprNode*> funcCallParams = this->params->getParamsList();
     // 如果数量不一致直接报错
@@ -1314,27 +1277,15 @@ void FuncCallNode::typeCheck(){
         fprintf(stderr, "function %s call params number is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
         exit(EXIT_FAILURE);
     }
-    // 然后进行类型匹配
-    // 依次匹配类型
+
     for(int i = 0; i < (int)funcParamsType.size(); i++){
         Type* needType = funcParamsType[i];
         Type* giveType = funcCallParams[i]->getSymPtr()->getType();
-        // 暂时不考虑类型转化的问题 所有的类型转化均到IR生成再做
-        // 除了void类型都可以进行转化
+
         if((!needType->calculatable() && giveType->calculatable())
          ||(needType->calculatable() && !giveType->calculatable())){
             fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
             exit(EXIT_FAILURE);
-        }
-        // // 检查数组是否匹配
-        // if((!needType->isArray() && giveType->isArray())
-        //  ||(needType->isArray() && !giveType->isArray())){
-        //     fprintf(stderr, "function %s call params type is not consistent\n",this->funcId->getSymPtr()->toStr().c_str());
-        //     exit(EXIT_FAILURE);
-        // }
-        //TODO: 检查数组维度是否匹配
-        if(needType->isArray() && giveType->isArray()){
-
         }
     }
 }
