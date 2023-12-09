@@ -18,7 +18,7 @@ int inIf = 0;
 BasicBlock* if_true_BB = nullptr;
 BasicBlock* if_false_BB = nullptr;
 
-std::stack<BasicBlock*> trueBrStack;
+std::stack<BasicBlock*> trueBrStack;   //用栈替代回填
 std::stack<BasicBlock*> falseBrStack;
 
 std::stack<WhileStmt*> whileStack;  //判断嵌套while
@@ -125,14 +125,11 @@ void FunctionDef::genCode()
         if (last->isCond()) {
             BasicBlock *trueBlock = dynamic_cast<CondBrInstruction*>(last)->getTrueBranch();
             BasicBlock *falseBlock = dynamic_cast<CondBrInstruction*>(last)->getFalseBranch();
-             //std::cout<<(*block)->getNo()<<" true to" <<trueBlock->getNo()<<std::endl;
-             //std::cout<<(*block)->getNo()<<" false to" <<falseBlock->getNo()<<std::endl;
             (*block)->addSucc(trueBlock);
             (*block)->addSucc(falseBlock);
             trueBlock->addPred(*block);
             falseBlock->addPred(*block);
         } 
-        // 对于无条件的跳转指令，只需要对其目标基本块设置控制流关系即可
         if (last->isUncond()) {
             BasicBlock* dstBlock = dynamic_cast<UncondBrInstruction*>(last)->getBranch();
              //std::cout<<(*block)->getNo()<<"  to" <<dstBlock->getNo()<<std::endl;
@@ -158,7 +155,6 @@ void BinaryExpr::genCode()
         expr1->genCode();
         trueBrStack.push(trueBB);
         if(inIf){
-            //std::cout<<"if and"<<std::endl;
             if_false_BB = falseBrStack.top();
             new CondBrInstruction(trueBB, if_false_BB, expr1->getOperand(), builder->getInsertBB());
         }
@@ -178,16 +174,13 @@ void BinaryExpr::genCode()
         expr1->genCode();
         bb = builder->getInsertBB();
         if(inIf){
-            //std::cout<<"if or "<<bb->getNo()<<std::endl;
             if_true_BB = trueBrStack.top();
             new CondBrInstruction(if_true_BB,falseBB, expr1->getOperand(), builder->getInsertBB());
-            //std::cout<<expr1->getOperand()->toStr()<<" "<<expr1->getOperand()<<" true to"<<if_true_BB->getNo()<<" false to"<<falseBB->getNo()<<std::endl;
-        }
+           }
         falseBrStack.pop();
         
         backPatch(expr1->falseList(),falseBB);
         builder->setInsertBB(falseBB);
-        //std::cout<<"now bb "<<builder->getInsertBB()->getNo()<<std::endl;
         expr2->genCode();
         this->dst = expr2->getOperand();
         true_list = merge(expr1->trueList(), expr2->trueList());
@@ -229,7 +222,6 @@ void BinaryExpr::genCode()
         }
         else {
             new CmpInstruction(opcode, dst, src1, src2, bb);
-            //std::cout<<dst->toStr()<<" "<<dst<<std::endl;
         }
         
     }
@@ -472,10 +464,10 @@ void DefNode::genCode(){
         addr_se->setType(new PointerType(se->getType()));
         addr = new Operand(addr_se);
         se->setAddr(addr);
-        this->builder->getUnit()->insertDecl(se);
+        this->builder->getUnit()->insertDecl(se);  //加入全局声明
         if(initVal!=nullptr ){
             if(!dynamic_cast<ExprNode*>(initVal)->getType()->isConst()){
-                se->value = initVal->getVal();
+                se->value = initVal->getVal();  //设置全局变量的value
             }
         }
     }
@@ -495,10 +487,10 @@ void DefNode::genCode(){
     }
     //add array instructions here
     if(initVal!=nullptr){
-        //BasicBlock *bb = builder->getInsertBB();
+        BasicBlock *bb = builder->getInsertBB();
         //initVal->genCode();
         //Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
-        BasicBlock *bb = builder->getInsertBB();
+  
         if(!se->getType()->isArray()){
             initVal->genCode();
             Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
@@ -510,10 +502,6 @@ void DefNode::genCode(){
             ArrayUtil::setArrayAddr(addr);
             initVal->genCode();
         }
-        /***
-         * We haven't implemented array yet, the lval can only be ID. So we just store the result of the `expr` to the addr of the id.
-         * If you want to implement array, you have to caculate the address first and then store the result into it.
-         */
         //new StoreInstruction(addr, src, bb);
     }
 }
@@ -528,14 +516,13 @@ void IfStmt::genCode()
     func = builder->getInsertBB()->getParent();
     then_bb = new BasicBlock(func);
     end_bb = new BasicBlock(func);
-    //std::cout<<"true no "<<then_bb->getNo()<<" false no"<<end_bb->getNo()<<std::endl;
+
     trueBrStack.push(then_bb);
     falseBrStack.push(end_bb);
     inIf = true;
     cond->genCode();
     BasicBlock *bb = builder->getInsertBB();
     new CondBrInstruction(then_bb, end_bb, cond->getOperand(), bb);
-    //std::cout<<bb->getNo()<<" true to"<<then_bb->getNo()<<" false to "<<end_bb->getNo()<<std::endl;
 
     if_true_BB = nullptr;
     if_false_BB = nullptr;
@@ -544,7 +531,7 @@ void IfStmt::genCode()
     falseBrStack.pop();
 
     backPatch(cond->trueList(), then_bb); //ture ---> then_block
-    backPatch(cond->falseList(), end_bb); //false --> end_block
+    backPatch(cond->falseList(), end_bb); //false --> end_block,实际上backPatch没有作用，此处仅保留lab框架
 
     builder->setInsertBB(then_bb);
     thenStmt->genCode();
@@ -640,11 +627,11 @@ void ContinueStmt::genCode(){
     assert(whileStack.size()!=0);
     Function* func = builder->getInsertBB()->getParent();
     BasicBlock* bb = builder->getInsertBB();
-    // 首先获取当前所在的while
+    // 获取当前所在的while
     WhileStmt* whileStmt = whileStack.top();
-    // 获取条件判断block
+
     BasicBlock* cond_bb = whileStmt->getCondBlock();
-    // 在当前基本块中生成一条跳转到条件判断的语句
+    // 生成一条跳转到条件判断的语句
     new UncondBrInstruction(cond_bb, bb);
     // 声明一个新的基本块用来插入后续的指令
     BasicBlock* nextBlock = new BasicBlock(func);
