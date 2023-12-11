@@ -482,9 +482,9 @@ void DefNode::genCode(){
         se->setAddr(addr);                                          // set the addr operand in symbol entry so that we can use it in subsequent code generation.
     }
     //add array instructions here
-    if(initVal!=nullptr){
+    if(initVal!=nullptr&&!se->isGlobal()){
         BasicBlock *bb = builder->getInsertBB();
-  
+    
         if(!se->getType()->isArray()){
             initVal->genCode();
             Operand *src = typeCast(se->getType(), dynamic_cast<ExprNode *>(initVal)->getOperand());
