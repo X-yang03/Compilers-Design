@@ -15,6 +15,14 @@ void Unit::insertDecl(IdentifierSymbolEntry* se)
     declare_func.insert(se);
 }
 
+void Unit::genMachineCode(MachineUnit* munit) 
+{
+    AsmBuilder* builder = new AsmBuilder();
+    builder->setUnit(munit);
+    for (auto &func : func_list)
+        func->genMachineCode(builder);
+}
+
 void Unit::output() const
 {
     // 先定义全局变量
