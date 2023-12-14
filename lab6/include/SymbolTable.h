@@ -99,6 +99,7 @@ public:
     // You can add any function you need here.
     void outputFuncDecl();
     bool isLibFunc();
+    std::string getName() const {return name;};
     //对外暴露所有实际值
     //实际值不区分int和float，实际类型需要根据符号表中的type判断
     double value;
@@ -129,6 +130,7 @@ public:
 class TemporarySymbolEntry : public SymbolEntry
 {
 private:
+    int stack_offset;
     int label;
     bool isGlobalArray;
 public:
@@ -139,6 +141,8 @@ public:
     // You can add any function you need here.
     void setGlobalArray() {isGlobalArray = true;};
     bool getGlobalArray() {return isGlobalArray;};
+    void setOffset(int offset) { this->stack_offset = offset; };
+    int getOffset() { return this->stack_offset; };
 };
 
 // symbol table managing identifier symbol entries

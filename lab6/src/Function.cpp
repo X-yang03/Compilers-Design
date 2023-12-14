@@ -38,7 +38,9 @@ void Function::output() const
     Type *retType = funcType->getRetType();
     fprintf(yyout, "define %s %s(", retType->toStr().c_str(), sym_ptr->toStr().c_str());
     bool first = true;
+    //std::cout<<params_list.size()<<std::endl;
     for(auto param : params_list){
+        //std::cout<<"list"<<std::endl;
         if(first){
             first = false;
         }
@@ -89,4 +91,46 @@ void Function::genMachineCode(AsmBuilder* builder)
     }
     cur_unit->InsertFunc(cur_func);
 
+}
+void Function::insertParam(Operand* param) {
+    if(param->getType()->isFloat()) {
+        fparams_list.push_back(param);
+    }
+    else {
+        iparams_list.push_back(param);
+    }
+    params_list.push_back(param);
+}
+
+int Function::getParamId(Operand *param) {
+    int i = 0;
+    for(auto p : iparams_list){
+        if(p == param) return i;
+        i++;
+    }
+    i = 0;
+    for(auto p : fparams_list){
+        if(p == param) return i;
+        i++;
+    }
+    return -1;
+}
+
+int Function::getIParamId(Operand* param) {
+    int i = 0;
+    for(auto p : iparams_list){
+        if(p == param) return i;
+        i++;
+    }
+    return -1;
+}
+
+
+int Function::getFParamId(Operand* param) {
+    int i = 0;
+    for(auto p : fparams_list){
+        if(p == param) return i;
+        i++;
+    }
+    return -1;
 }

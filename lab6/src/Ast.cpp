@@ -89,6 +89,7 @@ void FunctionDef::genCode()
 
     if(params!=nullptr){
         params->genCode();
+        //std::cout<<"param"<<std::endl;
     }
 
     stmt->genCode();

@@ -11,8 +11,10 @@ private:
 protected:
     // enum {INT, FLOAT, CONST_INT, CONST_FLOAT, VOID, BOOL, FUNC, INT_ARRAY, FLOAT_ARRAY, CONST_INT_ARRAY, CONST_FLOAT_ARRAY, PTR};
     enum {INT, FLOAT, VOID, BOOL, FUNC, INT_ARRAY, FLOAT_ARRAY, CONST_INT_ARRAY, CONST_FLOAT_ARRAY, PTR};
+    int size;
 public:
-    Type(int kind, bool is_const = false) : kind(kind), is_const(is_const) {};
+    //Type(int kind, bool is_const = false) : kind(kind), is_const(is_const) {};
+    explicit Type(int kind, bool is_const = false, int size = 0) : kind(kind), is_const(is_const), size(size){};
     virtual ~Type() {};
     virtual std::string toStr() = 0;
     bool isInt() const {return kind == INT;};
@@ -26,28 +28,32 @@ public:
     bool isConstFloatArray() const {return kind == CONST_FLOAT_ARRAY;}
     bool isArray() const {return kind == INT_ARRAY || kind == FLOAT_ARRAY || 
                             kind == CONST_FLOAT_ARRAY || kind == CONST_INT_ARRAY;}
+    bool isPointer() const {return kind == PTR;};
     bool isAnyInt() const {return kind == INT || kind == INT_ARRAY || kind == CONST_INT_ARRAY;}
     bool isAnyFloat() const {return kind == FLOAT || kind == FLOAT_ARRAY || kind == CONST_FLOAT_ARRAY;}
     bool calculatable() const {return isAnyInt()||isAnyFloat() || isBool();}//不是void其实就行
     bool isConst() const {return is_const || kind == CONST_INT_ARRAY || kind == CONST_FLOAT_ARRAY;}
+    int getSize() const {return this->size;}
 };
 
 class IntType : public Type
 {
 private:
-    int size;
+    //int size;
 public:
-    IntType(int size, bool is_const = false) : Type(Type::INT, is_const), size(size){};
+    //IntType(int size, bool is_const = false) : Type(Type::INT, is_const), size(size){};
+    IntType(int size, bool is_const = false) : Type(Type::INT, is_const, size) {};
     std::string toStr();
 };
 
 class FloatType : public Type
 {
 private:
-    int size;
+    //int size;
     bool need_fp;
 public:
-    FloatType(int size, bool is_const = false) : Type(Type::FLOAT, is_const), size(size){};
+    //FloatType(int size, bool is_const = false) : Type(Type::FLOAT, is_const), size(size){};
+    FloatType(int size, bool is_const = false) : Type(Type::FLOAT, is_const, size){};
     std::string toStr();
     void setNeedFP(bool flag){need_fp = flag;}
     bool isNeedFP() const {return need_fp;}
@@ -57,9 +63,10 @@ public:
 class BoolType : public Type
 {
 private:
-    int size;
+    //int size;
 public:
-    BoolType(int size, bool is_const = false) : Type(Type::BOOL, is_const), size(size){};
+    //BoolType(int size, bool is_const = false) : Type(Type::BOOL, is_const), size(size){};
+    BoolType(int size, bool is_const = false) : Type(Type::BOOL, is_const, size){};
     std::string toStr();
 };
 
@@ -89,44 +96,56 @@ class IntArrayType : public Type
 {
 private:
     std::vector<int> dimensions;
+    bool isPointer;
 public:
-    IntArrayType() : Type(Type::INT_ARRAY){};
+    IntArrayType() : Type(Type::INT_ARRAY){size = 4; isPointer = false;};
     void pushBackDimension(int);
     std::vector<int> getDimensions();
     std::string toStr();
+    void setPointer(bool value){isPointer = value;};
+    bool getPointer() {return isPointer;};
 };
 
 class FloatArrayType : public Type
 {
 private:
     std::vector<int> dimensions;
+    bool isPointer;
 public:
-    FloatArrayType() : Type(Type::FLOAT_ARRAY){};
+    FloatArrayType() : Type(Type::FLOAT_ARRAY){size = 4;isPointer = false;};
     void pushBackDimension(int);
     std::vector<int> getDimensions();
     std::string toStr();
+    void setPointer(bool value){isPointer = value;};
+    bool getPointer() {return isPointer;};
 };
 
 class ConstIntArrayType : public Type
 {
 private:
     std::vector<int> dimensions;
+    bool isPointer;
 public:
-    ConstIntArrayType() : Type(Type::CONST_INT_ARRAY){};
+    ConstIntArrayType() : Type(Type::CONST_INT_ARRAY){size = 4;isPointer = false;};
     void pushBackDimension(int);
     std::vector<int> getDimensions();
     std::string toStr();
+    void setPointer(bool value){isPointer = value;};
+    bool getPointer() {return isPointer;};
 };
 
 class ConstFloatArrayType : public Type
 {
 private:
     std::vector<int> dimensions;
+    bool isPointer;
 public:
-    ConstFloatArrayType() : Type(Type::CONST_FLOAT_ARRAY){};
+    ConstFloatArrayType() : Type(Type::CONST_FLOAT_ARRAY){size = 4;isPointer = false;};
     void pushBackDimension(int);
     std::vector<int> getDimensions();
     std::string toStr();
+    void setPointer(bool value){isPointer = value;};
+    bool getPointer() {return isPointer;};
 };
 
 class PointerType : public Type

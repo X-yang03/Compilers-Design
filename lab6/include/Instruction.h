@@ -17,22 +17,30 @@ public:
     BasicBlock *getParent();
     bool isUncond() const {return instType == UNCOND;};
     bool isCond() const {return instType == COND;};
+    bool isAlloc() const {return instType == ALLOCA;};
     bool isRet() const {return instType == RET;};
     void setParent(BasicBlock *);
     void setNext(Instruction *);
     void setPrev(Instruction *);
     Instruction *getNext();
     Instruction *getPrev();
+    int getType() {return instType;};
     virtual Operand *getDef() { return nullptr; }
     virtual std::vector<Operand *> getUse() { return {}; }
     virtual void output() const = 0;
     
-    MachineOperand* genMachineOperand(Operand*);
+    MachineOperand* genMachineOperand(Operand*, bool isFloat = false);
     MachineOperand* genMachineReg(int reg);
-    MachineOperand* genMachineVReg();
+    MachineOperand* genMachineVReg(bool isFloat = false);
     MachineOperand* genMachineImm(int val);
     MachineOperand* genMachineLabel(int block_no);
     virtual void genMachineCode(AsmBuilder*) = 0;
+    // MachineOperand* genMachineOperand(Operand*);
+    // MachineOperand* genMachineReg(int reg);
+    // MachineOperand* genMachineVReg();
+    // MachineOperand* genMachineImm(int val);
+    // MachineOperand* genMachineLabel(int block_no);
+    // virtual void genMachineCode(AsmBuilder*) = 0;
 
 protected:
     unsigned instType;
