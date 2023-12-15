@@ -399,23 +399,23 @@ void Id::genCode()
             new LoadInstruction(dst, offset_final, bb);
         }
         else{
-            // //为区分数组指针和数组值，需要置位dst的type中的pointer
-            // if(dst->getType()->isIntArray()){
-            //     dst->getEntry()->setType(new IntArrayType(*(dynamic_cast<IntArrayType*>(dst->getType()))));
-            //     dynamic_cast<IntArrayType*>(dst->getType())->setPointer(true);
-            // }
-            // else if(dst->getType()->isConstIntArray()){
-            //     dst->getEntry()->setType(new ConstIntArrayType(*(dynamic_cast<ConstIntArrayType*>(dst->getType()))));
-            //     dynamic_cast<ConstIntArrayType*>(dst->getType())->setPointer(true);
-            // }
-            // else if(dst->getType()->isFloatArray()){
-            //     dst->getEntry()->setType(new FloatArrayType(*(dynamic_cast<FloatArrayType*>(dst->getType()))));
-            //     dynamic_cast<FloatArrayType*>(dst->getType())->setPointer(true);
-            // }
-            // else if(dst->getType()->isConstFloatArray()){
-            //     dst->getEntry()->setType(new ConstFloatArrayType(*(dynamic_cast<ConstFloatArrayType*>(dst->getType()))));
-            //     dynamic_cast<ConstFloatArrayType*>(dst->getType())->setPointer(true);
-            // }
+            //为区分数组指针和数组值，需要置位dst的type中的pointer
+            if(dst->getType()->isIntArray()){
+                dst->getEntry()->setType(new IntArrayType(*(dynamic_cast<IntArrayType*>(dst->getType()))));
+                dynamic_cast<IntArrayType*>(dst->getType())->setPointer(true);
+            }
+            else if(dst->getType()->isConstIntArray()){
+                dst->getEntry()->setType(new ConstIntArrayType(*(dynamic_cast<ConstIntArrayType*>(dst->getType()))));
+                dynamic_cast<ConstIntArrayType*>(dst->getType())->setPointer(true);
+            }
+            else if(dst->getType()->isFloatArray()){
+                dst->getEntry()->setType(new FloatArrayType(*(dynamic_cast<FloatArrayType*>(dst->getType()))));
+                dynamic_cast<FloatArrayType*>(dst->getType())->setPointer(true);
+            }
+            else if(dst->getType()->isConstFloatArray()){
+                dst->getEntry()->setType(new ConstFloatArrayType(*(dynamic_cast<ConstFloatArrayType*>(dst->getType()))));
+                dynamic_cast<ConstFloatArrayType*>(dst->getType())->setPointer(true);
+            }
             new BinaryInstruction(BinaryInstruction::ADD, dst, offset1, addr, bb); 
         }
     }
