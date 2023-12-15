@@ -1,5 +1,3 @@
 int main(){
-	int a;
-	a = getint();
-	return 2;
+	return 0;
 }
