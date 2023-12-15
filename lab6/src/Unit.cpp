@@ -1,4 +1,5 @@
 #include "Unit.h"
+#include "Type.h"
 
 void Unit::insertFunc(Function *f)
 {
@@ -19,6 +20,12 @@ void Unit::genMachineCode(MachineUnit* munit)
 {
     AsmBuilder* builder = new AsmBuilder();
     builder->setUnit(munit);
+    // 设置全局变量
+    for(auto decl : declare_func){
+        if((!decl->isLibFunc() && !decl->getType()->isConst()) || decl->getType()->isArray()) {
+            munit->insertGlobalVar(decl);
+        }
+    }
     for (auto &func : func_list)
         func->genMachineCode(builder);
 }
