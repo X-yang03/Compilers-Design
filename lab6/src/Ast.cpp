@@ -89,7 +89,6 @@ void FunctionDef::genCode()
 
     if(params!=nullptr){
         params->genCode();
-        //std::cout<<"param"<<std::endl;
     }
 
     stmt->genCode();
@@ -130,7 +129,6 @@ void FunctionDef::genCode()
         } 
         if (last->isUncond()) {
             BasicBlock* dstBlock = dynamic_cast<UncondBrInstruction*>(last)->getBranch();
-             //std::cout<<(*block)->getNo()<<"  to" <<dstBlock->getNo()<<std::endl;
             (*block)->addSucc(dstBlock);
             dstBlock->addPred(*block);
         }
@@ -185,7 +183,6 @@ void BinaryExpr::genCode()
         false_list = expr2->falseList();
 
     }
-    // else if(op >= LESS && op <= GREATER)
     else if(op >= LESS && op <=NEQ)  //LESS,LE,GREATER,GE,EQ,NEQ
     {
         // Todo
