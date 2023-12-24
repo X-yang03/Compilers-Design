@@ -329,8 +329,6 @@ void Id::genCode()
         else {
             dimensions = dynamic_cast<ConstFloatArrayType*>(getType())->getDimensions();
         }
-        //如果是函数参数传入的数组指针，其[0]维度为-1
-        // we did it by addFisrt
         //此时需要生成新的load指令获取其地址
         if(dimensions[0]==-1){
             // printf("%d\n", dimensions[1]);
