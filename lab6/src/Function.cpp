@@ -99,7 +99,7 @@ void Function::insertParam(Operand* param) {
     else {
         iparams_list.push_back(param);
     }
-    params_list.push_back(param);
+    //params_list.push_back(param);
 }
 
 int Function::getParamId(Operand *param) {

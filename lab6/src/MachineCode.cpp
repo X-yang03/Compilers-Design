@@ -132,13 +132,13 @@ void MachineInstruction::PrintCond()
         fprintf(yyout, "lt");
         break;
     case LE:
-        fprintf(yyout, "ge");
+        fprintf(yyout, "le");
         break;
     case GT:
         fprintf(yyout, "gt");
         break;
     case GE:
-        fprintf(yyout, "le");
+        fprintf(yyout, "ge");
         break;
     default:
         break;
