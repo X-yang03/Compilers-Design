@@ -198,7 +198,7 @@ public:
     FBinaryInstruction(unsigned opcode, Operand *dst, Operand *src1, Operand *src2, BasicBlock *insert_bb = nullptr);
     ~FBinaryInstruction();
     void output() const;
-    enum {ADD, SUB, MUL, DIV, MOD, AND, OR};
+    enum {ADD, SUB, MUL, DIV};
     void genMachineCode(AsmBuilder*);
 };
 

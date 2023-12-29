@@ -366,8 +366,8 @@ void StoreInstruction::output() const
 
 ZextInstruction::ZextInstruction(Operand *src, Operand *dst, BasicBlock *insert_bb) : Instruction(ZEXT, insert_bb)
 {
-    operands.push_back(src);
     operands.push_back(dst);
+    operands.push_back(src);
     dst->setDef(this);
     src->addUse(this);
 }
@@ -382,10 +382,10 @@ ZextInstruction::~ZextInstruction()
 
 void ZextInstruction::output() const
 {
-    std::string src = operands[0]->toStr();
-    std::string dst = operands[1]->toStr();
-    std::string src_type = operands[0]->getType()->toStr();
-    std::string dst_type = operands[1]->getType()->toStr();
+    std::string src = operands[1]->toStr();
+    std::string dst = operands[0]->toStr();
+    std::string src_type = operands[1]->getType()->toStr();
+    std::string dst_type = operands[0]->getType()->toStr();
     fprintf(yyout, "  %s = zext %s %s to %s\n", dst.c_str(), src_type.c_str(), src.c_str(), dst_type.c_str());
 }
 
@@ -494,8 +494,8 @@ void FCmpInstruction::output() const
 IntFloatCastInstructionn::IntFloatCastInstructionn(unsigned opcode, Operand *src, Operand *dst, BasicBlock *insert_bb) : Instruction(CAST, insert_bb)
 {
     this->opcode = opcode;
-    operands.push_back(src);
     operands.push_back(dst);
+    operands.push_back(src);
     dst->setDef(this);
     src->addUse(this);
 }
@@ -510,10 +510,10 @@ IntFloatCastInstructionn::~IntFloatCastInstructionn()
 
 void IntFloatCastInstructionn::output() const
 {
-    std::string src = operands[0]->toStr();
-    std::string dst = operands[1]->toStr();
-    std::string src_type = operands[0]->getType()->toStr();
-    std::string dst_type = operands[1]->getType()->toStr();
+    std::string src = operands[1]->toStr();
+    std::string dst = operands[0]->toStr();
+    std::string src_type = operands[1]->getType()->toStr();
+    std::string dst_type = operands[0]->getType()->toStr();
     std::string castType;
     switch(opcode) {
         case I2F:

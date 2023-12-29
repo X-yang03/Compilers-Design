@@ -1,8 +1,11 @@
+int a;
+int func(int p){
+	p = p - 1;
+	return p;
+}
 int main(){
-	int a = 0 ;
-	if (a >= 10){
-		a = a + 1;
-	}
-	putint(a);
-	return 0;
+	int b;
+	a = 10;
+	b = func(a);
+	return b;
 }
