@@ -95,8 +95,8 @@ void MachineOperand::output()
     {
     case IMM:
         if(is_float) {
-            uint32_t* temp = reinterpret_cast<uint32_t*>(&(this->fval));
-            fprintf(yyout, "#%u", *temp);
+            uint32_t temp = reinterpret_cast<uint32_t&>(this->fval);
+            fprintf(yyout, "#%u", temp);
         }
         else {
             fprintf(yyout, "#%d", this->val);
@@ -246,8 +246,8 @@ void LoadMInstruction::output()
     {
         if(this->use_list[0]->isFloat()) {
             float val = this->use_list[0]->getFVal();
-            uint32_t* val_int =  reinterpret_cast<uint32_t*>(&val);
-            fprintf(yyout, "=%u\n", *val_int);
+            uint32_t val_int =  reinterpret_cast<uint32_t&>(val);
+            fprintf(yyout, "=%u\n", val_int);
         }
         else {
             fprintf(yyout, "=%d\n", this->use_list[0]->getVal());
@@ -738,8 +738,8 @@ void MachineUnit::PrintGlobalDecl()
                 else {
                     for (auto value: var->arrayValues) {
                         auto tmp_value = float(value);
-                        uint32_t *temp = reinterpret_cast<uint32_t*>(&tmp_value);
-                        fprintf(yyout, "\t.word %u\n", *temp);
+                        uint32_t temp = reinterpret_cast<uint32_t&>(tmp_value);
+                        fprintf(yyout, "\t.word %u\n", temp);
                     }
                 }
             }
@@ -753,8 +753,8 @@ void MachineUnit::PrintGlobalDecl()
                 fprintf(yyout, "\t.word %d\n", int(var->value));
             } else {
                 auto value = float(var->value);
-                uint32_t *temp = reinterpret_cast<uint32_t*>(&value);
-                fprintf(yyout, "\t.word %u\n", *temp);
+                uint32_t temp = reinterpret_cast<uint32_t&>(value);
+                fprintf(yyout, "\t.word %u\n", temp);
             }
         }
     }
