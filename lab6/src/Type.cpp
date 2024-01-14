@@ -18,16 +18,16 @@ Type* TypeSystem::constBoolType = &commonConstBool;
 Type* TypeSystem::voidType = &commonVoid;
 
 Type* TypeSystem::getMaxType(Type* type1, Type* type2){
-    if(type1->isFloat() || type2->isFloat()) return floatType;
-    if(type1->isInt() || type2->isInt()) return intType;
+    if(type1->isAnyFloat() || type2->isAnyFloat()) return floatType;
+    if(type1->isAnyInt() || type2->isAnyInt()) return intType;
     else return boolType;
 }
 
 bool TypeSystem::needCast(Type* src, Type* target) {
-    if(src->isInt() && target->isInt()) {
+    if(src->isAnyInt() && target->isAnyInt()) {
         return false;
     }
-    if(src->isFloat() && target->isFloat()) {
+    if(src->isAnyFloat() && target->isAnyFloat()) {
         return false;
     }
     if(src->isBool() && target->isBool()) {
@@ -86,6 +86,12 @@ std::string FunctionType::toStr()
 
 void IntArrayType::pushBackDimension(int dim)
 {
+    if(dim>0){
+        size *= dim;
+    }
+    else{//指针类型
+        size = 4;
+    }
     dimensions.push_back(dim);
 }
 
@@ -101,6 +107,12 @@ std::string IntArrayType::toStr()
 
 void FloatArrayType::pushBackDimension(int dim)
 {
+    if(dim>0){
+        size *= dim;
+    }
+    else{//指针类型
+        size = 4;
+    }
     dimensions.push_back(dim);
 }
 
@@ -115,6 +127,12 @@ std::string FloatArrayType::toStr()
 }
 void ConstIntArrayType::pushBackDimension(int dim)
 {
+    if(dim>0){
+        size *= dim;
+    }
+    else{//指针类型
+        size = 4;
+    }
     dimensions.push_back(dim);
 }
 
@@ -130,6 +148,12 @@ std::string ConstIntArrayType::toStr()
 
 void ConstFloatArrayType::pushBackDimension(int dim)
 {
+    if(dim>0){
+        size *= dim;
+    }
+    else{//指针类型
+        size = 4;
+    }
     dimensions.push_back(dim);
 }
 
