@@ -128,7 +128,7 @@ PASS: 063_sort_test3
 PASS: 065_sort_test5
 PASS: 067_sort_test7
 PASS: 072_percolation
-FAIL: 079_calculator	Compile Timeout
+PASS: 079_calculator
 PASS: 080_color
 PASS: 084_expr_eval
 PASS: 097_var_name
@@ -138,7 +138,7 @@ PASS: 104_long_array
 FAIL: 105_long_array2	Compile Timeout
 PASS: 106_long_code
 FAIL: 107_long_code2	Compile Timeout
-FAIL: 108_many_params	Compile Timeout
+PASS: 108_many_params
 FAIL: 109_many_params2	Compile Timeout
 PASS: 110_many_params3
 PASS: 111_many_globals
@@ -147,16 +147,16 @@ PASS: 113_many_locals2
 PASS: 114_register_alloc
 PASS: 115_nested_calls
 PASS: 116_nested_calls2
-FAIL: 117_nested_loops	Compile Timeout
-FAIL: 196_float	Assemble Error
-FAIL: 198_matrix_add	Assemble Error
-FAIL: 199_matrix_sub	Assemble Error
-FAIL: 200_matrix_mul	Assemble Error
-FAIL: 201_matrix_tran	Assemble Error
+PASS: 117_nested_loops
+PASS: 196_float
+PASS: 198_matrix_add
+PASS: 199_matrix_sub
+PASS: 200_matrix_mul
+PASS: 201_matrix_tran
 PASS: 202_register_realloc
-FAIL: 35_math	Assemble Error
-FAIL: 36_rotate	Assemble Error
-FAIL: 37_dct	Assemble Error
-FAIL: 38_light2d	Assemble Error
+PASS: 35_math
+PASS: 36_rotate
+FAIL: 37_dct	Wrong Answer
+FAIL: 38_light2d	Execute Timeout
 FAIL: 39_fp_params	Compile Timeout
-Total: 161	Accept: 134	Fail: 27
+Total: 161	Accept: 144	Fail: 17

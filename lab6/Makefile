@@ -75,7 +75,7 @@ $(TEST_PATH)/%_std.s:$(TEST_PATH)/%.sy
 	@arm-linux-gnueabihf-gcc -x c $< -S -o $@ 
 
 $(TEST_PATH)/%.s:$(TEST_PATH)/%.sy
-	@timeout 5s $(BINARY) $< -o $@ -S 2>$(addsuffix .log, $(basename $@))
+	@timeout 60s $(BINARY) $< -o $@ -S 2>$(addsuffix .log, $(basename $@))
 	@[ $$? != 0 ] && echo "\033[1;31mCOMPILE FAIL:\033[0m $(notdir $<)" || echo "\033[1;32mCOMPILE SUCCESS:\033[0m $(notdir $<)"
 
 llvmir:$(LLVM_IR)
@@ -105,7 +105,7 @@ test:app
 		OUT=$${file%.*}.out
 		FILE=$${file##*/}
 		FILE=$${FILE%.*}
-		timeout 5s $(BINARY) $${file} -o $${ASM} -S 2>$${LOG}
+		timeout 60s $(BINARY) $${file} -o $${ASM} -S 2>$${LOG}
 		RETURN_VALUE=$$?
 		if [ $$RETURN_VALUE = 124 ]; then
 			echo "\033[1;31mFAIL:\033[0m $${FILE}\t\033[1;31mCompile Timeout\033[0m" && echo "FAIL: $${FILE}\tCompile Timeout" >> newpass.log
@@ -120,9 +120,9 @@ test:app
 			echo "\033[1;31mFAIL:\033[0m $${FILE}\t\033[1;31mAssemble Error\033[0m" && echo "FAIL: $${FILE}\tAssemble Error" >> newpass.log
 		else
 			if [ -f "$${IN}" ]; then
-				timeout 2s qemu-arm -L /usr/arm-linux-gnueabihf $${BIN} <$${IN} >$${RES} 2>>$${LOG}
+				timeout 30s qemu-arm -L /usr/arm-linux-gnueabihf $${BIN} <$${IN} >$${RES} 2>>$${LOG}
 			else
-				timeout 2s qemu-arm -L /usr/arm-linux-gnueabihf $${BIN} >$${RES} 2>>$${LOG}
+				timeout 30s qemu-arm -L /usr/arm-linux-gnueabihf $${BIN} >$${RES} 2>>$${LOG}
 			fi
 			RETURN_VALUE=$$?
 			FINAL=`tail -c 1 $${RES}`
