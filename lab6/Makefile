@@ -55,6 +55,9 @@ run:app
 gdb:app
 	@gdb $(BINARY)
 
+tree:app
+	@$(BINARY) -o example.ast -a example.sy
+
 $(OBJ_PATH)/lexer.o:$(SRC_PATH)/lexer.cpp
 	@mkdir -p $(OBJ_PATH)
 	@g++ $(CFLAGS) -c -o $@ $<

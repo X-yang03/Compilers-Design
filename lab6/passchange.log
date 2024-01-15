@@ -1,0 +1,42 @@
+86c86
+< FAIL: 007_arr_defn4	Compile Error
+---
+> PASS: 007_arr_defn4
+88c88
+< FAIL: 042_arr_expr_len	Compile Error
+---
+> PASS: 042_arr_expr_len
+101c101
+< FAIL: 078_big_int_mul	Compile Error
+---
+> PASS: 078_big_int_mul
+103c103
+< FAIL: 083_brainfk	Compile Error
+---
+> PASS: 083_brainfk
+132c132
+< FAIL: 080_color	Compile Error
+---
+> PASS: 080_color
+134c134
+< FAIL: 097_var_name	Compile Error
+---
+> PASS: 097_var_name
+137c137
+< FAIL: 104_long_array	Compile Error
+---
+> PASS: 104_long_array
+151c151
+< FAIL: 196_float	Compile Error
+---
+> PASS: 196_float
+158,159c158,159
+< FAIL: 36_rotate	Compile Error
+< FAIL: 37_dct	Compile Error
+---
+> PASS: 36_rotate
+> FAIL: 37_dct	Wrong Answer
+162c162
+< Total: 161	Accept: 135	Fail: 26
+---
+> Total: 161	Accept: 144	Fail: 17

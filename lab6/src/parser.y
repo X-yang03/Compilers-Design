@@ -37,7 +37,7 @@
 %type <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt WhileStmt ReturnStmt DeclStmt FuncDef BreakStmt ContinueStmt ExpStmt Exps
 %type <stmttype> VarDefList VarDef ConstDefList ConstDef
 %type <stmttype> ArrIndices ArrayInitVal ArrayInitValList ConstArrayInitVal ConstArrayInitValList
-%type <exprtype> Exp /*ConstExp*/ AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
+%type <exprtype> Exp ConstExp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp UnaryExp MulExp EqExp 
 %type <stmttype> FuncParams FuncParam FuncRealParams
 %type <type> Type
 //%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
@@ -187,10 +187,10 @@ Exp
     AddExp {$$ = $1;}
     ;
 
-/* ConstExp
+ ConstExp
     :   
     AddExp {$$ = $1;}
-    ; */
+    ; 
 
 Cond
     :
@@ -428,13 +428,13 @@ DeclStmt
     ;
 // 数组下标
 ArrIndices 
-    :   ArrIndices LBRACKET Exp RBRACKET {
+    :   ArrIndices LBRACKET ConstExp RBRACKET {
             ExprStmtNode* node = dynamic_cast<ExprStmtNode*>($1);
             node->addNext($3);
             $$ = node;     
       
         }
-    |   LBRACKET Exp RBRACKET {
+    |   LBRACKET ConstExp RBRACKET {
             ExprStmtNode* node = new ExprStmtNode();
             node->addNext($2);
             $$ = node;
@@ -455,52 +455,59 @@ ConstDefList
     }
 
 ConstDef 
-    : ID ASSIGN Exp {
+    : ID ASSIGN ConstExp {
         // const 必须赋初值
+            // 首先判断是否重定义
+            if(identifiers->isRedefine($1)) {
+                fprintf(stderr, "identifier %s redefine\n", $1);
+                exit(EXIT_FAILURE);
+            }
+            // 此处文法有改动
+            // 首先将ID插入符号表中
             Type* type;
             if(currentType->isInt()){
-                type = TypeSystem::intType;
+                type = TypeSystem::constIntType;
             }
             else{
-                type = TypeSystem::floatType;
+                type = TypeSystem::constFloatType;
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            if(identifiers->lookupOneLevel($1) == nullptr){
-                identifiers->install($1, se);
-            }else{
-                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
-                assert(identifiers->lookupOneLevel($1) == nullptr);
-            }
-            $$ = new DefNode(new Id(se), (Node*)$3, true, false);
+            identifiers->install($1, se);
+            // 类型向上转换
+            $$ = new DefNode(new Id(se), dynamic_cast<Node*>($3), true, false);
+        
+
         }
     // todo 数组变量的定义
         |   ID ArrIndices ASSIGN ConstArrayInitVal{
+            if(identifiers->isRedefine($1)) {
+                fprintf(stderr, "identifier %s redefine\n", $1);
+                exit(EXIT_FAILURE);
+            }
+            // 首先将ID插入符号表中
             Type* type;
             if(currentType->isInt()){
-                type = new IntArrayType();
+                type = new ConstIntArrayType();
             }
             else{
-                type = new FloatArrayType();
+                type = new ConstFloatArrayType();
             }
             SymbolEntry *se;
             se = new IdentifierSymbolEntry(type, $1, identifiers->getLevel());
-            //identifiers->install($1, se);
-            if(identifiers->lookupOneLevel($1) == nullptr){
-                identifiers->install($1, se);
-            }else{
-                fprintf(stderr, "identifier \"%s\" is redefined\n", (char*)$1);
-                assert(identifiers->lookupOneLevel($1) == nullptr);
-            }
+            identifiers->install($1, se);
             Id* id = new Id(se);
-            id->addIndices((ExprStmtNode*)$2);
-            $$ = new DefNode(id, (Node*)$4, true, true);
+            id->addIndices(dynamic_cast<ExprStmtNode*>($2));
+            // 类型向上转换
+            $$ = new DefNode(id, dynamic_cast<Node*>($4), true, true);
+        
+
         }
 
 ConstArrayInitVal 
-    :   Exp {
+    :   ConstExp {
             InitValNode* node = new InitValNode(true);
-            node->setLeafNode((ExprNode*)$1);
+            node->setLeafNode(dynamic_cast<ExprNode*>($1));
             $$ = node;
         }
     |   LBRACE ConstArrayInitValList RBRACE{
@@ -514,7 +521,7 @@ ConstArrayInitVal
  ConstArrayInitValList
     :   ConstArrayInitValList PARSE ConstArrayInitVal{
             InitValNode* node = (InitValNode*)$1;
-            node->addNext((InitValNode*)$3);
+            node->addNext(dynamic_cast<InitValNode*>($3));
             $$ = node;
         }
     |   ConstArrayInitVal{
