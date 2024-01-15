@@ -23,11 +23,9 @@ private:
 protected:
     std::vector<BasicBlock**> true_list;   //条件为真的跳转
     std::vector<BasicBlock**> false_list;
-
     static IRBuilder *builder;
     void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
     std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
-
     Operand* typeCast(Type* targetType, Operand* operand);
 public:
     Node();
@@ -39,7 +37,6 @@ public:
     virtual void genCode() = 0;
     std::vector<BasicBlock**>& trueList() {return true_list;}
     std::vector<BasicBlock**>& falseList() {return false_list;}
-
 };
 
 // todo 考虑加一个const标志位来表示是否为常量表达式？
@@ -349,5 +346,6 @@ public:
     void genCode(Unit *unit);
 };
 
+static std::stack<WhileStmt*> whileStack;
 
 #endif

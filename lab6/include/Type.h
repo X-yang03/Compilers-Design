@@ -15,12 +15,17 @@ protected:
     enum {INT, FLOAT, VOID, BOOL, FUNC, INT_ARRAY, FLOAT_ARRAY, CONST_INT_ARRAY, CONST_FLOAT_ARRAY, PTR};
     int size;
 public:
+<<<<<<< HEAD
 //Type(int kind, bool is_const = false) : kind(kind), is_const(is_const) {};
+=======
+>>>>>>> 952f69e01c68e82866d21d701853de8691377611
     explicit Type(int kind, bool is_const = false, int size = 0) : kind(kind), is_const(is_const), size(size){};
     virtual ~Type() {};
     virtual std::string toStr() = 0;
     bool isInt() const {return kind == INT;};
     bool isFloat() const {return kind == FLOAT;};
+    // bool isConstInt() const {return kind == INT && is_const;}
+    // bool isConstFloat() const {return kind == FLOAT && is_const;}
     bool isBool() const {return kind == BOOL;}
     bool isVoid() const {return kind == VOID;}
     bool isFunc() const {return kind == FUNC;}
@@ -31,7 +36,11 @@ public:
     bool isArray() const {return kind == INT_ARRAY || kind == FLOAT_ARRAY || 
                             kind == CONST_FLOAT_ARRAY || kind == CONST_INT_ARRAY;}
     bool isPointer() const {return kind == PTR;};
+    //ATTENTION: FUNC excluded
+    // bool isAnyInt() const {return kind == INT || kind == CONST_INT || kind == INT_ARRAY || kind == CONST_INT_ARRAY;}
     bool isAnyInt() const {return kind == INT || kind == INT_ARRAY || kind == CONST_INT_ARRAY;}
+    //ATTENTION: FUNC excluded
+    // bool isAnyFloat() const {return kind == FLOAT || kind == FLOAT_ARRAY || kind == CONST_FLOAT || kind == CONST_FLOAT_ARRAY;}
     bool isAnyFloat() const {return kind == FLOAT || kind == FLOAT_ARRAY || kind == CONST_FLOAT_ARRAY;}
     bool calculatable() const {return isAnyInt()||isAnyFloat() || isBool();}//不是void其实就行
     bool isConst() const {return is_const || kind == CONST_INT_ARRAY || kind == CONST_FLOAT_ARRAY;}
@@ -47,9 +56,13 @@ public:
 
 class FloatType : public Type
 {
+<<<<<<< HEAD
     private:
     //int size;
     bool need_fp;
+=======
+    bool need_fp = false;
+>>>>>>> 952f69e01c68e82866d21d701853de8691377611
 public:
     FloatType(int size, bool is_const = false) : Type(Type::FLOAT, is_const, size){};
     std::string toStr();
