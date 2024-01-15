@@ -83,9 +83,9 @@ PASS: 088_hanoi
 PASS: 004_arr_defn
 PASS: 005_arr_defn2
 PASS: 006_arr_defn3
-FAIL: 007_arr_defn4	Compile Error
+PASS: 007_arr_defn4
 PASS: 011_const_array_defn
-FAIL: 042_arr_expr_len	Compile Error
+PASS: 042_arr_expr_len
 PASS: 061_sort_test1
 PASS: 062_sort_test2
 PASS: 064_sort_test4
@@ -98,9 +98,9 @@ PASS: 074_matrix_add
 PASS: 075_matrix_sub
 PASS: 076_matrix_mul
 PASS: 077_matrix_tran
-FAIL: 078_big_int_mul	Compile Error
+PASS: 078_big_int_mul
 PASS: 081_exgcd
-FAIL: 083_brainfk	Compile Error
+PASS: 083_brainfk
 PASS: 085_dijkstra
 PASS: 086_full_conn
 PASS: 089_hidden_var
@@ -129,12 +129,12 @@ PASS: 065_sort_test5
 PASS: 067_sort_test7
 PASS: 072_percolation
 PASS: 079_calculator
-FAIL: 080_color	Compile Error
+PASS: 080_color
 PASS: 084_expr_eval
-FAIL: 097_var_name	Compile Error
+PASS: 097_var_name
 PASS: 098_chaos_token
 FAIL: 103_long_func	Compile Timeout
-FAIL: 104_long_array	Compile Error
+PASS: 104_long_array
 FAIL: 105_long_array2	Compile Timeout
 PASS: 106_long_code
 FAIL: 107_long_code2	Compile Timeout
@@ -148,15 +148,15 @@ PASS: 114_register_alloc
 PASS: 115_nested_calls
 PASS: 116_nested_calls2
 PASS: 117_nested_loops
-FAIL: 196_float	Compile Error
+PASS: 196_float
 PASS: 198_matrix_add
 PASS: 199_matrix_sub
 PASS: 200_matrix_mul
 PASS: 201_matrix_tran
 PASS: 202_register_realloc
 PASS: 35_math
-FAIL: 36_rotate	Compile Error
-FAIL: 37_dct	Compile Error
+PASS: 36_rotate
+FAIL: 37_dct	Wrong Answer
 FAIL: 38_light2d	Execute Timeout
 FAIL: 39_fp_params	Compile Timeout
-Total: 161	Accept: 135	Fail: 26
+Total: 161	Accept: 144	Fail: 17
