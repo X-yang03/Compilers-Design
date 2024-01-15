@@ -56,12 +56,12 @@ Program
 Stmts
     :   Stmts Stmt{
             SeqNode* node = dynamic_cast<SeqNode*>($1);
-            node->append(dynamic_cast<StmtNode*>($2));
+            node->addNext(dynamic_cast<StmtNode*>($2));
             $$ = dynamic_cast<StmtNode*>(node);
         }
     |   Stmt{
             SeqNode* node = new SeqNode();
-            node->append(dynamic_cast<StmtNode*>($1));
+            node->addNext(dynamic_cast<StmtNode*>($1));
             $$ = dynamic_cast<StmtNode*>(node);
         }
     ;
@@ -75,7 +75,7 @@ Stmt
     | FuncDef {$$=$1;}
     | BreakStmt{$$=$1;}
     | ContinueStmt{$$=$1;}
-    | SEMICOLON{$$ = new EmptyStmtNode() ;}
+    | SEMICOLON{$$ = new EmptyStmt() ;}
     | ExpStmt{$$ = $1;}
     ;
 LVal
@@ -172,12 +172,12 @@ ExpStmt
 Exps
     :  ExpStmt PARSE Exp {
             ExprStmtNode* node = (ExprStmtNode*)$1;
-            node->append($3);
+            node->addNext($3);
             $$ = node;
         }
     |   Exp {
             ExprStmtNode* node = new ExprStmtNode();
-            node->append($1);
+            node->addNext($1);
             $$ = node;
         }
     ;
@@ -201,13 +201,13 @@ FuncRealParams
     :
     FuncRealParams PARSE Exp{
         FuncCallParamsNode* node = (FuncCallParamsNode*) $1;
-        node->append($3);
+        node->addNext($3);
         $$ = node;
     }
     |
     Exp{
         FuncCallParamsNode* node = new FuncCallParamsNode();
-        node->append($1);
+        node->addNext($1);
         $$ = node;
     }
     |
@@ -244,12 +244,12 @@ UnaryExp
     |
     SUB UnaryExp{
         SymbolEntry *se = new TemporarySymbolEntry($2->getType(), SymbolTable::getLabel());
-        $$ = new UnaryOpExpr(se, UnaryOpExpr::SUB, $2);
+        $$ = new OneOpExpr(se, OneOpExpr::SUB, $2);
     }
     |
     NOT UnaryExp{
          SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-         $$ = new UnaryOpExpr(se, UnaryOpExpr::NOT, $2);
+         $$ = new OneOpExpr(se, OneOpExpr::NOT, $2);
     }
     |
     ID LPAREN FuncRealParams RPAREN{ // 函数调用
@@ -351,19 +351,19 @@ RelExp
     {
         
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::GREATER, $1, $3);
+        $$ = new BinaryExpr(se, BinaryExpr::GREAT, $1, $3);
     }
     |
     RelExp LE AddExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::LE, $1, $3);
+        $$ = new BinaryExpr(se, BinaryExpr::LESSEQ, $1, $3);
     }
     |
     RelExp GE AddExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::GE, $1, $3);
+        $$ = new BinaryExpr(se, BinaryExpr::GREATEQ, $1, $3);
     }
     ;
 
@@ -429,14 +429,16 @@ DeclStmt
 // 数组下标
 ArrIndices 
     :   ArrIndices LBRACKET Exp RBRACKET {
-            ArrayIndiceNode* node = (ArrayIndiceNode*)$1;
-            node->append($3);
-            $$ = node;          
+            ExprStmtNode* node = dynamic_cast<ExprStmtNode*>($1);
+            node->addNext($3);
+            $$ = node;     
+      
         }
     |   LBRACKET Exp RBRACKET {
-            ArrayIndiceNode* node = new ArrayIndiceNode();
-            node->append($2);
+            ExprStmtNode* node = new ExprStmtNode();
+            node->addNext($2);
             $$ = node;
+
         }
     ;
 
@@ -497,7 +499,7 @@ ConstDef
 
 ConstArrayInitVal 
     :   Exp {
-            ArrayinitNode* node = new ArrayinitNode(true);
+            InitValNode* node = new InitValNode(true);
             node->setLeafNode((ExprNode*)$1);
             $$ = node;
         }
@@ -505,26 +507,26 @@ ConstArrayInitVal
             $$ = $2;
         }
     |   LBRACE RBRACE{
-            $$ = new ArrayinitNode(true);
+            $$ = new InitValNode(true);
     }
     ; 
 
  ConstArrayInitValList
     :   ConstArrayInitValList PARSE ConstArrayInitVal{
-            ArrayinitNode* node = (ArrayinitNode*)$1;
-            node->append((ArrayinitNode*)$3);
+            InitValNode* node = (InitValNode*)$1;
+            node->addNext((InitValNode*)$3);
             $$ = node;
         }
     |   ConstArrayInitVal{
-            ArrayinitNode* newNode = new ArrayinitNode(true);
-            newNode->append((ArrayinitNode*)$1);
+            InitValNode* newNode = new InitValNode(true);
+            newNode->addNext((InitValNode*)$1);
             $$ = newNode;
         }
     ;   
 
 ArrayInitVal 
     :   Exp {
-            ArrayinitNode* node = new ArrayinitNode(false);
+            InitValNode* node = new InitValNode(false);
             node->setLeafNode((ExprNode*)$1);
             $$ = node;
         }
@@ -532,19 +534,19 @@ ArrayInitVal
             $$ = $2;
         }
     |   LBRACE RBRACE{
-            $$ = new ArrayinitNode(false);
+            $$ = new InitValNode(false);
     }
     ; 
 
 ArrayInitValList
     :   ArrayInitValList PARSE ArrayInitVal{
-            ArrayinitNode* node = (ArrayinitNode*)$1;
-            node->append((ArrayinitNode*)$3);
+            InitValNode* node = (InitValNode*)$1;
+            node->addNext((InitValNode*)$3);
             $$ = node;
         }
     |   ArrayInitVal{
-            ArrayinitNode* newNode = new ArrayinitNode(false);
-            newNode->append((ArrayinitNode*)$1);
+            InitValNode* newNode = new InitValNode(false);
+            newNode->addNext((InitValNode*)$1);
             $$ = newNode;
         }
     ;

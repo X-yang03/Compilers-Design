@@ -19,40 +19,39 @@ class Node
 private:
     static int counter;
     int seq;
-    float value;
+//added in lab6
 protected:
-    std::vector<BasicBlock**> true_list;   //条件为真的跳转
-    std::vector<BasicBlock**> false_list;
+    std::vector<Instruction*> true_list;
+    std::vector<Instruction*> false_list;
     static IRBuilder *builder;
-    void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
-    std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
+    void backPatch(std::vector<Instruction*> &list, BasicBlock*bb);
+    std::vector<Instruction*> merge(std::vector<Instruction*> &list1, std::vector<Instruction*> &list2);
     Operand* typeCast(Type* targetType, Operand* operand);
 public:
     Node();
     int getSeq() const {return seq;};
-    float getVal(){return value;};
-    void setVal(float f){this->value = f;};
-    static void setIRBuilder(IRBuilder*ib) {builder = ib;};
     virtual void output(int level) = 0;
-    virtual void typeCheck() = 0;
+    //added in lab6
+    static void setIRBuilder(IRBuilder*ib) {builder = ib;};
+    virtual void typeCheck(Node** parentToChild) = 0;
     virtual void genCode() = 0;
-    std::vector<BasicBlock**>& trueList() {return true_list;}
-    std::vector<BasicBlock**>& falseList() {return false_list;}
+    std::vector<Instruction*>& trueList() {return true_list;}
+    std::vector<Instruction*>& falseList() {return false_list;}
 };
 
+// todo 考虑加一个const标志位来表示是否为常量表达式？
 class ExprNode : public Node
 {
 protected:
     SymbolEntry *symbolEntry;
     Operand *dst;   // The result of the subtree is stored into dst.
 public:
-    ExprNode(SymbolEntry *se) : symbolEntry(se){dst = new Operand(se);};
+    ExprNode(SymbolEntry *se) : symbolEntry(se){dst = new Operand(se);}
     Type* getType();
+    void setType(Type* type);
     Operand* getOperand() {return dst;};
-    void setType(Type* type){symbolEntry->setType(type);};
     SymbolEntry* getSymPtr() {return symbolEntry;};
 };
-
 
 class BinaryExpr : public ExprNode
 {
@@ -60,33 +59,32 @@ private:
     int op;
     ExprNode *expr1, *expr2;
 public:
-    enum {ADD, SUB,MUL,DIV,MOD, AND, OR, LESS,LE,GREATER,GE,EQ,NEQ};
-    BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){dst = new Operand(se);};
+    enum {ADD, SUB, MUL, DIV, MOD, AND, OR, LESS, LESSEQ, GREAT, GREATEQ, EQ, NEQ};
+    BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
-    int getOp(){return op;};
 };
 
-class UnaryOpExpr : public ExprNode{
+class OneOpExpr : public ExprNode
+{
 private:
     int op;
     ExprNode *expr;
 public:
-    enum {SUB,NOT};
-    UnaryOpExpr(SymbolEntry *se,int op,ExprNode *expr) : ExprNode(se),op(op),expr(expr){};
+    enum {SUB, NOT};
+    OneOpExpr(SymbolEntry *se, int op, ExprNode* expr): ExprNode(se), op(op), expr(expr){};
     void output(int level);
-    void typeCheck();
-    
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
 class Constant : public ExprNode
 {
 public:
-    Constant(SymbolEntry *se) : ExprNode(se){dst = new Operand(se);};
+    Constant(SymbolEntry *se) : ExprNode(se){}
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -94,31 +92,14 @@ class StmtNode : public Node
 {};
 
 class ExprStmtNode : public StmtNode
-{
+{//注意：该类由ExprStmt与ArrayIndices共享，二者的行为完全一致
 public:
     std::vector<ExprNode*> exprList;
-
     ExprStmtNode(){};
-    void append(ExprNode* next);
     void addNext(ExprNode* next);
     void addFirst(ExprNode* first);
     void output(int level);
-    void typeCheck();
-    void genCode();
-    void initDimInSymTable(IdentifierSymbolEntry* se);
-};
-
-class ArrayIndiceNode : public StmtNode
-{
-public:
-    std::vector<ExprNode*> arrindexList;
-    ArrayIndiceNode(){};
-    //append is addNext
-    void append(ExprNode* next);
-    void addFirst(ExprNode* first);
-    void output(int level);
-    void typeCheck();
-    //gencode use
+    void typeCheck(Node** parentToChild);
     void genCode();
     void initDimInSymTable(IdentifierSymbolEntry* se);
 };
@@ -128,18 +109,50 @@ class Id : public ExprNode
 private:
     ExprStmtNode* indices;
 public:
-    Id(SymbolEntry *se) : ExprNode(se){SymbolEntry *temp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel()); dst = new Operand(temp);};
+    Id(SymbolEntry *se) : ExprNode(se), indices(nullptr){};
     SymbolEntry* getSymbolEntry() {return symbolEntry;}
     bool isArray();     //必须配合indices!=nullptr使用（a[]的情况）
     void addIndices(ExprStmtNode* idx) {indices = idx;}
-    void output(int level);
-    std::string getName();
-    Type* getType();
-    void typeCheck();
-    void genCode();
     ExprStmtNode* getIndices() {return indices;};
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
 };
 
+class EmptyStmt : public StmtNode
+{
+public:
+    EmptyStmt(){};
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
+};
+
+class FuncCallParamsNode : public StmtNode
+{
+private:
+    std::vector<ExprNode*> paramsList;
+public:
+    FuncCallParamsNode(){};
+    void addNext(ExprNode* next);
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
+    std::vector<ExprNode*> getParamsList() {return this->paramsList;};
+    std::vector<Operand*> getOperandList();
+};
+
+class FuncCallNode : public ExprNode
+{
+private:
+    Id* funcId;
+    FuncCallParamsNode* params;
+public:
+    FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
+};
 
 class CompoundStmt : public StmtNode
 {
@@ -148,10 +161,9 @@ private:
 public:
     CompoundStmt(StmtNode *stmt) : stmt(stmt) {};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
-
 
 class SeqNode : public StmtNode
 {
@@ -159,32 +171,29 @@ private:
     std::vector<StmtNode*> stmtList;
 public:
     SeqNode(){};
-    void append(StmtNode* next);
+    void addNext(StmtNode* next);
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
-// we add
-
-//数组初始化，用树结构来维护初始值
-class ArrayinitNode : public StmtNode
+class InitValNode : public StmtNode
 {
 private:
     bool isconst;
-    ExprNode* leafNode;//用于output
-    std::vector<ArrayinitNode*> innerList;//容器为空则是叶节点
+    ExprNode* leafNode; //可能为空，即使是叶节点（考虑{}）
+    std::vector<InitValNode*> innerList;//为空则为叶节点，这是唯一判断标准
 public:
-    ArrayinitNode(bool isconst) : 
+    InitValNode(bool isconst) : 
         isconst(isconst), leafNode(nullptr){};
-    void setLeafNode(ExprNode* leaf){leafNode = leaf;};
-    void append(ArrayinitNode* next){innerList.push_back(next);};
-    bool isLeaf(){return innerList.empty();};
-    bool isConst() const { return isconst; };
+    void addNext(InitValNode* next);
+    void setLeafNode(ExprNode* leaf);
+    bool isLeaf();
+    bool isConst() const { return isconst; }
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
-    std::vector<ArrayinitNode*> getInnerList() {return innerList;};
+    std::vector<InitValNode*> getInnerList() {return innerList;};
     ExprNode* getLeafNode() {return leafNode;};
 };
 
@@ -194,29 +203,26 @@ private:
     bool isConst;
     bool isArray;
     Id* id;
-    Node* initVal;//对于非数组，是ExprNode；对于数组，是ArrayinitNode
+    Node* initVal;//对于非数组，是ExprNode；对于数组，是InitValNode
 public:
     DefNode(Id* id, Node* initVal, bool isConst, bool isArray) : 
         isConst(isConst), isArray(isArray), id(id), initVal(initVal){};
     Id* getId() {return id;}
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
-
 
 class DeclStmt : public StmtNode
 {
 private:
-    Id *id;
     bool isConst;
     std::vector<DefNode*> defList;
 public:
-    DeclStmt(Id *id) : id(id){};
     DeclStmt(bool isConst) : isConst(isConst){};
     void addNext(DefNode* next);
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -228,7 +234,7 @@ private:
 public:
     IfStmt(ExprNode *cond, StmtNode *thenStmt) : cond(cond), thenStmt(thenStmt){};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -241,7 +247,7 @@ private:
 public:
     IfElseStmt(ExprNode *cond, StmtNode *thenStmt, StmtNode *elseStmt) : cond(cond), thenStmt(thenStmt), elseStmt(elseStmt) {};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -249,16 +255,32 @@ class WhileStmt : public StmtNode
 {
 private:
     ExprNode *cond;
-    StmtNode *Stmt;
+    StmtNode *bodyStmt;
     BasicBlock* condBlock;
     BasicBlock* endBlock;
 public:
-    WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt){};
+    WhileStmt(ExprNode *cond, StmtNode *bodyStmt) : cond(cond), bodyStmt(bodyStmt){};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
     BasicBlock* getCondBlock() {return this->condBlock;}
     BasicBlock* getEndBlock() {return this->endBlock;}
+};
+
+class BreakStmt : public StmtNode
+{
+public:
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
+};
+
+class ContinueStmt : public StmtNode
+{
+public:
+    void output(int level);
+    void typeCheck(Node** parentToChild);
+    void genCode();
 };
 
 class ReturnStmt : public StmtNode
@@ -269,25 +291,7 @@ private:
 public:
     ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
     void output(int level);
-    void typeCheck();
-    void genCode();
-};
-
-class ContinueStmt : public StmtNode //continue
-{
-private:
-public:
-    void output(int level);
-    void typeCheck();
-    void genCode();
-    
-};
-
-class BreakStmt: public StmtNode
-{
-public:
-    void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -299,20 +303,10 @@ private:
 public:
     AssignStmt(ExprNode *lval, ExprNode *expr) : lval(lval), expr(expr) {};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
-class EmptyStmtNode : public StmtNode
-{
-public:
-    EmptyStmtNode(){};
-    void output(int level);
-    void typeCheck();
-    void genCode();
-};
-
-//WE ADD
 class FuncDefParamsNode : public StmtNode
 {
 private:
@@ -322,7 +316,7 @@ public:
     void addNext(Id* next);
     std::vector<Type*> getParamsType();
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
 
@@ -336,37 +330,9 @@ private:
 public:
     FunctionDef(SymbolEntry *se, FuncDefParamsNode *params, StmtNode *stmt) : se(se), params(params), stmt(stmt){};
     void output(int level);
-    void typeCheck();
+    void typeCheck(Node** parentToChild);
     void genCode();
 };
-
-// 函数调用
-class FuncCallParamsNode : public StmtNode
-{
-private:
-    std::vector<ExprNode*> paramsList; //参数列表
-public:
-    FuncCallParamsNode(){};
-    void append(ExprNode* next);
-    void output(int level);
-    void typeCheck();
-    void genCode();
-    std::vector<ExprNode*> getParamsList() {return this->paramsList;};
-    std::vector<Operand*> getOperandList();
-};
-
-class FuncCallNode : public ExprNode  
-{
-private:
-    Id* funcId;  //函数名
-    FuncCallParamsNode* params; //参数
-public:
-    FuncCallNode(SymbolEntry *se, Id* id, FuncCallParamsNode* params) : ExprNode(se), funcId(id), params(params){};
-    void output(int level);
-    void typeCheck();
-    void genCode();
-};
-
 
 class Ast
 {
@@ -380,5 +346,6 @@ public:
     void genCode(Unit *unit);
 };
 
+static std::stack<WhileStmt*> whileStack;
 
 #endif
