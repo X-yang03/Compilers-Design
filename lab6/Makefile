@@ -58,6 +58,9 @@ gdb:app
 tree:app
 	@$(BINARY) -o example.ast -a example.sy
 
+toks:app
+	@$(BINARY) -o example.toks -t example.sy
+
 $(OBJ_PATH)/lexer.o:$(SRC_PATH)/lexer.cpp
 	@mkdir -p $(OBJ_PATH)
 	@g++ $(CFLAGS) -c -o $@ $<
