@@ -105,7 +105,7 @@ LVal
             assert(se != nullptr);
         }
         Id* newId = new Id(se);
-        newId->addIndices((ArrayIndiceNode*)$2);
+        newId->addIndices((ExprStmtNode*)$2);
         $$ =  newId;
         delete []$1;
     }
@@ -491,7 +491,7 @@ ConstDef
                 assert(identifiers->lookupOneLevel($1) == nullptr);
             }
             Id* id = new Id(se);
-            id->addIndices((ArrayIndiceNode*)$2);
+            id->addIndices((ExprStmtNode*)$2);
             $$ = new DefNode(id, (Node*)$4, true, true);
         }
 
@@ -618,7 +618,7 @@ VarDef
                 assert(identifiers->lookupOneLevel($1) == nullptr);
             }
             Id* id = new Id(se);
-            id->addIndices((ArrayIndiceNode*)$2);
+            id->addIndices((ExprStmtNode*)$2);
             $$ = new DefNode(id, nullptr, false, true);
         }
     |   ID ArrIndices ASSIGN ArrayInitVal{
@@ -639,7 +639,7 @@ VarDef
                 assert(identifiers->lookupOneLevel($1) == nullptr);
             }
             Id* id = new Id(se);
-            id->addIndices((ArrayIndiceNode*)$2);
+            id->addIndices((ExprStmtNode*)$2);
             $$ = new DefNode(id, (Node*)$4, false, true);
         }
 FuncDef
@@ -703,33 +703,36 @@ FuncParam
             Type* arrayType = nullptr; 
             if($1==TypeSystem::intType){
                 arrayType = new IntArrayType();
-                ((IntArrayType*)arrayType)->pushBackDimension(-1);
             }
             else if($1==TypeSystem::floatType){
                 arrayType = new FloatArrayType();
-                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
+               
             }
             //最高维未指定，记为默认值-1
+            SymbolEntry *addDim = new ConstantSymbolEntry(TypeSystem::constIntType, -1);
+            dynamic_cast<ExprStmtNode*>($5)->addFirst(new Constant(addDim));
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
             identifiers->install($2, se);
             Id* id = new Id(se);
-            id->addIndices((ArrayIndiceNode*)$5);
+            id->addIndices((ExprStmtNode*)$5);
             $$ = new DefNode(id, nullptr, false, true);
         }
     |   Type ID LBRACKET RBRACKET{
             Type* arrayType = nullptr; 
             if($1==TypeSystem::intType){
                 arrayType = new IntArrayType();
-                ((IntArrayType*)arrayType)->pushBackDimension(-1);
             }
             else if($1==TypeSystem::floatType){
                 arrayType = new FloatArrayType();
-                ((FloatArrayType*)arrayType)->pushBackDimension(-1);
             }
             //最高维未指定，记为默认值-1
+            SymbolEntry *addDim = new ConstantSymbolEntry(TypeSystem::constIntType, -1);
+            ExprStmtNode* indices = new ExprStmtNode();
+            indices->addNext(new Constant(addDim));
             SymbolEntry *se = new IdentifierSymbolEntry(arrayType, $2, identifiers->getLevel());
             identifiers->install($2, se);
             Id* id = new Id(se);
+            id->addIndices(indices);
             $$ = new DefNode(id, nullptr, false, true);
         }
     ;

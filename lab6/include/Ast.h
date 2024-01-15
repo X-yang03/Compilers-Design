@@ -95,14 +95,17 @@ class StmtNode : public Node
 
 class ExprStmtNode : public StmtNode
 {
-private:
-    std::vector<ExprNode*> exprList;
 public:
+    std::vector<ExprNode*> exprList;
+
     ExprStmtNode(){};
     void append(ExprNode* next);
+    void addNext(ExprNode* next);
+    void addFirst(ExprNode* first);
     void output(int level);
     void typeCheck();
     void genCode();
+    void initDimInSymTable(IdentifierSymbolEntry* se);
 };
 
 class ArrayIndiceNode : public StmtNode
@@ -123,17 +126,18 @@ public:
 class Id : public ExprNode
 {
 private:
-    ArrayIndiceNode* indices;
+    ExprStmtNode* indices;
 public:
     Id(SymbolEntry *se) : ExprNode(se){SymbolEntry *temp = new TemporarySymbolEntry(se->getType(), SymbolTable::getLabel()); dst = new Operand(temp);};
     SymbolEntry* getSymbolEntry() {return symbolEntry;}
     bool isArray();     //必须配合indices!=nullptr使用（a[]的情况）
-    void addIndices(ArrayIndiceNode* idx) {indices = idx;}
+    void addIndices(ExprStmtNode* idx) {indices = idx;}
     void output(int level);
     std::string getName();
     Type* getType();
     void typeCheck();
     void genCode();
+    ExprStmtNode* getIndices() {return indices;};
 };
 
 
@@ -180,7 +184,7 @@ public:
     void output(int level);
     void typeCheck();
     void genCode();
-    std::vector<ArrayinitNode*> getinnerList(){return this->innerList;};
+    std::vector<ArrayinitNode*> getInnerList() {return innerList;};
     ExprNode* getLeafNode() {return leafNode;};
 };
 
