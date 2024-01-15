@@ -95,8 +95,8 @@ void MachineOperand::output()
     {
     case IMM:
         if(is_float) {
-            uint32_t* temp = reinterpret_cast<uint32_t*>(&(this->fval));
-            fprintf(yyout, "#%u", *temp);
+            uint32_t temp = reinterpret_cast<uint32_t&>(this->fval);
+            fprintf(yyout, "#%u", temp);
         }
         else {
             fprintf(yyout, "#%d", this->val);
@@ -246,8 +246,8 @@ void LoadMInstruction::output()
     {
         if(this->use_list[0]->isFloat()) {
             float val = this->use_list[0]->getFVal();
-            uint32_t* val_int =  reinterpret_cast<uint32_t*>(&val);
-            fprintf(yyout, "=%u\n", *val_int);
+            uint32_t val_int =  reinterpret_cast<uint32_t&>(val);
+            fprintf(yyout, "=%u\n", val_int);
         }
         else {
             fprintf(yyout, "=%d\n", this->use_list[0]->getVal());
@@ -714,11 +714,9 @@ void MachineFunction::output()
     fprintf(yyout, "\tbx lr\n\n");
 }
 
+// TODO: 浮点数全局变量声明 数组全局变量声明
 void MachineUnit::PrintGlobalDecl()
 {
-    if(global_var_list.empty()) {
-        return;
-    }
     fprintf(yyout, "\t.data\n");
     for(auto var : global_var_list) {
         if(var->getType()->isArray()) {
@@ -738,8 +736,8 @@ void MachineUnit::PrintGlobalDecl()
                 else {
                     for (auto value: var->arrayValues) {
                         auto tmp_value = float(value);
-                        uint32_t *temp = reinterpret_cast<uint32_t*>(&tmp_value);
-                        fprintf(yyout, "\t.word %u\n", *temp);
+                        uint32_t temp = reinterpret_cast<uint32_t&>(tmp_value);
+                        fprintf(yyout, "\t.word %u\n", temp);
                     }
                 }
             }
@@ -753,8 +751,8 @@ void MachineUnit::PrintGlobalDecl()
                 fprintf(yyout, "\t.word %d\n", int(var->value));
             } else {
                 auto value = float(var->value);
-                uint32_t *temp = reinterpret_cast<uint32_t*>(&value);
-                fprintf(yyout, "\t.word %u\n", *temp);
+                uint32_t temp = reinterpret_cast<uint32_t&>(value);
+                fprintf(yyout, "\t.word %u\n", temp);
             }
         }
     }
@@ -768,11 +766,10 @@ void MachineUnit::output()
     * 2. Traverse all the function in func_list to print assembly code;
     * 3. Don't forget print bridge label at the end of assembly code!! */
     fprintf(yyout, "\t.arch armv8-a\n");
-//    fprintf(yyout, "\t.fpu vfpv3-d16\n");
+    fprintf(yyout, "\t.fpu vfpv3-d16\n");
     fprintf(yyout, "\t.arch_extension crc\n");
     fprintf(yyout, "\t.arm\n");
     PrintGlobalDecl();
-    fprintf(yyout, "\t.text\n");
     for(auto iter : func_list)
         iter->output();
     PrintGlobal();
