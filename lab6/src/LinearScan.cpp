@@ -23,8 +23,10 @@ void LinearScan::allocateRegisters()
         {
             computeLiveIntervals();
             success = linearScanRegisterAllocation();
-            if (success)        // all vregs can be mapped to real regs
+            if (success){        // all vregs can be mapped to real regs
                 modifyCode();
+                //printf("success\n");    
+            }
             else                // spill vregs that can't be mapped to real regs
                 genSpillCode();
         }

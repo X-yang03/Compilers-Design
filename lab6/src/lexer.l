@@ -1,336 +1,259 @@
 %option noyywrap
-%{
-    /*
-    * You will need to comment this line in lab5.
-    */
-    //#define ONLY_FOR_LEX
-    
-    #ifdef ONLY_FOR_LEX
-    #else
-    // #define YYSTYPE void *
-    #endif
-
-    #define YY_NO_UNPUT
-    #define YY_NO_INPUT
+%option nounput
+%option noinput
+%option yylineno
+%top{
+    #include <stdarg.h>
+    #include "common.h"
     #include "parser.h"
-    #include <string>
-    #include <sstream>
+}
+%{
 
-    #include <ostream>
-    #include <fstream>
-    using namespace std;
-    extern FILE *yyin; 
-    extern FILE *yyout;
+    
+    int columnNo = 0;
 
-    int offset = 1;
+    //bool preToken = 0; //0表示加减号 ，1表示为正负号
 
-    #ifdef ONLY_FOR_LEX
-    void DEBUG_FOR_LAB4(std::string token, std::string lexeme){
-        fprintf(yyout, "[DEBUG LAB4]:  %10s%10s%10d%10d\n",token.c_str(), lexeme.c_str(), yylineno, offset);
+    extern dump_type_t dump_type;
+
+    //  dump_tokens用于输出token的信息
+    inline void dump_tokens(const char* format, ...){  //变长参数
+        va_list args;                                   //va_list表示可变参数列表类型，实际上是一个char*
+        va_start(args, format);                         //初始化args，指向第一个可变参数，即format后的第一个参数
+        if (dump_type == TOKENS)
+            vfprintf(yyout, format, args);              //yyout中输出format格式化的字符串
+        va_end(args);
+        columnNo += yyleng;      //columnNo 加上yytext的长度yyleng
+
     }
-    #endif
-%}
 
-INTEGER ([1-9][0-9]*|0)
-OCTAL (0[0-7][0-7]*)
-HEXAL (0(x|X)[0-9a-fA-F][0-9a-fA-F]*)
-FLOATING ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+))[fLlL]?)
-HEXADECIMAL_FLOAT (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*([pP][+-]?[0-9]+)?)|([0-9A-Fa-f]+[pP][+-]?[0-9]+))[fLlL]?)
-ID [[:alpha:]_][[:alpha:][:digit:]_]*
-EOL (\r\n|\n|\r)
-WHITE [\t ]
-COMMENT (\/\/[^\n]*)
-commentbegin "/*"
-commentelement .
-commentline \n
-commentend "*/"
+    /* Your code here, if desired (lab3). */
+%}
+/* definitions section */
+
+COMMENTBEGIN    "/*"
+COMMENTEND      "*/"
+COMMENTELEMENT  .
+SINGLECOMMENT   "//"[^\n]*   
+DECIMIAL        ([1-9][0-9]*|0)
+OCTAL           (0[0-7]+)
+HEXDECIMAL      (0[xX][0-9a-fA-F]+)
+FLOAT_NUMBER    ((([0-9]*[.][0-9]*([eE][+-]?[0-9]+)?)|([0-9]+[eE][+-]?[0-9]+))[fFlL]?)
+HEX_FLOAT       (0[xX](([0-9A-Fa-f]*[.][0-9A-Fa-f]*[pP][+-]?[0-9]+)|([0-9A-Fa-f]+[pP][+-]?[0-9]+))[fFlL]?)
+ID              [[:alpha:]_][[:alpha:][:digit:]_]*
+EOL             (\r\n|\n|\r)
+WHITE           [\t ]
 %x COMMENT
-%x COMBLOCK
+/*  Your code here (lab3). */
 
 %%
-{commentbegin} {BEGIN COMMENT;}
-<COMMENT>{commentelement} {}
-<COMMENT>{commentline} {yylineno++;}
-<COMMENT>{commentend} {BEGIN INITIAL;}
-
-"int" {
-    /*
-    * Questions: 
-    *   Q1: Why we need to return INT in further labs?
-    *   Q2: What is "INT" actually?
-    */
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("TYPE_INT", "int");
-        offset+=strlen(yytext);
-    #else
-        return TYPE_INT;
-    #endif
+    /* rules section */
+{SINGLECOMMENT} {
+    columnNo = 0;
+    dump_tokens("SINGLECOMMENT\t%d\n",yylineno);
 }
+
+{COMMENTBEGIN}  {
+    BEGIN COMMENT;
+    columnNo+=2;
+}
+
+<COMMENT>{COMMENTELEMENT}    { columnNo++;}
+
+<COMMENT>{EOL}  {columnNo = 0;}
+
+<COMMENT>{COMMENTEND}    {
+    BEGIN INITIAL;
+    columnNo+=2;
+}
+
+
+"int" {     //输出 INT  int    行号    列号
+    dump_tokens("INT\t\t%s\t%d\t%d\n", yytext,yylineno,columnNo); //yytext是识别到的字符串
+    return INT;
+}
+
 "float" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("TYPE_FLOAT", "float");
-        offset+=strlen(yytext);
-    #else
-        return TYPE_FLOAT;
-    #endif
+    dump_tokens("FLOAT\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return FLOAT;
 }
-"void" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("TYPE_VOID", "void");
-        offset+=strlen(yytext);
-    #else
-        return TYPE_VOID;
-    #endif 
-}
-"const" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("CONST", "const");
-        offset+=strlen(yytext);
-    #else
-        return CONST;
-    #endif 
 
+"void" {
+    dump_tokens("VOID\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return VOID;
 }
+
 "if" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("IF", "if");
-        offset+=strlen(yytext);
-    #else
-        return IF;
-    #endif
+    dump_tokens("IF\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return IF;
 }
+
 "else" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ELSE", "else");
-        offset+=strlen(yytext);
-    #else
-        return ELSE;
-    #endif
+    dump_tokens("ELSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return ELSE;
 }
-"while" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("WHILE", "while");
-        offset+=strlen(yytext);
-    #else
-        return WHILE;
-    #endif
-}
-"break" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("BREAK", "break");
-        offset+=strlen(yytext);
-    #else
-        return BREAK;
-    #endif
-}
-"continue" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("CONTINUE", "continue");
-        offset+=strlen(yytext);
-    #else
-        return CONTINUE;
-    #endif
-}
+
 "return" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("RETURN", "return");
-        offset+=strlen(yytext);
-    #else
-        return RETURN;
-    #endif
-}
-"=" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ASSIGN", "=");
-        offset+=strlen(yytext);
-    #else
-        return ASSIGN;
-    #endif
-}
-"==" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("EQ", "==");
-        offset+=strlen(yytext);
-    #else
-        return EQ;
-    #endif
+    dump_tokens("RETURN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+    return RETURN;
 }
 "!=" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("NEQ", "!=");
-        offset+=strlen(yytext);
-    #else
-        return NEQ;
-    #endif
+    dump_tokens("NEQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return NEQ;
 }
+"==" {
+    dump_tokens("EQ\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return EQ;
+}
+
+"=" {
+    dump_tokens("ASSIGN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return ASSIGN;
+}
+
+"<="    {
+    dump_tokens("LE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return LE;
+}
+
 "<" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("LESS", "<");
-        offset+=strlen(yytext);
-    #else
-        return LESS;
-    #endif
+    dump_tokens("LESS\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return LESS;
 }
-"<=" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("LESSEQ", "<=");
-        offset+=strlen(yytext);
-    #else
-        return LESSEQ;
-    #endif
+
+">="    {
+    dump_tokens("GE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return GE;
 }
+
 ">" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("GREAT", ">");
-        offset+=strlen(yytext);
-    #else
-        return GREAT;
-    #endif
+    dump_tokens("GREATER\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return GREATER;
 }
-">=" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("GREATEQ", ">=");
-        offset+=strlen(yytext);
-    #else
-        return GREATEQ;
-    #endif
-}
+
 "+" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ADD", "+");
-        offset+=strlen(yytext);
-    #else
+  
+        dump_tokens("ADD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return ADD;
-    #endif
+    
 }
+
 "-" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("SUB", "-");
-        offset+=strlen(yytext);
-    #else
+        dump_tokens("SUB\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
         return SUB;
-    #endif
 }
+
 "*" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("MUL", "*");
-        offset+=strlen(yytext);
-    #else
-        return MUL;
-    #endif
+    dump_tokens("MUL\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+
+    return MUL;
 }
 "/" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("DIV", "/");
-        offset+=strlen(yytext);
-    #else
-        return DIV;
-    #endif
+    dump_tokens("DIV\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    //here add
+
+    return DIV;
 }
 "%" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("MOD", "%");
-        offset+=strlen(yytext);
-    #else
-        return MOD;
-    #endif
-}
-"||" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("OR", "||");
-        offset+=strlen(yytext);
-    #else
-        return OR;
-    #endif
-}
-"&&" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("AND", "&&");
-        offset+=strlen(yytext);
-    #else
-        return AND;
-    #endif
-}
-"!" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("NOT", "!");
-        offset+=strlen(yytext);
-    #else
-        return NOT;
-    #endif
-}
-"," {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("COMMA", ",");
-        offset+=strlen(yytext);
-    #else
-        return COMMA;
-    #endif
+    dump_tokens("MOD\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return MOD;
 }
 ";" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("SEMICOLON", ";");
-        offset+=strlen(yytext);
-    #else
-        return SEMICOLON;
-    #endif
+    dump_tokens("SEMICOLON\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return SEMICOLON;
 }
+
 "(" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("LPAREN", "(");
-        offset+=strlen(yytext);
-    #else
-        return LPAREN;
-    #endif
+    dump_tokens("LPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return LPAREN;
 }
+
 ")" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("RPAREN", ")");
-        offset+=strlen(yytext);
-    #else
+    dump_tokens("RPAREN\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
     return RPAREN;
-    #endif
 }
-"[" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("LBRACKET", "[");
-        offset+=strlen(yytext);
-    #else
-        return LBRACKET;
-    #endif
-}
-"]" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("RBRACKET", "]");
-        offset+=strlen(yytext);
-    #else
-    return RBRACKET;
-    #endif
-}
+
 "{" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("LBRACE", "{");
-        offset+=strlen(yytext);
-    #else
-        return LBRACE;
-    #endif
+    dump_tokens("LBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return LBRACE;
 }
+
 "}" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("RBRACE", "}");
-        offset+=strlen(yytext);
-    #else
-        return RBRACE;
-    #endif
+    dump_tokens("RBRACE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return RBRACE;
 }
+"," {
+    dump_tokens("PARSE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+
+    return PARSE;
+}
+"while" {
+    dump_tokens("WHILE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return WHILE;
+}
+
+"continue"  {
+    dump_tokens("CONTINUE\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return CONTINUE;
+}
+
+"break" {
+    dump_tokens("BREAK\t%s\t%d\t%d\n", yytext,yylineno,columnNo);
+    return BREAK;
+}
+
+"const" {
+    dump_tokens("CONST\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return CONST;
+}
+
+"&&"    {
+    dump_tokens("AND\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+
+    return AND;
+}
+
+"||"    {
+    dump_tokens("OR\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+
+    return OR;
+}
+
+"!" {
+    dump_tokens("NOT\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return NOT;
+}
+
+"[" {
+    dump_tokens("LBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return LBRACKET;
+}
+
+"]" {
+    dump_tokens("RBRACKET\t%s\t%d\t%d\n",yytext,yylineno,columnNo);
+    return RBRACKET;
+}
+
 "getint" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "getint");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+       yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* funcType = new FunctionType(TypeSystem::intType, {});//返回类型int，无参数
             SymbolTable* globalTable;    //全域符号表
@@ -339,16 +262,14 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
+
 }
 "getch" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "getch");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+       yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* funcType = new FunctionType(TypeSystem::intType, {});//返回类型int，无参数
             SymbolTable* globalTable;    //全域符号表
@@ -357,14 +278,11 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
+
 }
 "getfloat" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "getfloat");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -375,14 +293,12 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
+
 }
 "getarray" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "getarray");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -397,16 +313,13 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
+
 }
 "getfarray" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "getfarray");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
-        yylval.strtype = lexeme;
+         yylval.strtype = lexeme;
         std::vector<Type*> vec; //形参类型表
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             Type* arrayType = new FloatArrayType();
@@ -419,14 +332,10 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
 "putint" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putint");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -439,14 +348,10 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
 "putch" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putch");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -459,14 +364,10 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
 "putfloat" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putfloat");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -479,17 +380,13 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
 "putarray" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putarray");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
-        if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
+         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
             std::vector<Type*> vec; //形参类型表
             vec.push_back(TypeSystem::intType);
             Type* arrayType = new IntArrayType();
@@ -502,14 +399,10 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
 "putfarray" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putfarray");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
@@ -525,154 +418,104 @@ commentend "*/"
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
+
 }
 "putf" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "putf");
-        offset+=strlen(yytext);
-    #else
-        /*todo: implement putf*/
-    #endif
-}
-"starttime" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "starttime");
-        offset+=strlen(yytext);
-    #else
-        char *lexeme = new char[strlen(yytext) + 1];
+        columnNo+=yyleng;
+        char *lexeme = new char[yyleng + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
         if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
-            Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
+            std::vector<Type*> vec; //形参类型表
+            vec.push_back(TypeSystem::floatType);
+            Type* funcType = new FunctionType(TypeSystem::voidType, vec);//返回类型void，参数表[int]
             SymbolTable* globalTable;    //全域符号表
             for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
             SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
             globalTable->install(yytext, entry);
         }
         return ID;
-    #endif
 }
-"stoptime" {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", "stoptime");
-        offset+=strlen(yytext);
-    #else
+
+"_sysy_starttime" {
+        columnNo += yyleng;
         char *lexeme = new char[strlen(yytext) + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
-        if(identifiers->lookup(yytext)==nullptr){//符号表内未找到，插入
-            Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
-            SymbolTable* globalTable;    //全域符号表
-            for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
-            SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域GLOBAL(0)
-            globalTable->install(yytext, entry);
-        }
+        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
+        SymbolTable* globalTable;    //全域符号表
+        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); 
+        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
+        globalTable->install(yytext, entry);
         return ID;
-    #endif
 }
-{INTEGER} {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("INTEGER", ""+std::string(yytext));
-        offset+=strlen(yytext);
-    #else
-        yylval.itype = atoi(yytext);
-        return INTEGER;
-    #endif
-}
-{FLOATING} {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("FLOATING", ""+std::string(yytext));
-        offset+=strlen(yytext);
-    #else
-        float temp;
-        sscanf(yytext, "%f", &temp);
-        yylval.ftype = double(temp);
-        return FLOATING;
-    #endif
-}
-{HEXADECIMAL_FLOAT} {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("FLOATING", ""+std::string(yytext));
-        offset+=strlen(yytext);
-    #else
-        float temp;
-        sscanf(yytext, "%f", &temp);
-        yylval.ftype = double(temp);
-        return FLOATING;
-    #endif
-}
-{ID} {
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("ID", ""+std::string(yytext));
-        offset+=strlen(yytext);
-    #else
-        char* lexeme = new char[strlen(yytext) + 1];
+"_sysy_stoptime" {
+        columnNo += yyleng;
+        char *lexeme = new char[strlen(yytext) + 1];
         strcpy(lexeme, yytext);
         yylval.strtype = lexeme;
+        Type* funcType = new FunctionType(TypeSystem::voidType, {});//返回类型void，无参数
+        SymbolTable* globalTable;    //全域符号表
+        for(globalTable = identifiers;globalTable->getPrev();globalTable = globalTable->getPrev()); //全域符号表
+        SymbolEntry* entry = new IdentifierSymbolEntry(funcType, yytext, 0);//作用域(0)
+        globalTable->install(yytext, entry);
         return ID;
-    #endif
+}
+
+{DECIMIAL} {
+    int decimal;
+    decimal = atoi(yytext);
+    yylval.iType = decimal;
+    dump_tokens("DECIMAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, decimal);
+    return INTEGER;
 }
 {OCTAL} {
-    char* stop;
-    int dec = strtol(yytext, &stop, 8);
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("DECIMAL", ""+to_string(dec));
-        offset+=strlen(yytext);
-    #else
-        yylval.itype = dec;
-        return INTEGER;
-    #endif 
+    int oct = 0;
+    sscanf(yytext, "%o", &oct);
+    yylval.iType = oct;
+    dump_tokens("OCTAL\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, oct);
+
+    return INTEGER;
 }
-{HEXAL} {
-    char* stop;
-    int dec = strtol(yytext, &stop, 16);
-    #ifdef ONLY_FOR_LEX
-        DEBUG_FOR_LAB4("DECIMAL", ""+to_string(dec));
-        offset+=strlen(yytext);
-    #else
-        yylval.itype = dec;
-        return INTEGER;
-    #endif 
+{HEXDECIMAL} {
+    int hex = 0;
+    sscanf(yytext,"%016x",&hex);
+    yylval.iType = hex;
+    dump_tokens("HEX\t%s\t%d\t%d\t%d\n", yytext,yylineno,columnNo, hex);
+    return INTEGER;
 }
+{FLOAT_NUMBER} {
+    float f ;
+    sscanf(yytext, "%f", &f);
+    yylval.fType = f;
+    dump_tokens("FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
+    return FLOATNUM;
+}
+
+{HEX_FLOAT} {
+    float f ;
+    sscanf(yytext, "%f", &f);
+    yylval.fType = f;    
+    dump_tokens("HEX_FLOAT\t%s\t%d\t%d\t%f\n", yytext,yylineno,columnNo, f);
+    return FLOATNUM;
+}
+
+{ID} {
+    char *lexeme;
+    lexeme = new char[yyleng + 1];
+    strcpy(lexeme, yytext);
+    yylval.strtype = lexeme;
+    dump_tokens("ID\t\t%s\t%d\t%d\t\n", yytext,yylineno,columnNo);
+    return ID;
+}
+
 {EOL} {
-    #ifdef ONLY_FOR_LEX
-        yylineno++;
-        offset=1;
-    #endif
+    columnNo = 0; //换行时列数置0
 }
+
 {WHITE} {
-    #ifdef ONLY_FOR_LEX
-        if(yytext[0] == 32)
-            offset+=1;
-        else
-            offset+=4;
-    #endif
+    columnNo+=1;
 }
-{COMMENT}
-%%
 
-#ifdef ONLY_FOR_LEX
-int main(int argc, char **argv){
 
-    if(argc != 5){
-        fprintf(stderr, "Argument Not Enough");
-        exit(EXIT_FAILURE);
-    }
 
-    
-    if(!(yyin = fopen(argv[1], "r"))){
-        fprintf(stderr, "No such file or directory: %s", argv[1]);
-        exit(EXIT_FAILURE);
-    }
-
-    if(!(yyout = fopen(argv[3], "w"))){
-        fprintf(stderr, "No such file or directory: %s", argv[3]);
-        exit(EXIT_FAILURE);
-    }
-    fprintf(yyout, "[DEBUG LAB4]:  %10s%10s%10s%10s\n","token", "lexeme", "lineno", "offset");
-    yylineno = 1;
-    yylex();
-    return 0;
-}
-#endif
