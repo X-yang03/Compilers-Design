@@ -615,9 +615,7 @@ void MachineBlock::insertAfter(MachineInstruction* at, MachineInstruction* src)
 
 void MachineFunction::output()
 {
-    //我也不知道这里用func_name接一下为什么就乱码了
-    // const char *func_name = this->sym_ptr->toStr().c_str() + 1;
-    // printf("%s\n", this->sym_ptr->toStr().c_str() + 1);
+
     fprintf(yyout, "\t.global %s\n", this->sym_ptr->toStr().c_str() + 1);
     fprintf(yyout, "\t.type %s , %%function\n", this->sym_ptr->toStr().c_str() + 1);
     fprintf(yyout, "%s:\n", this->sym_ptr->toStr().c_str() + 1);
@@ -655,9 +653,7 @@ void MachineFunction::output()
             fprintf(yyout, "\tsub sp, sp, #%d\n", stack_size);
         }
     }
-    // Traverse all the block in block_list to print assembly code.
-//    for(auto iter : block_list)
-//        iter->output();
+
     std::queue<MachineBlock*> q;
     std::set<MachineBlock*> v;
     q.push(block_list[0]);
@@ -760,11 +756,7 @@ void MachineUnit::PrintGlobalDecl()
 
 void MachineUnit::output()
 {
-    // TODO
-    /* Hint:
-    * 1. You need to print global variable/const declarition code;
-    * 2. Traverse all the function in func_list to print assembly code;
-    * 3. Don't forget print bridge label at the end of assembly code!! */
+
     fprintf(yyout, "\t.arch armv8-a\n");
     fprintf(yyout, "\t.fpu vfpv3-d16\n");
     fprintf(yyout, "\t.arch_extension crc\n");

@@ -238,24 +238,6 @@ void LinearScan::genSpillCode()
         for (auto use : interval->uses){
             MachineBlock* block = use->getParent()->getParent();
             MachineOperand* offset = new MachineOperand(MachineOperand::IMM, -interval->disp);
-            //如果栈帧偏移是大于255的立即数，需要重新load
-            // if (interval->disp > 255 || interval->disp < -255) {
-            //     MachineOperand* temp = new MachineOperand(MachineOperand::VREG, SymbolTable::getLabel());
-            //     //先把立即数load到寄存器
-            //     block->insertBefore(use->getParent(), new LoadMInstruction(block, temp, offset));
-            //     offset = new MachineOperand(*temp);
-            //     MachineOperand* addr = new MachineOperand(MachineOperand::VREG, SymbolTable::getLabel());
-            //     //然后add fp和立即数
-            //     block->insertBefore(use->getParent(), new BinaryMInstruction(block, BinaryMInstruction::ADD, addr, new MachineOperand(MachineOperand::REG, 11), offset));
-            //     //最后load
-            //     if(!use->isFloat()){
-            //         block->insertBefore(use->getParent(), new LoadMInstruction(block, new MachineOperand(*use), new MachineOperand(*addr), nullptr, LoadMInstruction::LDR));
-            //     }
-            //     else{
-            //         block->insertBefore(use->getParent(), new LoadMInstruction(block, new MachineOperand(*use), new MachineOperand(*addr), nullptr, LoadMInstruction::VLDR));
-            //     }
-            // }
-            // else{
                 if(!use->isFloat()){
                     block->insertBefore(use->getParent(), new LoadMInstruction(block, new MachineOperand(*use), new MachineOperand(MachineOperand::REG, 11), offset, LoadMInstruction::LDR));
                 }
@@ -268,24 +250,6 @@ void LinearScan::genSpillCode()
         for (auto def : interval->defs){
             MachineBlock* block = def->getParent()->getParent();
             MachineOperand* offset = new MachineOperand(MachineOperand::IMM, -interval->disp);
-            //如果栈帧偏移是大于255的立即数，需要重新load
-            // if (interval->disp > 255 || interval->disp < -255) {
-            //     MachineOperand* temp = new MachineOperand(MachineOperand::VREG, SymbolTable::getLabel());
-            //     //先把立即数load到寄存器
-            //     block->insertAfter(def->getParent(), new LoadMInstruction(block, temp, offset));
-            //     offset = new MachineOperand(*temp);
-            //     MachineOperand* addr = new MachineOperand(MachineOperand::VREG, SymbolTable::getLabel());
-            //     //然后add fp和立即数
-            //     block->insertAfter(def->getParent(), new BinaryMInstruction(block, BinaryMInstruction::ADD, addr, new MachineOperand(MachineOperand::REG, 11), offset));
-            //     //最后load
-            //     if(!def->isFloat()){
-            //         block->insertAfter(def->getParent(), new StoreMInstruction(block, new MachineOperand(*def), new MachineOperand(*addr), nullptr, StoreMInstruction::STR));
-            //     }
-            //     else{
-            //         block->insertAfter(def->getParent(), new StoreMInstruction(block, new MachineOperand(*def), new MachineOperand(*addr), nullptr, StoreMInstruction::VSTR));
-            //     }
-            // }
-            // else{
                 if(!def->isFloat()){
                     block->insertAfter(def->getParent(), new StoreMInstruction(block, new MachineOperand(*def), new MachineOperand(MachineOperand::REG, 11), offset, StoreMInstruction::STR));
                 }
@@ -328,10 +292,7 @@ void LinearScan::spillAtInterval(Interval *interval)
     }
     else{// active 列表中的 interval 结束时间更晚
         active[active.size()-1]->spill = true;//置位其spill标志位
-        interval->rreg = active[active.size()-1]->rreg;//将其占用的寄存器分配给 unhandled interval
-        // active.pop_back();
-        // std::vector<Interval*>::iterator insertPos = std::lower_bound(active.begin(), active.end(), interval, insertComp);
-        // active.insert(insertPos, interval);//按照unhandled interval活跃区间结束位置，将其插入到 active 列表中
+        interval->rreg = active[active.size()-1]->rreg;
         active.push_back(interval);
         sort(active.begin(), active.end(), insertComp);
     }

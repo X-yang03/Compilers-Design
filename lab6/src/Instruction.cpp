@@ -652,9 +652,7 @@ MachineOperand* Instruction::genMachineLabel(int block_no)
 }
 void AllocaInstruction::genMachineCode(AsmBuilder* builder)
 {
-    /* HINT:
-    * Allocate stack space for local variabel
-    * Store frame offset in symbol entry */
+
     auto cur_func = builder->getFunction();
     // printf("%s\t%d\n", se->toStr().c_str(), se->getType()->getSize());
     int offset = cur_func->AllocSpace(se->getType()->getSize());

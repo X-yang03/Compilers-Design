@@ -12,11 +12,7 @@ IRComSubExprElim::~IRComSubExprElim()
 
 bool IRComSubExprElim::skip(Instruction *inst)
 {
-    /**
-     * 判断当前指令是否可以当成一个表达式
-     * 当前只将二元运算指令当作表达式
-     * 纯函数及一些一元指令也可当作表达式
-     */
+
     if (dynamic_cast<BinaryInstruction *>(inst) != nullptr)
         return false;
     return true;
@@ -41,12 +37,7 @@ bool IRComSubExprElim::localCSE(Function *func)
             }
             else
                 exprs.emplace_back(inst);
-            /**
-             * 这里不需要考虑表达式注销的问题
-             * 因为ir是ssa形式的代码，目前来说应该不会有这样的情况，这种是错的
-             * a = b + c
-             * b = d + f
-             */
+
         }
     }
     return result;
